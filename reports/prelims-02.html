@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No-Code Text Classification Using Neural Networks — Report — ITC C508 Portfolio</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-activity-id="prelims-02">
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="wordmark">ITC <span>C508</span> · Deep Learning &amp; NLP</div>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About Me</a>
+      <a href="../prelims.html">Prelims</a>
+      <a href="../midterms.html">Midterms</a>
+      <a href="../finals.html">Finals</a>
+      <a href="../report.html" aria-current="page">Report</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 0.5rem;">
+    <span class="kicker">Prelims &middot; Activity 02 &middot; Week 3</span>
+    <h1>No-Code Text Classification Using Neural Networks</h1>
+  </section>
+
+  <div class="report-gallery">
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+  </div>
+
+  <section class="report-section">
+    <h2>Activity Details</h2>
+    <p>Submitted as <strong>PT-P1: "No-Code Text Classification Using
+    Neural Networks"</strong>, this activity used the <strong>Machine
+    Learning for Kids</strong> platform — a no-code interface over a
+    text-classification service — to build, test, and refine a
+    three-class intent classifier for customer feedback, then wire the
+    trained model into a working mobile app via MIT App Inventor.</p>
+
+    <h3>Project Setup &amp; Data Collection</h3>
+    <p>A "Recognizing Text" project was created without account
+    registration, with training data stored locally in the browser. The
+    platform exposed three stages: <strong>Train</strong> (enter tagged
+    text examples), <strong>Learn &amp; Test</strong> (train and evaluate
+    the network), and <strong>Make</strong> (test the trained model
+    against live, freely typed input). Three intent classes were defined
+    to represent common categories of customer / ride-hailing feedback —
+    <strong>Positive_Review/Praise</strong>,
+    <strong>Negative_Review/Complaint</strong>, and
+    <strong>Urgent_Support</strong> — with a minimum of ten distinct
+    tagged example phrases entered per class (positive: praise for
+    quality or responsiveness; negative: dissatisfaction, refund
+    requests; urgent: account lockouts, failed payments, safety issues).</p>
+
+    <h3>Model Training &amp; Quantitative Results</h3>
+    <p>After training, the model was evaluated against 35 held-out test
+    phrases across the three classes:</p>
+    <ul>
+      <li>Positive_Review — 8/10 correct (<strong>80.0%</strong> accuracy)</li>
+      <li>Negative_Review — 14/15 correct (<strong>93.3%</strong> accuracy)</li>
+      <li>Urgent_Support — 9/10 correct (<strong>90.0%</strong> accuracy)</li>
+      <li><strong>Overall: 31/35 correct — 88.6% accuracy</strong></li>
+    </ul>
+    <p>Live "Try it" testing (captured in the accompanying model testing
+    snapshots) probed the model further across clear-pattern phrases,
+    sarcastic/ambiguous phrases, and out-of-vocabulary questions. Clear
+    complaints and urgent phrases were classified confidently (e.g.
+    <em>"Driver won't stop the car even though I keep asking, I'm
+    terrified"</em> → Urgent_Support at 82% confidence), while sarcastic
+    phrasing such as <em>"Wonderful, my driver just drove past my stop
+    again"</em> was misread as Positive_Praise (64% confidence), and
+    out-of-vocabulary questions like <em>"What payment methods do you
+    accept?"</em> returned Positive_Praise at 0% confidence — exposing the
+    model's reliance on surface word patterns rather than true intent
+    understanding. Adding more negative-complaint examples afterward
+    visibly improved confidence on previously borderline cases (e.g.
+    <em>"Driver locked the doors and won't let me out, I'm scared"</em>
+    rose to 85% confidence for Urgent_Support).</p>
+
+    <h3>Application Integration: Ride-Hailing Chat Analyzer</h3>
+    <p>The trained model was connected to a working prototype built in
+    <strong>MIT App Inventor</strong>: a "Chat Analyzer" screen that sends
+    typed messages to the ML4Kids classifier component (<code>ClassifyText</code>)
+    and displays the recognized label and confidence back to the user in
+    real time — demonstrating the full loop from no-code training data to
+    a deployed, interactive classification app.</p>
+
+    <h3>Discussion: Rules vs. Learning, Data Quality, and the Pipeline</h3>
+    <ul>
+      <li><strong>Rule-based vs. learned classification</strong> —
+      hand-coded IF/ELSE rules break down because natural language
+      phrasing is highly variable, keyword rules can't reliably read
+      context (e.g. sarcasm), the rule set grows unmanageably as new
+      phrasing appears, and rules can't generalize to inputs never
+      anticipated by the developer — while a model trained on tagged
+      examples generalizes to unseen but statistically similar phrasing.</li>
+      <li><strong>Dataset size &amp; diversity</strong> — with only a
+      handful of examples per class, predictions were unstable and swayed
+      by superficial word matches; expanding toward ten-plus diverse
+      examples per class broadened the vocabulary and sentence patterns
+      learned, producing higher and more consistent confidence scores.</li>
+      <li><strong>Where feature extraction happens</strong> — identified
+      as occurring in the Learn &amp; Test stage, at the point where
+      "Train (New Machine Learning Model)" converts raw tagged text into
+      numerical tokens before any weight updates — the translation layer
+      between human language and the network's internal numerical
+      operations, sitting between raw data collection (Train) and
+      inference (Make).</li>
+    </ul>
+  </section>
+
+  <section class="report-section">
+    <h2>Description</h2>
+    <p>Built a three-class intent classifier for customer/ride-hailing
+    feedback on the no-code Machine Learning for Kids platform, reaching
+    88.6% accuracy on held-out test phrases, then integrated the trained
+    model into a live MIT App Inventor chat-analyzer app.</p>
+  </section>
+
+  <section class="report-section">
+    <h2>Reflection</h2>
+    <p>Testing revealed that the model performed well on phrases closely
+    resembling its training data but struggled with sarcasm and topics
+    outside its training vocabulary — both of which improved after
+    targeted refinement of the training set. Building this classifier
+    without writing a single line of model code, and then wiring it into
+    a live App Inventor chat screen, reinforced that in deep learning
+    systems the size, diversity, and representativeness of training data
+    matter as much as the learning algorithm itself, and that feature
+    extraction — turning raw text into a numerical form the network can
+    learn from — is a necessary bridge between data collection and model
+    training. This baseline (90.80% accuracy / 88.61% F1 in later formal
+    testing) became the point of comparison for the code-based
+    hyperparameter tuning work in the following activity.</p>
+  </section>
+
+  <a class="back-link" href="../prelims.html">&larr; Back to Prelims</a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ITC C508 — Deep Learning and Neural Network (NLP)</span>
+    <span><a href="../index.html">Back to home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+<script src="../js/content-loader.js" defer></script>
+</body>
+</html>

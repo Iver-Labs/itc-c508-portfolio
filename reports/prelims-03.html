@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Network Training (Hyperparameters) — Report — ITC C508 Portfolio</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-activity-id="prelims-03">
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="wordmark">ITC <span>C508</span> · Deep Learning &amp; NLP</div>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About Me</a>
+      <a href="../prelims.html">Prelims</a>
+      <a href="../midterms.html">Midterms</a>
+      <a href="../finals.html">Finals</a>
+      <a href="../report.html" aria-current="page">Report</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 0.5rem;">
+    <span class="kicker">Prelims &middot; Activity 03 &middot; Week 4</span>
+    <h1>Neural Network Training (Hyperparameters)</h1>
+  </section>
+
+  <div class="report-gallery">
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+  </div>
+
+  <section class="report-section">
+    <h2>Activity Details</h2>
+    <p>Submitted as <strong>PT-P2: "Neural Network Testing Report"</strong>,
+    this activity moved from the no-code baseline of PT-P1 into explicit,
+    code-based model development: a Feedforward Backpropagation (FFBP)
+    neural network built in <strong>TensorFlow/Keras</strong> inside the
+    notebook <code>Iverson_Neural_Network_Training_Testing.ipynb</code>,
+    trained and re-trained across <strong>20 structured experimental runs
+    (EXP-001–EXP-020)</strong> on a ride-hailing text classification
+    dataset, logged in the Labastida-FFBP Training Log.</p>
+
+    <h3>Data &amp; Model Architecture</h3>
+    <p>Two dataset scales were used: an initial 35-row set
+    (<code>ride_hailing_dataset.csv</code>) and an expanded 500-row set
+    (<code>ride-hailing-dataset-expanded.csv</code>). Text was
+    preprocessed with a custom vocabulary builder (max vocabulary size
+    300, fixed sequence length of 15 tokens, zero-padding/truncation),
+    then split 70/15/15 into train/validation/test with
+    <code>random_state=42</code> for reproducibility. The Keras Sequential
+    model consisted of: an <strong>Embedding</strong> layer mapping token
+    indices to dense vectors, <strong>GlobalAveragePooling1D</strong> for
+    sequence-length-independent feature reduction, a
+    <strong>Dense(ReLU)</strong> hidden layer, a <strong>Dropout</strong>
+    regularization layer, and a final <strong>Dense(softmax)</strong>
+    classification layer.</p>
+
+    <h3>Three Experimental Phases</h3>
+    <ul>
+      <li><strong>Phase 1 — Small dataset (EXP-001–EXP-007, N=35):</strong>
+      revealed severe overfitting — training loss collapsed to 0.0291
+      while validation loss exploded to 1.5693 (a 1.54 generalization
+      gap), capping validation accuracy at 20.00%. Reducing architectural
+      capacity (hidden_dim from 64 → 32 → 24) alone failed to fix it,
+      proving that capacity tuning cannot compensate for insufficient
+      data. Aggressively lowering the learning rate to 0.0001 (EXP-005)
+      instead pushed the model into underfitting (training loss 1.0889,
+      validation loss 1.0945).</li>
+      <li><strong>Phase 2 — Expanded dataset (EXP-008–EXP-014,
+      N=500):</strong> validation accuracy jumped to 86.00% and F1-score
+      to 0.8698; the generalization gap collapsed from 1.5402 down to
+      0.2942 — the single most decisive factor in the whole study.</li>
+      <li><strong>Phase 3 — Epoch scaling &amp; regularization
+      (EXP-015–EXP-020):</strong> identified an operational plateau
+      around 60 epochs, with overfitting re-emerging by epoch 70
+      (validation loss rising from 0.3646 to 0.3738). Applying a 0.30
+      dropout rate in EXP-020 eliminated the generalization gap,
+      converging cleanly to a training loss of 0.2238 and validation loss
+      of 0.3586 (F1-score 0.8275).</li>
+    </ul>
+
+    <h3>Code-Based Control vs. the No-Code Baseline (PT-P1)</h3>
+    <p>The no-code PT-P1 baseline reached a strong 90.80% accuracy /
+    88.61% F1 out of the box, but offered no way to diagnose <em>why</em>
+    performance stalled. Explicit Keras code restored that visibility and
+    control: real-time loss tracking pinpointed the exact epoch (60)
+    where validation loss plateaued before diverging; optimizer choice
+    (Adam vs. SGD), learning rate (tuned across two orders of magnitude,
+    0.0050 → 0.0003), loss formulation, and layer-specific dropout could
+    all be adjusted directly — none of which the no-code heuristics
+    exposed. The trade-off identified: no-code automation is best for
+    rapid feasibility checks and non-technical demos, while code-based
+    FFBP is what production work needs for debugging loss curves and
+    preventing catastrophic failure on out-of-distribution input.</p>
+
+    <h3>Pipeline Mapping (Code ↔ Theory)</h3>
+    <p>The report also traces the theoretical deep learning pipeline
+    directly onto notebook cells: <strong>feature extraction</strong> in
+    the Embedding and GlobalAveragePooling1D layers (Cell 14), the
+    <strong>forward pass</strong> through the Dense/Dropout/Softmax layers
+    (Cell 14), <strong>loss computation</strong> via sparse categorical
+    cross-entropy (Cell 16), and the <strong>backward pass</strong> —
+    automatic differentiation and Adam weight updates per mini-batch —
+    inside <code>model.fit()</code> (Cell 18).</p>
+  </section>
+
+  <section class="report-section">
+    <h2>Description</h2>
+    <p>Trained a Keras feedforward backpropagation network across 20
+    experimental runs on a ride-hailing text dataset, diagnosing
+    overfitting and underfitting through loss curves and tuning dataset
+    size, learning rate, and dropout to close the generalization gap
+    against a no-code baseline.</p>
+  </section>
+
+  <section class="report-section">
+    <h2>Reflection</h2>
+    <p>Running the same underlying problem through both a no-code tool and
+    hand-written Keras code made the mechanics of overfitting and
+    underfitting concrete rather than abstract. The clearest lesson was
+    that no amount of architectural or learning-rate tuning rescues a
+    model starved of data — expanding from 35 to 500 rows mattered more
+    than any single hyperparameter choice — while dropout regularization
+    was what finally closed the gap once enough data was in place. Having
+    to justify every configuration change against a validation-loss curve,
+    instead of trusting an automated score, is the habit I want to carry
+    into the rest of this course and into the capstone project.</p>
+  </section>
+
+  <a class="back-link" href="../prelims.html">&larr; Back to Prelims</a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ITC C508 — Deep Learning and Neural Network (NLP)</span>
+    <span><a href="../index.html">Back to home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+<script src="../js/content-loader.js" defer></script>
+</body>
+</html>

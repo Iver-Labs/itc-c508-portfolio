@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to NLP Concepts — Report — ITC C508 Portfolio</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-activity-id="prelims-01">
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="wordmark">ITC <span>C508</span> · Deep Learning &amp; NLP</div>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About Me</a>
+      <a href="../prelims.html">Prelims</a>
+      <a href="../midterms.html">Midterms</a>
+      <a href="../finals.html">Finals</a>
+      <a href="../report.html" aria-current="page">Report</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 0.5rem;">
+    <span class="kicker">Prelims &middot; Activity 01 &middot; Week 2</span>
+    <h1>Introduction to NLP Concepts</h1>
+  </section>
+
+  <div class="report-gallery">
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+    <div class="img-placeholder" role="img" aria-label="Screenshot placeholder — add a screenshot of this activity's output">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+      <span>Screenshot<br>e.g. code output, plot</span>
+    </div>
+  </div>
+
+  <section class="report-section">
+    <h2>Activity Details</h2>
+    <p>This activity paired a self-paced Microsoft Learn module with
+    hands-on experimentation and a formal reflective report, laying down
+    the vocabulary and intuition needed before the course moves into
+    hands-on neural network implementation. The submitted artifacts are a
+    completed Microsoft Learn transcript and a full IEEE-formatted
+    reflective report, <em>"Reflective Report about Introduction to Natural
+    Language Processing Concepts."</em></p>
+
+    <h3>Microsoft Learn: Introduction to Natural Language Processing Concepts</h3>
+    <p>The <strong>"Introduction to natural language processing
+    concepts"</strong> module was completed on <strong>July 24,
+    2026</strong> under the Microsoft Learn account
+    <em>iversonlabastida-9902</em>, logging 30 minutes of training time and
+    a <strong>passed module assessment</strong>. The module covers the
+    concepts that make NLP possible — the building blocks that let
+    applications see, hear, speak with, and understand users — and served
+    as the theoretical grounding for the hands-on work that followed.</p>
+
+    <h3>Hands-On Exploration of Generative &amp; Specialized NLP Tools</h3>
+    <p>Beyond the module itself, the exercise involved testing several
+    NLP-oriented tools directly to observe their real-world behavior and
+    limitations:</p>
+    <ul>
+      <li><strong>Phi 3.5-mini (local generative model)</strong> — used for
+      text summarization; produced coherent, concise summaries well-suited
+      to low-bandwidth scenarios, but occasionally missed nuanced content
+      compared to larger cloud models.</li>
+      <li><strong>Language Playground</strong> — used for language
+      detection; reliably identified supported languages on clear input
+      text but struggled with short snippets or mixed-language phrasing.</li>
+      <li><strong>PII Analyzer</strong> — used for personally identifiable
+      information extraction; detected obvious personal data through a
+      hybrid of generative cues and pattern matching, but showed both false
+      positives and false negatives on nonstandard formats.</li>
+    </ul>
+    <p>This comparison surfaced a recurring theme: interactive, editable,
+    locally-run interfaces are pedagogically valuable and privacy-friendly
+    for experimentation, but production-grade analytics need larger models
+    or cloud services, deterministic validation such as regex/rule engines,
+    and human review to keep errors, bias, and privacy risk in check.</p>
+
+    <h3>Core Concepts Covered</h3>
+    <ul>
+      <li><strong>Tokenization</strong> — comparing word-level, sub-word,
+      and character-level tokenization, and the trade-offs each makes
+      between vocabulary size, handling of rare/out-of-vocabulary tokens,
+      and computational cost. Sub-word tokenization was identified as the
+      most practical general-purpose balance.</li>
+      <li><strong>Statistical text analysis</strong> — frequency-of-words
+      analysis over a corpus, and TF-IDF as a fast, interpretable, sparse
+      baseline that captures term importance while ignoring semantics.</li>
+      <li><strong>Semantic language models</strong> — the concept of
+      embeddings as dense, semantic representations that enable similarity
+      search and algebraic reasoning over text, in contrast to TF-IDF's
+      purely statistical view.</li>
+      <li><strong>Context vectors / attention</strong> — how
+      transformer-style attention refines token meaning based on
+      surrounding context, improving disambiguation and downstream task
+      performance.</li>
+    </ul>
+    <p>The resulting rule of thumb: use TF-IDF for lightweight, explainable
+    baselines; static embeddings for semantic retrieval; and contextual
+    embeddings when nuance and contextual understanding matter most.</p>
+  </section>
+
+  <section class="report-section">
+    <h2>Description</h2>
+    <p>Completed the Microsoft Learn module "Introduction to natural
+    language processing concepts" and wrote an IEEE-formatted reflective
+    report covering tokenization, TF-IDF, and embeddings — grounded in
+    hands-on testing of a local summarization model, a language-detection
+    playground, and a PII analyzer.</p>
+  </section>
+
+  <section class="report-section">
+    <h2>Reflection</h2>
+    <p>This exercise introduced me to foundational NLP concepts —
+    tokenization, statistical analysis such as word frequency, and
+    semantic language models that introduced me to embeddings — followed
+    by a hands-on exercise and a knowledge assessment. Working through
+    tokenization trade-offs, TF-IDF, and embeddings gave me a strong
+    foundation for the advanced topics ahead in this course: text
+    processing, classification, sentiment analysis, and information
+    extraction. I now better appreciate both the capabilities and the
+    limitations of current NLP technologies, and I plan to deepen my
+    understanding of transformer architectures, prompt engineering,
+    retrieval-augmented generation (RAG), fine-tuning, and responsible AI
+    practices as I continue — knowledge I intend to apply directly when
+    designing my capstone project.</p>
+  </section>
+
+  <a class="back-link" href="../prelims.html">&larr; Back to Prelims</a>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ITC C508 — Deep Learning and Neural Network (NLP)</span>
+    <span><a href="../index.html">Back to home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+<script src="../js/content-loader.js" defer></script>
+</body>
+</html>

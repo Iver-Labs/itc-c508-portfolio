@@ -11,12 +11,14 @@
 <header class="site-header">
   <div class="wrap">
     <div class="wordmark">ITC <span>C508</span> · Deep Learning &amp; NLP</div>
-    <nav class="primary" aria-label="Primary">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
       <a href="index.html">Home</a>
       <a href="about.html">About Me</a>
       <a href="prelims.html" aria-current="page">Prelims</a>
       <a href="midterms.html">Midterms</a>
       <a href="finals.html">Finals</a>
+      <a href="report.html">Report</a>
     </nav>
   </div>
 </header>
@@ -25,9 +27,17 @@
   <section class="hero" style="padding-bottom: 1.5rem;">
     <span class="kicker">Period 1</span>
     <h1>Prelims</h1>
-    <p>Foundational exercises from the first stretch of the term — replace the
-    text below with a short note on what this period covered.</p>
+    <p>Foundational exercises covering the building blocks of neural
+    networks — perceptrons, activation functions, and a first feedforward
+    network — before the course moves into NLP-specific architectures.</p>
   </section>
+
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+      <span>✦ Deep Learning</span><span>✦ NLP</span><span>✦ ITC C508</span><span>✦ Neural Networks</span>
+      <span>✦ Deep Learning</span><span>✦ NLP</span><span>✦ ITC C508</span><span>✦ Neural Networks</span>
+    </div>
+  </div>
 
   <div class="stepper">
     <a href="prelims.html" aria-current="page">01 · Prelims</a>
@@ -37,39 +47,63 @@
 
   <section class="activity-list">
 
-    <article class="activity-card">
+    <article class="activity-card" data-activity-id="prelims-01">
       <div class="img-placeholder" role="img" aria-label="Activity screenshot placeholder">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
         <span>Screenshot / output<br>e.g. loss curve, notebook cell</span>
       </div>
       <div>
-        <div class="activity-meta mono">Activity 01 &middot; Week —</div>
-        <h3>Activity title goes here</h3>
-        <p>One or two sentences describing what the exercise was, what you
-        built, and what you learned. Keep it specific — dataset used,
-        approach taken, result achieved.</p>
+        <div class="activity-meta mono">Activity 01 &middot; Week 2</div>
+        <h3>Introduction to NLP Concepts</h3>
+        <p>Completed the Microsoft Learn module on foundational NLP concepts
+        and wrote a reflective report comparing tokenization strategies,
+        TF-IDF, and embeddings after hands-on testing of summarization,
+        language-detection, and PII-extraction tools.</p>
         <div class="tags">
-          <span class="tag">Python</span>
-          <span class="tag">Keras</span>
+          <span class="tag">Microsoft Learn</span>
+          <span class="tag">NLP Foundations</span>
         </div>
-        <p><a href="#">View notebook / report →</a></p>
+        <p><a href="reports/prelims-01.html">View report →</a></p>
       </div>
     </article>
 
-    <article class="activity-card">
+    <article class="activity-card" data-activity-id="prelims-02">
       <div class="img-placeholder" role="img" aria-label="Activity screenshot placeholder">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
         <span>Screenshot / output</span>
       </div>
       <div>
-        <div class="activity-meta mono">Activity 02 &middot; Week —</div>
-        <h3>Activity title goes here</h3>
-        <p>Description placeholder. Duplicate this &lt;article&gt; block for
-        each additional activity in this period.</p>
+        <div class="activity-meta mono">Activity 02 &middot; Week 3</div>
+        <h3>No-Code Text Classification Using Neural Networks</h3>
+        <p>Built a three-class intent classifier for customer/ride-hailing
+        feedback on the Machine Learning for Kids platform (88.6% test
+        accuracy) and wired the trained model into a live MIT App Inventor
+        chat-analyzer app.</p>
+        <div class="tags">
+          <span class="tag">Machine Learning for Kids</span>
+          <span class="tag">App Inventor</span>
+        </div>
+        <p><a href="reports/prelims-02.html">View report →</a></p>
+      </div>
+    </article>
+
+    <article class="activity-card" data-activity-id="prelims-03">
+      <div class="img-placeholder" role="img" aria-label="Activity screenshot placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
+        <span>Screenshot / output</span>
+      </div>
+      <div>
+        <div class="activity-meta mono">Activity 03 &middot; Week 4</div>
+        <h3>Neural Network Training (Hyperparameters)</h3>
+        <p>Trained a Keras feedforward network across 20 experimental runs,
+        diagnosing overfitting/underfitting via loss curves and tuning
+        dataset size, learning rate, and dropout to beat the no-code
+        baseline's generalization.</p>
         <div class="tags">
           <span class="tag">TensorFlow</span>
+          <span class="tag">Keras</span>
         </div>
-        <p><a href="#">View notebook / report →</a></p>
+        <p><a href="reports/prelims-03.html">View report →</a></p>
       </div>
     </article>
 
@@ -83,5 +117,7 @@
   </div>
 </footer>
 
+<script src="js/main.js" defer></script>
+<script src="js/content-loader.js" defer></script>
 </body>
 </html>
