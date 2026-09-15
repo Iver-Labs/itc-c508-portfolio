@@ -29,8 +29,8 @@
 - Snapshot 3:
 
 # Home Hero Images
-- Image 1: images/Pasted image 20260915084651.png
-- Image 2: 
+- Image 1: images/prelims-03-screenshot-1.png
+- Image 2: images/week_2_thumbnail.png
 - Image 3:
 
 # Prelims
@@ -48,7 +48,7 @@
   summarization tool, a language-identification playground, and a hybrid
   pattern-matching PII extractor.
 - Tags: Python, NumPy
-- Screenshot 1:
+- Screenshot 1: images/week_2_thumbnail.png
 - Screenshot 2:
 - Reflection: Tokenization granularity turned out to be a real design
   trade-off — word-level tokens stay interpretable but choke on rare or
@@ -81,7 +81,7 @@
   for a per-class accuracy of 80.0% (Positive), 93.3% (Negative), and 90.0%
   (Urgent) — 88.6% overall.
 - Tags: Machine Learning for Kids, No-Code ML
-- Screenshot 1:
+- Screenshot 1: images/week_3_snapshot.png
 - Screenshot 2:
 - Reflection: Working through this without writing code still required real
   design thinking — explicit IF/ELSE keyword rules break down on natural
