@@ -25,13 +25,13 @@
 - GitHub Username: Iver-Labs
 - Photo: images/profile.jpg
 - Snapshot 1: images/about-snapshot-1.png
-- Snapshot 2:
-- Snapshot 3:
+- Snapshot 2: images/hayler-se-core.jpg
+- Snapshot 3: images/hayler-se-telemetry.jpg
 
 # Home Hero Images
-- Image 1: images/prelims-03-screenshot-1.png
-- Image 2: images/week_2_thumbnail.png
-- Image 3:
+- Image 1: images/hayler-se-workstation.jpg
+- Image 2: images/hayler-se-core.jpg
+- Image 3: images/hayler-se-telemetry.jpg
 
 # Prelims
 

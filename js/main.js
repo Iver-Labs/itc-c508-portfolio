@@ -387,6 +387,42 @@
     update();
   }
 
+
+  /* ---------- Feature 6: Hayler Gliding Nav Tab Emphasis ---------- */
+  function initNavTabGlide() {
+    if (reduceMotion.matches) return;
+    var nav = document.getElementById('primary-nav');
+    if (!nav) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll('a'));
+    if (!links.length) return;
+
+    var indicator = document.createElement('span');
+    indicator.className = 'nav-glide-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    nav.appendChild(indicator);
+
+    function moveIndicator(el) {
+      if (!el || window.innerWidth <= 720) {
+        indicator.style.opacity = '0';
+        return;
+      }
+      var navRect = nav.getBoundingClientRect();
+      var elRect = el.getBoundingClientRect();
+      indicator.style.width = elRect.width + 'px';
+      indicator.style.transform = 'translateX(' + (elRect.left - navRect.left) + 'px)';
+      indicator.style.opacity = el.getAttribute('aria-current') === 'page' ? '0' : '1';
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener('mouseenter', function () { moveIndicator(link); });
+      link.addEventListener('focus', function () { moveIndicator(link); });
+    });
+
+    nav.addEventListener('mouseleave', function () {
+      indicator.style.opacity = '0';
+    });
+  }
+
   var initialized = false;
   window.initPortfolioUI = function () {
     if (initialized) return;
@@ -398,5 +434,6 @@
     initScrollReveal();
     initBackToTop();
     initReadingProgress();
+    initNavTabGlide();
   };
 })();
