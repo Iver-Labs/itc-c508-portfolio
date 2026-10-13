@@ -1,143 +1,970 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ITC C508 Portfolio — Deep Learning &amp; NLP</title>
-<meta name="description" content="Coursework portfolio for ITC C508: Deep Learning and Neural Networks, focused on Natural Language Processing.">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Learning &amp; NLP — ITC C508 Portfolio</title>
+  <meta name="description" content="ClaPat Hayler Edition — ITC C508 Coursework Portfolio: Deep Learning and Neural Networks for NLP by Iverson Labastida." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Hayler Brutalist Dark Hero & Navigation Overrides */
+    :root {
+      --bg-core: #0c0e12;
+      --bg-card: rgba(18, 21, 26, 0.82);
+      --bg-card-hover: rgba(26, 30, 38, 0.92);
+      --border-subtle: rgba(255, 255, 255, 0.14);
+      --border-strong: rgba(255, 255, 255, 0.38);
+      --accent-cyan: #5ce1e6;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      min-height: 100%;
+      background-color: var(--bg-core);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Background Stage & Vignette */
+    .bg-stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image: url('images/hayler-se-workstation.jpg');
+      background-size: cover;
+      background-position: center center;
+      transform: scale(1.0);
+      transition: background-image 320ms ease-out, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .bg-stage.switching {
+      transform: scale(1.035);
+    }
+
+    .bg-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 62% 46%, rgba(12, 14, 18, 0.15) 0%, rgba(10, 12, 15, 0.65) 68%, rgba(8, 10, 12, 0.88) 100%),
+        linear-gradient(180deg, rgba(10, 12, 15, 0.72) 0%, rgba(10, 12, 15, 0.18) 22%, rgba(10, 12, 15, 0.45) 75%, rgba(8, 10, 12, 0.92) 100%);
+    }
+
+    /* Overall Shell */
+    .page-shell {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px 44px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Top Header */
+    .site-header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 12px;
+    }
+
+    /* ClaPat Hayler Logo Mark */
+    .site-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      width: fit-content;
+      transition: opacity 180ms ease;
+    }
+
+    .site-logo:hover {
+      opacity: 0.85;
+    }
+
+    .hayler-h-icon {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+
+    /* Navigation Dock */
+    .nav-dock {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 6px;
+      background: rgba(36, 40, 46, 0.58);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-tab {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 180ms ease;
+    }
+
+    .nav-tab:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.10);
+    }
+
+    .nav-tab.active {
+      background: #ffffff;
+      color: #0b0d10;
+      font-weight: 700;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Top Right CTA Pill */
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .gh-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.72);
+      background: rgba(16, 18, 22, 0.50);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 180ms ease;
+    }
+
+    .gh-pill:hover {
+      background: #ffffff;
+      color: #0b0d10;
+      border-color: #ffffff;
+    }
+
+    /* Main View Panels */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .view-panel {
+      display: none;
+      opacity: 0;
+      transition: opacity 220ms ease;
+      animation: haylerFadeIn 280ms ease forwards;
+    }
+
+    .view-panel.active {
+      display: block;
+      opacity: 1;
+    }
+
+    @keyframes haylerFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       HOME VIEW — EXACT MATCH TO CLAPAT HAYLER SCREENSHOT
+       ========================================================================== */
+    .home-hero-viewport {
+      min-height: calc(100vh - 170px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-bottom: 24px;
+    }
+
+    .hero-title-wrap {
+      max-width: 620px;
+    }
+
+    .hero-main-title {
+      font-family: var(--font-sans);
+      font-size: clamp(3.4rem, 6.8vw, 6.4rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      text-shadow: 0 14px 42px rgba(0, 0, 0, 0.75);
+    }
+
+    .hero-meta-label {
+      font-family: var(--font-sans);
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 500;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.90);
+      text-align: left;
+      padding-right: 12px;
+      max-width: 200px;
+      letter-spacing: -0.01em;
+    }
+
+    /* Scrollable Section below Home Hero */
+    .home-scroll-drawer {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .expectations-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    /* Bottom Bar Controls */
+    .bottom-bar {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding-top: 18px;
+    }
+
+    .bottom-left-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stepper-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .step-item {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.38);
+      font-family: var(--font-sans);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0;
+      transition: color 180ms ease;
+    }
+
+    .step-item:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .step-item.active {
+      color: #ffffff;
+    }
+
+    .step-item .active-line {
+      display: inline-block;
+      width: 140px;
+      height: 2px;
+      background: #ffffff;
+    }
+
+    .drag-label {
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.50);
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: color 180ms ease;
+    }
+
+    .drag-label:hover {
+      color: #ffffff;
+    }
+
+    .bottom-center-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .arrow-btn {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .arrow-btn:hover {
+      color: #ffffff;
+      transform: scale(1.15);
+    }
+
+    .nav-indicator-text {
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.01em;
+    }
+
+    .bottom-right-meta {
+      display: flex;
+      justify-content: flex-end;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* Glass Cards & Content Layouts (About, Prelims, Midterms, Finals, Report) */
+    .panel-header {
+      margin-bottom: 24px;
+    }
+
+    .kicker-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      background: rgba(92, 225, 230, 0.10);
+      border: 1px solid rgba(92, 225, 230, 0.28);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .panel-lead {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 15px;
+      max-width: 65ch;
+      line-height: 1.55;
+    }
+
+    .cards-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .cards-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 220ms ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.40);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .card-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .card-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+    }
+
+    .card-h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.25;
+    }
+
+    .card-p {
+      font-size: 13.5px;
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.55;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .tag-chip {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+    }
+
+    .view-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 180ms ease;
+    }
+
+    .view-link:hover {
+      color: var(--accent-cyan);
+    }
+
+    /* About Panel Layout */
+    .about-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 290px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .snapshots-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .snapshot-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    @media (max-width: 992px) {
+      .page-shell { padding: 20px; }
+      .site-header { grid-template-columns: 1fr; justify-items: center; gap: 14px; }
+      .header-right { justify-content: center; }
+      .home-hero-viewport { flex-direction: column; align-items: flex-start; gap: 24px; min-height: auto; }
+      .hero-meta-label { text-align: left; max-width: 100%; }
+      .cards-grid-3, .cards-grid-2, .expectations-grid, .about-layout, .snapshots-row { grid-template-columns: 1fr; }
+      .bottom-bar { grid-template-columns: 1fr; gap: 18px; justify-items: center; text-align: center; }
+      .bottom-right-meta { justify-content: center; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Fixed Dynamic Background & Vignette -->
+  <div class="bg-stage" id="bgStage"></div>
+  <div class="bg-vignette"></div>
 
-<header class="site-header">
-  <div class="wrap">
-    <div class="wordmark">ITC <span>C508</span> · Deep Learning &amp; NLP</div>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
-    <nav class="primary" id="primary-nav" aria-label="Primary">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="about.html">About Me</a>
-      <a href="prelims.html">Prelims</a>
-      <a href="midterms.html">Midterms</a>
-      <a href="finals.html">Finals</a>
-      <a href="report.html">Report</a>
-    </nav>
+  <div class="page-shell">
+    <!-- Top Header Navigation -->
+    <header class="site-header">
+      <!-- ClaPat Hayler "H" Logo -->
+      <div class="site-logo" onclick="switchPage('home')" title="Hayler Edition — Home">
+        <svg class="hayler-h-icon" viewBox="0 0 32 32" fill="none">
+          <rect x="3" y="3" width="7.5" height="26" rx="2" fill="#ffffff" />
+          <rect x="21.5" y="3" width="7.5" height="26" rx="2" fill="#ffffff" />
+          <rect x="10.5" y="13" width="11" height="6" fill="#ffffff" />
+          <rect x="14" y="9.5" width="4" height="13" fill="#ffffff" />
+        </svg>
+      </div>
+
+      <!-- Center Pill Navigation Dock -->
+      <nav class="nav-dock" aria-label="Primary Navigation">
+        <button class="nav-tab active" data-page="home" onclick="switchPage('home')">Home</button>
+        <button class="nav-tab" data-page="about" onclick="switchPage('about')">About Me</button>
+        <button class="nav-tab" data-page="prelims" onclick="switchPage('prelims')">Prelims</button>
+        <button class="nav-tab" data-page="midterms" onclick="switchPage('midterms')">Midterms</button>
+        <button class="nav-tab" data-page="finals" onclick="switchPage('finals')">Finals</button>
+        <button class="nav-tab" data-page="report" onclick="switchPage('report')">Report</button>
+      </nav>
+
+      <!-- Right GitHub CTA -->
+      <div class="header-right">
+        <a class="gh-pill" href="https://github.com/Iver-Labs" target="_blank" rel="noopener">
+          <span>Iver-Labs</span>
+          <span style="font-size: 14px;">↗</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content Panels -->
+    <main>
+      <!-- 1. HOME VIEW (Exact visual layout of the ClaPat Hayler screenshot) -->
+      <section class="view-panel active" id="view-home">
+        <div class="home-hero-viewport">
+          <div class="hero-title-wrap">
+            <h1 class="hero-main-title">Deep Learning<br>&amp; NLP</h1>
+          </div>
+          <div class="hero-meta-label">
+            <div>ITC C508</div>
+            <div>· Software</div>
+            <div>Engineering</div>
+          </div>
+        </div>
+
+        <!-- Below the Fold Details -->
+        <div class="home-scroll-drawer" id="homeCourseDrawer">
+          <div class="panel-header">
+            <span class="kicker-pill">COURSE EXPECTATIONS &amp; IT PRINCIPLES</span>
+            <h2 class="panel-title">Engineering Foundations &amp; Model Trust</h2>
+            <p class="panel-lead">
+              A comprehensive technical record of developing neural architectures, database pipelines, and interpretable deep learning workflows in ITC C508.
+            </p>
+          </div>
+
+          <div class="expectations-grid">
+            <div class="glass-card" style="padding: 22px;">
+              <div class="card-meta">COURSE EXPECTATION // QUESTION A</div>
+              <h3 class="card-h3" style="margin-top: 6px; margin-bottom: 8px;">Deep Learning &amp; Predictive Transparency</h3>
+              <p class="card-p">
+                In this BSIT course, students gain a comprehensive understanding of core information technology principles. The curriculum focuses on developing technical proficiency, critical thinking, and problem-solving skills necessary for the modern IT landscape. Students engage with complex neural architectures, database management, and strategies for addressing the "black box" challenge to improve model transparency, interpretability, and trustworthiness.
+              </p>
+            </div>
+            <div class="glass-card" style="padding: 22px;">
+              <div class="card-meta">COURSE EXPECTATION // QUESTION B</div>
+              <h3 class="card-h3" style="margin-top: 6px; margin-bottom: 8px;">Bridging Theory &amp; Scalable Execution</h3>
+              <p class="card-p">
+                The course aims to bridge the gap between theoretical mathematical models and practical execution. Expect a rigorous academic environment where collaboration and independent research are highly valued. By the end of this program, students are proficient in implementing scalable IT solutions with TensorFlow, Keras, and PyTorch while maintaining strict ethical standards and security best practices.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. ABOUT ME VIEW -->
+      <section class="view-panel" id="view-about">
+        <div class="panel-header">
+          <span class="kicker-pill">ABOUT ME // PROFILE</span>
+          <h2 class="panel-title">Iverson Labastida</h2>
+          <p class="panel-lead">
+            Software engineering &amp; BSIT student taking ITC C508 (Deep Learning &amp; Neural Networks, with a focus on NLP). This portfolio tracks the experiments, model training loops, and IEEE reflective reports completed across the academic term.
+          </p>
+        </div>
+
+        <div class="glass-card" style="padding: 26px;">
+          <div class="about-layout">
+            <img class="profile-photo" src="images/profile.jpg" alt="Iverson Labastida" />
+            <div>
+              <h3 class="card-h3" style="font-size: 22px; margin-bottom: 12px;">Technical Focus &amp; Specialization</h3>
+              <p class="card-p" style="margin-bottom: 14px;">
+                Building scalable web services, full-stack architectures, and production-grade NLP systems. Focused on reproducible neural network pipelines, data validation, and interpretable machine learning.
+              </p>
+              <div class="tag-row" style="margin-bottom: 18px;">
+                <span class="tag-chip">Python</span>
+                <span class="tag-chip">TensorFlow / Keras</span>
+                <span class="tag-chip">PyTorch</span>
+                <span class="tag-chip">NLP &amp; Embeddings</span>
+                <span class="tag-chip">Jupyter / Colab</span>
+                <span class="tag-chip">Full-Stack Systems</span>
+              </div>
+              <h3 class="card-h3" style="font-size: 16px; margin-bottom: 6px;">Direct Contact</h3>
+              <p class="card-p">
+                Email: <a href="mailto:labastidaiverson@gmail.com" style="color: var(--accent-cyan); text-decoration: none;">labastidaiverson@gmail.com</a><br>
+                GitHub: <a href="https://github.com/Iver-Labs" target="_blank" rel="noopener" style="color: var(--accent-cyan); text-decoration: none;">github.com/Iver-Labs</a>
+              </p>
+            </div>
+          </div>
+
+          <h3 class="card-h3" style="font-size: 16px; margin-top: 10px; margin-bottom: 8px;">Workspace &amp; Engineering Snapshots</h3>
+          <div class="snapshots-row">
+            <img class="snapshot-img" src="images/about-snapshot-1.png" alt="Workspace Setup" />
+            <img class="snapshot-img" src="images/hayler-se-core.jpg" alt="Core Systems Architecture" />
+            <img class="snapshot-img" src="images/hayler-se-telemetry.jpg" alt="Telemetry & Neural Logs" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. PRELIMS VIEW -->
+      <section class="view-panel" id="view-prelims">
+        <div class="panel-header">
+          <span class="kicker-pill">PERIOD 01 // PRELIMS</span>
+          <h2 class="panel-title">Prelims Coursework</h2>
+          <p class="panel-lead">
+            Foundational machine learning and NLP labs—from tokenization fundamentals to training first multi-layer perceptrons in Keras.
+          </p>
+        </div>
+
+        <div class="cards-grid-3">
+          <article class="glass-card">
+            <img class="card-thumb" src="images/week_2_thumbnail.png" alt="Introduction to NLP Concepts" />
+            <div class="card-body">
+              <span class="card-meta">Activity 01 · Week 2</span>
+              <h3 class="card-h3">WW-P2: Introduction to NLP Concepts</h3>
+              <p class="card-p">
+                Covered core NLP foundations via Microsoft Learn: tokenization, stop word removal, stemming, n-grams, and vector space models.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">Microsoft Learn</span>
+                <span class="tag-chip">NLP Foundations</span>
+              </div>
+              <a class="view-link" href="reports/prelims-01.html">View Technical Report →</a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/week_3_snapshot.png" alt="No-Code Neural Text Classifier" />
+            <div class="card-body">
+              <span class="card-meta">Activity 02 · Week 3</span>
+              <h3 class="card-h3">PT-P1: Deep Learning (Neural Networks)</h3>
+              <p class="card-p">
+                Trained a no-code neural network text classifier using Machine Learning for Kids, then integrated it into an App Inventor mobile app.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">ML for Kids</span>
+                <span class="tag-chip">App Inventor</span>
+              </div>
+              <a class="view-link" href="reports/prelims-02.html">View Technical Report →</a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/prelims-03-screenshot-1.png" alt="Neural Network Hyperparameter Tuning" />
+            <div class="card-body">
+              <span class="card-meta">Activity 03 · Week 4</span>
+              <h3 class="card-h3">PT-P2: Neural Network Training</h3>
+              <p class="card-p">
+                Tuned hyperparameters on a feedforward network in Keras/TensorFlow. Explored learning rate schedules, batch sizes, and epoch effects on loss curves.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">TensorFlow</span>
+                <span class="tag-chip">Keras</span>
+              </div>
+              <a class="view-link" href="reports/prelims-03.html">View Technical Report →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 4. MIDTERMS VIEW -->
+      <section class="view-panel" id="view-midterms">
+        <div class="panel-header">
+          <span class="kicker-pill">PERIOD 02 // MIDTERMS</span>
+          <h2 class="panel-title">Midterms Coursework</h2>
+          <p class="panel-lead">
+            Applied NLP work—dense word embeddings, recurrent architectures, and sequence classification using LSTMs.
+          </p>
+        </div>
+
+        <div class="cards-grid-2">
+          <article class="glass-card">
+            <img class="card-thumb" src="images/hayler-se-core.jpg" alt="Word2Vec Embeddings" />
+            <div class="card-body">
+              <span class="card-meta">Activity 01 · Week 7</span>
+              <h3 class="card-h3">Text Preprocessing &amp; Word Embeddings</h3>
+              <p class="card-p">
+                Cleaned and tokenized raw text corpora, then trained continuous Word2Vec vector embeddings with Gensim to evaluate semantic similarity clusters.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">Python</span>
+                <span class="tag-chip">Gensim</span>
+                <span class="tag-chip">Word2Vec</span>
+              </div>
+              <a class="view-link" href="reports/midterms-01.html">View Technical Report →</a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/hayler-se-telemetry.jpg" alt="LSTM Sentiment Classification" />
+            <div class="card-body">
+              <span class="card-meta">Activity 02 · Week 9</span>
+              <h3 class="card-h3">Sentiment Classification with an LSTM</h3>
+              <p class="card-p">
+                Trained a recurrent neural network with LSTM cells to classify sentiment, establishing benchmarks against a baseline feedforward architecture.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">TensorFlow</span>
+                <span class="tag-chip">LSTM</span>
+                <span class="tag-chip">RNN</span>
+              </div>
+              <a class="view-link" href="reports/midterms-02.html">View Technical Report →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. FINALS VIEW -->
+      <section class="view-panel" id="view-finals">
+        <div class="panel-header">
+          <span class="kicker-pill">PERIOD 03 // FINALS</span>
+          <h2 class="panel-title">Finals Capstone Coursework</h2>
+          <p class="panel-lead">
+            Advanced neural models—encoder-decoder architectures with attention mechanisms and transformer fine-tuning for document-level tasks.
+          </p>
+        </div>
+
+        <div class="cards-grid-2">
+          <article class="glass-card">
+            <img class="card-thumb" src="images/hayler-se-workstation.jpg" alt="Seq2Seq Attention Summarization" />
+            <div class="card-body">
+              <span class="card-meta">Activity 01 · Week 12</span>
+              <h3 class="card-h3">Sequence-to-Sequence Text Summarization</h3>
+              <p class="card-p">
+                Constructed an encoder-decoder neural network with Bahdanau attention to generate concise summaries, evaluated rigorously with ROUGE metrics.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">TensorFlow</span>
+                <span class="tag-chip">Seq2Seq</span>
+                <span class="tag-chip">Attention</span>
+              </div>
+              <a class="view-link" href="reports/finals-01.html">View Technical Report →</a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/hayler-se-telemetry.jpg" alt="Transformer Fine-Tuning" />
+            <div class="card-body">
+              <span class="card-meta">Activity 02 · Week 14</span>
+              <h3 class="card-h3">Fine-Tuning a Transformer for Text Classification</h3>
+              <p class="card-p">
+                Fine-tuned a pretrained transformer encoder on domain-specific classification benchmarks in PyTorch, analyzing attention heads and performance gains.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">PyTorch</span>
+                <span class="tag-chip">Hugging Face</span>
+                <span class="tag-chip">Transformers</span>
+              </div>
+              <a class="view-link" href="reports/finals-02.html">View Technical Report →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 6. REPORT VIEW -->
+      <section class="view-panel" id="view-report">
+        <div class="panel-header">
+          <span class="kicker-pill">REPORTS // FORMAL DOCUMENTATION</span>
+          <h2 class="panel-title">Activity Reports &amp; Reflections</h2>
+          <p class="panel-lead">
+            Comprehensive IEEE-formatted technical write-ups, model training curves, and reflective documentation for all completed exercises.
+          </p>
+        </div>
+
+        <div class="cards-grid-3">
+          <div class="glass-card" style="padding: 22px;">
+            <span class="card-meta">PRELIMS · WEEK 2</span>
+            <h3 class="card-h3" style="margin-top: 6px;">WW-P2: NLP Concepts</h3>
+            <p class="card-p" style="margin-top: 8px;">
+              Reflected on token granularity trade-offs: word tokens preserve interpretability but struggle with out-of-vocabulary terms; character tokens inflate sequence length; sub-word tokenization strikes the optimal balance.
+            </p>
+            <a class="view-link" href="reports/prelims-01.html" style="margin-top: 14px;">Open Full Report Page →</a>
+          </div>
+
+          <div class="glass-card" style="padding: 22px;">
+            <span class="card-meta">PRELIMS · WEEK 3</span>
+            <h3 class="card-h3" style="margin-top: 6px;">PT-P1: No-Code Classifier</h3>
+            <p class="card-p" style="margin-top: 8px;">
+              Attained 88.6% classification accuracy. Validated that feature extraction occurs during Learn &amp; Test when tagged raw text is mapped into numerical vector indices before weight updates.
+            </p>
+            <a class="view-link" href="reports/prelims-02.html" style="margin-top: 14px;">Open Full Report Page →</a>
+          </div>
+
+          <div class="glass-card" style="padding: 22px;">
+            <span class="card-meta">PRELIMS · WEEK 4</span>
+            <h3 class="card-h3" style="margin-top: 6px;">PT-P2: Keras Hyperparameters</h3>
+            <p class="card-p" style="margin-top: 8px;">
+              Documented how batch sizes and Adam learning rate schedules directly dictate gradient stability and validation loss convergence across training epochs.
+            </p>
+            <a class="view-link" href="reports/prelims-03.html" style="margin-top: 14px;">Open Full Report Page →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Bar Controls (Exact match to screenshot) -->
+    <footer class="bottom-bar">
+      <!-- Left: 01. / 02. / 03. Stepper & Drag to Explore -->
+      <div class="bottom-left-group">
+        <div class="stepper-nav" role="group" aria-label="Course Period Stepper">
+          <button class="step-item active" id="step-btn-prelims" onclick="switchPage('prelims')">
+            <span class="step-num">01.</span>
+            <span class="active-line"></span>
+          </button>
+          <button class="step-item" id="step-btn-midterms" onclick="switchPage('midterms')">
+            <span class="step-num">02.</span>
+          </button>
+          <button class="step-item" id="step-btn-finals" onclick="switchPage('finals')">
+            <span class="step-num">03.</span>
+          </button>
+        </div>
+        <div class="drag-label" onclick="scrollHomeToContent()">Drag to Explore</div>
+      </div>
+
+      <!-- Center: Navigate Arrows -->
+      <div class="bottom-center-nav">
+        <button class="arrow-btn" onclick="cyclePage(-1)" aria-label="Previous View">←</button>
+        <span class="nav-indicator-text">Navigate</span>
+        <button class="arrow-btn" onclick="cyclePage(1)" aria-label="Next View">→</button>
+      </div>
+
+      <!-- Right: Course Signature -->
+      <div class="bottom-right-meta">
+        <span>Iverson Labastida · Built for GitHub Pages</span>
+      </div>
+    </footer>
   </div>
-</header>
 
-<main>
-  <section class="hero hero--split">
-    <div class="hero-inner">
-      <div class="hero-copy">
-        <span class="kicker">Course Portfolio</span>
-        <span class="sparkle sparkle-1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg></span>
-        <h1>Deep Learning &amp; Neural Networks, applied to language.</h1>
-        <p>This is a running record of my work in ITC C508 — building, training, and
-        breaking neural networks with a focus on Natural Language Processing. Each
-        period below collects the exercises, labs, and reports from that stretch
-        of the term, in the order I built them.</p>
-        <p><a href="about.html">Read more about me →</a></p>
-      </div>
-      <div class="hero-collage" aria-hidden="true">
-        <div class="img-placeholder collage-1" data-role="hero-collage-1" style="padding:0;" aria-label="Software Engineering & Neural Network Workstation">
-          <img src="images/hayler-se-workstation.jpg" alt="Software Engineering & Neural Network Workstation">
-        </div>
-        <div class="img-placeholder collage-2" data-role="hero-collage-2" style="padding:0;" aria-label="Core Systems Architecture">
-          <img src="images/hayler-se-core.jpg" alt="Core Systems Architecture">
-        </div>
-        <div class="img-placeholder collage-3" data-role="hero-collage-3" style="padding:0;" aria-label="Distributed Telemetry & IDE">
-          <img src="images/hayler-se-telemetry.jpg" alt="Distributed Telemetry & IDE">
-        </div>
-        <span class="sparkle sparkle-2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg></span>
-        <span class="sparkle sparkle-3" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"/></svg></span>
-      </div>
-    </div>
-  </section>
+  <script>
+    const pageOrder = ['home', 'about', 'prelims', 'midterms', 'finals', 'report'];
+    const bgMap = {
+      home: 'images/hayler-se-workstation.jpg',
+      about: 'images/hayler-se-core.jpg',
+      prelims: 'images/hayler-se-workstation.jpg',
+      midterms: 'images/hayler-se-telemetry.jpg',
+      finals: 'images/hayler-se-workstation.jpg',
+      report: 'images/hayler-se-core.jpg'
+    };
 
-  <div class="ribbon" aria-hidden="true">
-    <div class="ribbon-track">
-      <span>✦ Deep Learning</span><span>✦ NLP</span><span>✦ ITC C508</span><span>✦ Neural Networks</span>
-      <span>✦ Deep Learning</span><span>✦ NLP</span><span>✦ ITC C508</span><span>✦ Neural Networks</span>
-    </div>
-  </div>
+    let currentPage = 'home';
 
-  <section aria-label="Course periods">
-    <div class="stepper">
-      <a href="prelims.html">01 · Prelims</a>
-      <a href="midterms.html">02 · Midterms</a>
-      <a href="finals.html">03 · Finals</a>
-    </div>
-  </section>
+    function switchPage(page) {
+      if (!pageOrder.includes(page)) page = 'home';
+      currentPage = page;
 
-  <section style="padding-bottom: 4rem;">
-    <h2>What's in here</h2>
-    <div class="activity-list" style="padding-bottom: 0;">
-      <div class="activity-card" style="grid-template-columns: 1fr;">
-        <div>
-          <h3>Prelims</h3>
-          <p>Foundational exercises — neural network basics, training loops, and first experiments.</p>
-        </div>
-      </div>
-      <div class="activity-card" style="grid-template-columns: 1fr;">
-        <div>
-          <h3>Midterms</h3>
-          <p>Applied NLP work — text representations, model architectures, and evaluation.</p>
-        </div>
-      </div>
-      <div class="activity-card" style="grid-template-columns: 1fr;">
-        <div>
-          <h3>Finals</h3>
-          <p>Capstone-level work — larger builds, LLM-adjacent tooling, and final reports.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      // Update Nav Tabs
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.page === page);
+      });
 
-  <section id="course-expectations" style="padding-bottom: 4rem;">
-    <span class="kicker">Read me first</span>
-    <h2>Course Expectations</h2>
-    <p>A couple of reflection prompts on what this course expects from its
-    students, and how deep learning connects to real business problems.</p>
+      // Update Panels
+      document.querySelectorAll('.view-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === 'view-' + page);
+      });
 
-    <div class="expectations-list">
-      <article class="expectation-item">
-        <span class="expectation-label">Question A</span>
-        <p class="expectation-question">Identify and describe a specific business problem that can be
-        addressed using deep learning-based predictive models. First, explain the nature and impact of
-        the business problem. Then, discuss how deep learning can be applied to solve it, including
-        strategies for addressing the &ldquo;black box&rdquo; challenge to improve the transparency,
-        interpretability, and trustworthiness of the model&rsquo;s predictions.</p>
-        <p class="expectation-answer">In this BSIT course, students are expected to gain a comprehensive
-        understanding of core information technology principles. The curriculum focuses on developing
-        technical proficiency, critical thinking, and problem-solving skills necessary for the modern
-        IT landscape. Students will engage with complex systems, networking fundamentals, and database
-        management, preparing them for real-world applications and professional environments.</p>
-      </article>
+      // Update Dynamic Background
+      const bgEl = document.getElementById('bgStage');
+      if (bgEl && bgMap[page]) {
+        bgEl.classList.add('switching');
+        bgEl.style.backgroundImage = `url('${bgMap[page]}')`;
+        setTimeout(() => bgEl.classList.remove('switching'), 280);
+      }
 
-      <article class="expectation-item">
-        <span class="expectation-label">Question B</span>
-        <p class="expectation-question">Identify and describe a specific business problem that can be
-        addressed using deep learning-based predictive models. First, explain the nature and impact of
-        the business problem. Then, discuss how deep learning can be applied to solve it, including
-        strategies for addressing the &ldquo;black box&rdquo; challenge to improve the transparency,
-        interpretability, and trustworthiness of the model&rsquo;s predictions.</p>
-        <p class="expectation-answer">The course aims to bridge the gap between theoretical knowledge and
-        practical execution. Expect a rigorous academic environment where collaboration and independent
-        research are highly valued. By the end of this program, students should be proficient in
-        navigating emerging technologies and implementing scalable IT solutions while maintaining
-        ethical standards and security best practices.</p>
-      </article>
-    </div>
-  </section>
-</main>
+      // Update Bottom Stepper Indicator
+      document.querySelectorAll('.step-item').forEach(btn => btn.classList.remove('active'));
+      const activeStepBtn = document.getElementById(
+        page === 'midterms' ? 'step-btn-midterms' : (page === 'finals' ? 'step-btn-finals' : 'step-btn-prelims')
+      );
+      if (activeStepBtn) activeStepBtn.classList.add('active');
 
-<footer>
-  <div class="wrap">
-    <span>ITC C508 — Deep Learning and Neural Network (NLP)</span>
-    <span>Built for GitHub Pages</span>
-  </div>
-</footer>
+      // Update hash in URL
+      if (window.location.hash.replace('#', '') !== page) {
+        history.replaceState(null, '', '#' + page);
+      }
 
-<script src="js/main.js" defer></script>
-<script src="js/content-loader.js" defer></script>
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cyclePage(delta) {
+      const idx = pageOrder.indexOf(currentPage);
+      const nextIdx = (idx + delta + pageOrder.length) % pageOrder.length;
+      switchPage(pageOrder[nextIdx]);
+    }
+
+    function scrollHomeToContent() {
+      const el = document.getElementById('homeCourseDrawer');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Keyboard Arrow Navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') cyclePage(1);
+      if (e.key === 'ArrowLeft') cyclePage(-1);
+    });
+
+    // Check URL Hash on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && pageOrder.includes(hash)) {
+        switchPage(hash);
+      }
+    });
+  </script>
 </body>
 </html>
