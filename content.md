@@ -39,17 +39,14 @@
 - Activity Number: Activity 01
 - Week: Week 2
 - Title: WW-P2: Introduction to NLP Concepts
-- Description: Completed Microsoft Learn's "Introduction to NLP Concepts"
-  module (assessment passed), studying the text-processing pipeline behind
-  modern NLP systems — word/sub-word/character tokenization, frequency-based
-  statistical weighting (TF-IDF), and vector-space semantic models ranging
-  from static embeddings to transformer-based contextual embeddings — then
-  applied these concepts hands-on through a Phi-3.5-mini-powered
-  summarization tool, a language-identification playground, and a hybrid
-  pattern-matching PII extractor.
+- Description: Completed Microsoft Learn's "Introduction to natural language
+  processing concepts" module and tested three NLP tools hands-on: a local
+  summarization model, a language detector and a PII analyzer. The IEEE-format
+  reflection compares tokenization, TF-IDF and embeddings and documents where
+  each tool broke.
 - Tags: Python, NumPy
 - Screenshot 1: images/week_2_thumbnail.png
-- Screenshot 2:
+- Screenshot 2: images/about-snapshot-1.png
 - Reflection: Tokenization granularity turned out to be a real design
   trade-off — word-level tokens stay interpretable but choke on rare or
   out-of-vocabulary terms, character-level tokens handle anything but
@@ -73,13 +70,10 @@
 - Activity Number: Activity 02
 - Week: Week 3
 - Title: PT-P1: Deep Learning (Neural Networks)
-- Description: Built a three-class no-code neural network text classifier
-  (Positive Review, Negative Review, Urgent Support) on the Machine Learning
-  for Kids platform, training it through the platform's Train → Learn & Test
-  → Make pipeline on 35 tagged examples (10 Positive, 15 Negative, 10
-  Urgent), then evaluated the trained model against 35 unseen test phrases
-  for a per-class accuracy of 80.0% (Positive), 93.3% (Negative), and 90.0%
-  (Urgent) — 88.6% overall.
+- Description: Built a three-class intent classifier for ride-hailing customer
+  feedback on the no-code Machine Learning for Kids platform, tested it on 35
+  phrases it had never seen, then connected it to a working MIT App Inventor
+  chat app.
 - Tags: Machine Learning for Kids, No-Code ML
 - Screenshot 1: images/week_3_snapshot.png
 - Screenshot 2:
@@ -107,16 +101,10 @@
 - Activity Number: Activity 03
 - Week: Week 4
 - Title: PT-P2: Neural Network Training (Hyperparameters)
-- Description: Designed and trained a Keras Sequential feedforward network
-  (Embedding → GlobalAveragePooling1D → Dense(ReLU) → Dropout →
-  Dense(Softmax)) on a tokenized ride-hailing text dataset — vocabulary
-  capped at 300 tokens, sequences padded/truncated to length 15 — using a
-  70/15/15 train/validation/test split (random_state=42). Ran 20 structured
-  experiments (EXP-001–EXP-020), systematically varying hidden-layer width,
-  learning rate, epoch count, and dropout rate while reading
-  training-vs-validation loss curves to diagnose overfitting and
-  underfitting, benchmarked against a 90.8%-accuracy, 88.61%-F1 no-code
-  baseline.
+- Description: Trained a Keras feedforward network on a ride-hailing text
+  dataset across 20 logged runs, using training and validation loss curves to
+  diagnose overfitting and underfitting. Growing the dataset mattered more than
+  any single hyperparameter; dropout then stabilized the final model.
 - Tags: TensorFlow, Keras
 - Screenshot 1: images/prelims-03-screenshot-1.png
 - Screenshot 2: images/prelims-03-training-loop.png

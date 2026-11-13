@@ -1,9 +1,9 @@
 /* ITC C508 — Deep Learning & NLP Portfolio
    ClaPat Hayler Architectural Brutalist Dark Concrete Design System
-   Professional Typography: Plus Jakarta Sans / Inter (Display & UI) + IBM Plex Mono (Technical Metadata)
+   Professional Typography: Archivo (display at expanded width, UI and body) + IBM Plex Mono (technical metadata)
    Features: High-Emphasis Pill Navigation Dock, Minimal Transitions, Full Multi-Page Continuity */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
   --paper: #0e1013;
@@ -18,6 +18,13 @@
   --line: rgba(255, 255, 255, 0.16);
   --line-strong: rgba(255, 255, 255, 0.38);
   --max-w: 1120px;
+  /* Type: Archivo at expanded width for display and headings, IBM Plex Sans
+     for reading and interface text, IBM Plex Mono for metadata and code. */
+  --font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --stretch-display: 112%;
+  --stretch-heading: 106%;
   --transition-minimal: 150ms cubic-bezier(0.22, 1, 0.36, 1);
   /* better-ui: dark-mode elevation is a single white ring */
   --shadow-border: 0 0 0 1px oklch(1 0 0 / 0.08);
@@ -27,12 +34,12 @@
 
 * {
   box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 html {
   background-color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -57,7 +64,7 @@ body {
   background-position: center center;
   background-attachment: fixed;
   color: var(--ink);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.62;
 }
 
@@ -86,10 +93,11 @@ button:focus-visible {
 }
 
 h1, h2, h3 {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-stretch: var(--stretch-heading);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   margin: 0 0 0.55em;
   color: #ffffff;
 }
@@ -99,18 +107,21 @@ h1 {
   overflow-wrap: break-word;
   text-wrap: balance;
   font-weight: 800;
-  letter-spacing: -0.035em;
+  font-stretch: var(--stretch-display);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   text-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
 }
 
 h2 {
   font-size: clamp(1.55rem, 2.6vw, 2.15rem);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
 h3 {
   font-size: 1.2rem;
-  letter-spacing: -0.015em;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 p {
@@ -120,7 +131,7 @@ p {
 }
 
 .mono {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.04em;
 }
@@ -152,7 +163,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -169,7 +180,7 @@ p {
 
 .wordmark span {
   color: var(--signal-cyan);
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
@@ -203,7 +214,7 @@ nav.primary {
 
 nav.primary a {
   color: rgba(255, 255, 255, 0.88);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 500;
   font-size: 0.84rem;
   letter-spacing: 0.01em;
@@ -250,7 +261,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 600;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -391,7 +402,7 @@ main {
 }
 
 .ribbon-track span {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 500;
   font-size: 0.74rem;
   text-transform: uppercase;
@@ -425,7 +436,7 @@ main {
   align-items: center;
   justify-content: space-between;
   padding: 1.15rem 1.35rem 1.35rem;
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -442,7 +453,7 @@ main {
 
 .stepper a::after {
   content: "→";
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
   opacity: 0.5;
   transition: opacity var(--transition-minimal);
@@ -543,7 +554,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-size: 0.84rem;
   font-weight: 600;
   color: #ffffff;
@@ -571,7 +582,7 @@ main {
 }
 
 .tag {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.88);
@@ -620,7 +631,7 @@ main {
 }
 
 .img-placeholder span {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.68rem;
   line-height: 1.4;
 }
@@ -661,7 +672,7 @@ main {
 
 .expectation-label {
   display: inline-block;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 600;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -718,7 +729,7 @@ main {
 }
 
 .skills-list li {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.76rem;
   font-weight: 500;
   color: #ffffff;
@@ -766,7 +777,7 @@ main {
 
 .report-link::after {
   content: "Open Report ↗";
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.24);
@@ -833,7 +844,7 @@ main {
 }
 
 .report-section code {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.86em;
   padding: 0.1em 0.35em;
   border-radius: 4px;
@@ -868,7 +879,7 @@ main {
   align-items: center;
   gap: 0.4rem;
   margin-top: 0.85rem;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.84rem;
   color: #ffffff;
@@ -890,7 +901,7 @@ main {
   align-items: center;
   gap: 0.5rem;
   margin: 0.75rem 0 3rem;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.86rem;
   color: #0b0d10;
@@ -919,7 +930,7 @@ footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
   padding: 1.6rem 2.25rem;
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 0.76rem;
   letter-spacing: 0.03em;
 }
@@ -1400,4 +1411,474 @@ nav.primary a {
   .activity-card:hover .img-placeholder img {
     scale: 1.04;
   }
+}
+
+/* ==========================================================================
+   REPORT PAGES v2 — summary first, metrics, results, sidebar
+   Layout: content column + sticky "On this page" sidebar (desktop only).
+   Data: stat tiles, bar-tables (a <table> whose cells draw bars, so the
+   chart IS its own table view), plain data tables, captioned figures.
+   ========================================================================== */
+.report-hero {
+  padding: 3rem 0 1.75rem;
+  max-width: 920px;
+}
+
+.report-hero h1 { margin-bottom: 0.4em; }
+
+.report-takeaway {
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 62ch;
+  margin: 0 0 1.25rem;
+  text-wrap: pretty;
+  animation: hayler-fade-in 300ms ease-out 200ms both;
+}
+
+.report-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  animation: hayler-fade-in 300ms ease-out 300ms both;
+}
+
+.report-facts div { display: flex; gap: 8px; align-items: baseline; }
+.report-facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.report-facts dd { margin: 0; font-size: 0.9rem; color: #ffffff; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .report-takeaway, .report-facts { animation-name: hayler-fade-in-up; }
+}
+
+.report-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 248px;
+  gap: 32px;
+  align-items: start;
+  padding-bottom: 1rem;
+}
+
+.report-body { min-width: 0; }
+
+.report-body .report-section { scroll-margin-top: calc(var(--header-h, 88px) + 16px); }
+.report-body .report-section > p,
+.report-body .report-section li { max-width: 68ch; }
+
+.report-section h3 {
+  font-size: 1.02rem;
+  margin: 1.6rem 0 0.6rem;
+}
+
+/* Sidebar */
+.report-aside {
+  position: sticky;
+  top: calc(var(--header-h, 88px) + 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.aside-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 8px 12px;
+}
+
+.toc { display: flex; flex-direction: column; gap: 2px; }
+.toc a {
+  display: block;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition-property: color, background-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+.toc a[aria-current="true"] {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.aside-links { display: flex; flex-direction: column; gap: 8px; }
+.aside-links a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-border);
+  transition-property: background-color, box-shadow, scale;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+@media (hover: hover) {
+  .toc a:not([aria-current="true"]):hover { color: #ffffff; }
+  .aside-links a:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+    box-shadow: var(--shadow-border-hover);
+    color: #ffffff;
+  }
+}
+
+/* Below this width the sidebar's contents already appear in the page
+   (facts in the hero, files in "Files"), so it steps aside entirely. */
+@media (max-width: 1000px) {
+  .report-layout { grid-template-columns: minmax(0, 1fr); }
+  .report-aside { display: none; }
+}
+
+/* Inline icons */
+.r-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Stat tiles */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 20px 0;
+  margin: 1.5rem 0 0.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 16px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.metric-label { font-size: 0.82rem; color: var(--muted); }
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #ffffff;
+}
+.metric-note { font-size: 0.78rem; line-height: 1.45; color: var(--muted); }
+
+/* Tables */
+.table-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  margin: 0.75rem 0 0.5rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-border);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.data-table caption {
+  caption-side: top;
+  text-align: start;
+  padding: 12px 14px 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px 14px;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.data-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child > * { border-bottom: 0; }
+.data-table .num { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.data-table .mono { font-family: var(--font-mono); font-size: 0.82rem; white-space: nowrap; }
+.data-table tr.is-key { background: rgba(92, 225, 230, 0.06); }
+.data-table tr.is-total > * { font-weight: 600; color: #ffffff; }
+.data-table td.outcome { min-width: 150px; }
+
+.row-tag {
+  display: inline-block;
+  margin-inline-start: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #0b0d10;
+  background: #5ce1e6;
+  vertical-align: 1px;
+}
+
+/* Verdict labels: icon + word, never color alone */
+.verdict { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; white-space: nowrap; }
+.verdict .r-icon { width: 1em; height: 1em; }
+.verdict.is-right { color: #ffffff; }
+.verdict.is-wrong { color: #ffb4a8; }
+
+/* Bar-table: one series, bars grow from a shared baseline */
+.bar-cell { width: 55%; min-width: 160px; }
+.bar-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 22px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.28);
+}
+.bar {
+  flex: none;
+  height: 16px;
+  /* --p is the value as a 0–1 fraction of the scale; 64px stays free for the tip label */
+  width: calc((100% - 64px) * var(--p, 0));
+  min-width: 2px;
+  background: #16a6ad; /* cyan stepped into the dark data band (validated: L 0.48–0.67, ≥3:1) */
+  border-radius: 0 4px 4px 0;
+}
+.bar-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+.data-table tr.has-bar:hover { background: rgba(255, 255, 255, 0.03); }
+
+/* Figures */
+.report-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 16px;
+  margin: 1rem 0 0.5rem;
+}
+
+.report-figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.report-figure a { display: block; border-radius: 10px; }
+
+.report-figure img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  object-position: left top;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.report-figure figcaption {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.report-figure figcaption strong { color: #ffffff; font-weight: 600; }
+
+/* Two-up comparison */
+.compare {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 12px;
+  margin: 0.75rem 0 0.25rem;
+}
+.compare > div {
+  padding: 2px 16px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.14);
+}
+.compare h4 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+.compare p { margin: 0; font-size: 0.9rem; }
+
+/* Definitions */
+.terms { margin: 0.75rem 0 0; display: grid; gap: 8px; }
+.terms div { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 16px; font-size: 0.9rem; }
+.terms dt { font-weight: 600; color: #ffffff; }
+.terms dd { margin: 0; color: rgba(245, 247, 250, 0.84); }
+@media (max-width: 560px) { .terms div { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Collapsible technical details */
+.report-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  -webkit-tap-highlight-color: transparent;
+}
+.report-details > summary::-webkit-details-marker { display: none; }
+.report-details > summary .hint {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.report-details > summary .r-icon { transition: rotate 150ms ease-out; }
+.report-details[open] > summary .r-icon { rotate: 180deg; }
+.report-details[open] > summary { margin-bottom: 0.5rem; }
+.report-details > summary:focus-visible { outline: 2px solid var(--signal-cyan); outline-offset: 6px; border-radius: 6px; }
+
+/* Files */
+.file-list { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; }
+.file-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0;
+  max-width: none;
+}
+.file-list li:last-child { border-bottom: 0; }
+.file-list .file-icon { color: var(--muted); display: flex; }
+.file-list .file-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.file-list .file-name strong { color: #ffffff; font-weight: 600; font-size: 0.92rem; }
+.file-list .file-name span { font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
+.file-list .file-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.file-pending {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* The inline PDF viewer only earns its height on wide screens */
+.report-body .pdf-viewer { margin-top: 1.25rem; }
+.report-body .pdf-viewer object { height: 72vh; }
+@media (max-width: 900px) {
+  .report-body .pdf-viewer { display: none; }
+}
+
+/* Previous / next */
+.report-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0.5rem 0 1rem;
+}
+.report-pager a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-border);
+  color: #ffffff;
+  transition-property: background-color, box-shadow, scale;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+.report-pager a.next { grid-column: 2; text-align: end; align-items: flex-end; }
+.report-pager .pager-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.report-pager .pager-title { font-weight: 600; font-size: 0.98rem; }
+@media (hover: hover) {
+  .report-pager a:hover { background-color: var(--card-hover); box-shadow: var(--shadow-border-hover); color: #ffffff; }
+}
+@media (max-width: 560px) {
+  .report-pager { grid-template-columns: 1fr; }
+  .report-pager a.next { grid-column: 1; }
+}
+
+:is(.aside-links a, .report-pager a):active { scale: 0.96; }
+
+/* Report pages are for reading: the photo stays as atmosphere, dimmed so
+   text that sits on it (hero facts, sidebar) keeps its contrast. */
+body:has(.report-layout) {
+  background-image:
+    linear-gradient(rgba(10, 12, 15, 0.58), rgba(10, 12, 15, 0.58)),
+    radial-gradient(circle at 58% 42%, rgba(14, 16, 19, 0.42) 0%, rgba(10, 12, 15, 0.84) 75%, rgba(8, 10, 12, 0.94) 100%),
+    url('../images/hayler-se-workstation.jpg');
+}
+
+/* Text that sits directly on the background photo (not on a card) needs a
+   brighter muted tone: the photo lightens the backdrop to ~#3e3f41. */
+.report-facts dt,
+.aside-label { color: #c3c9d2; }
+.toc a { color: #b8bfca; }
+
+@media (max-width: 560px) {
+  .report-body .report-section { padding: 1.25rem 1.1rem; }
+  .file-list li { grid-template-columns: auto minmax(0, 1fr); }
+  .file-list .file-action, .file-list .file-pending { grid-column: 2; }
+}
+
+@media print {
+  .site-header, .report-aside, .report-pager, .back-link, footer, .reading-progress, .back-to-top { display: none !important; }
+  body { background: #ffffff; color: #111111; }
+  .report-layout { grid-template-columns: 1fr; }
+}
+
+
+/* Typography: expanded display width costs ~12% more line length, so phones
+   set headings at normal width to keep long words like "(Hyperparameters)" whole. */
+@media (max-width: 560px) {
+  h1, h2, h3 { font-stretch: 100%; }
 }

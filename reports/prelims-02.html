@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>No-Code Text Classification Using Neural Networks — Report — ITC C508 Portfolio</title>
+<title>PT-P1: Deep Learning (Neural Networks) — Report — ITC C508 Portfolio</title>
+<meta name="description" content="A three-class text classifier built without code: 88.6% accuracy on 35 unseen phrases, connected to a working MIT App Inventor chat app.">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-activity-id="prelims-02">
@@ -24,143 +25,212 @@
 </header>
 
 <main>
-  <section class="hero" style="padding-bottom: 0.5rem;">
+  <section class="hero report-hero">
     <span class="kicker">Prelims &middot; Activity 02 &middot; Week 3</span>
-    <h1>No-Code Text Classification Using Neural Networks</h1>
+    <h1>PT-P1: Deep Learning (Neural Networks)</h1>
+    <p class="report-takeaway">A classifier trained on 35 examples labelled 88.6% of unseen phrases correctly. Sarcasm and off-topic questions were where it broke.</p>
+    <dl class="report-facts">
+      <div><dt>Tools</dt><dd>Machine Learning for Kids · MIT App Inventor</dd></div>
+      <div><dt>Classes</dt><dd>Positive review · Negative review · Urgent support</dd></div>
+      <div><dt>Test set</dt><dd>35 unseen phrases</dd></div>
+    </dl>
   </section>
 
-  <div class="report-gallery">
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
+  <div class="report-layout">
+    <div class="report-body">
+
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">Built a three-class intent classifier for ride-hailing customer feedback on the no-code Machine Learning for Kids platform, tested it on 35 phrases it had never seen, then connected it to a working MIT App Inventor chat app.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Overall accuracy</span>
+            <span class="metric-value">88.6%</span>
+            <span class="metric-note">31 of 35 unseen test phrases</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Strongest class</span>
+            <span class="metric-value">93.3%</span>
+            <span class="metric-note">Negative review, 14 of 15</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Weakest class</span>
+            <span class="metric-value">80.0%</span>
+            <span class="metric-note">Positive review, 8 of 10</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Later formal testing</span>
+            <span class="metric-value">90.80%</span>
+            <span class="metric-note">Accuracy, with 88.61% F1. Used as the PT-P2 baseline.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>Machine Learning for Kids wraps a text-classification network in three stages, so the whole pipeline runs without writing model code.</p>
+        <ol>
+          <li><strong>Train:</strong> enter tagged example phrases for each class. Positive reviews praise quality or responsiveness; negative reviews complain or ask for refunds; urgent support covers lockouts, failed payments and safety.</li>
+          <li><strong>Learn &amp; Test:</strong> train the network. This is where raw text is turned into numbers the network can learn from (feature extraction).</li>
+          <li><strong>Make:</strong> type new phrases and see the predicted class and confidence.</li>
+        </ol>
+        <p>The trained model was then wired into a "Chat Analyzer" screen in MIT App Inventor, which sends each typed message to the classifier (<code>ClassifyText</code>) and shows the label and confidence in real time.</p>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Accuracy on 35 unseen test phrases, by class</caption>
+            <thead>
+              <tr><th scope="col">Class</th><th scope="col" class="num">Correct</th><th scope="col">Accuracy</th></tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar">
+                <th scope="row">Positive review</th>
+                <td class="num">8 / 10</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.8"></span><span class="bar-value">80.0%</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Negative review</th>
+                <td class="num">14 / 15</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.933"></span><span class="bar-value">93.3%</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Urgent support</th>
+                <td class="num">9 / 10</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.9"></span><span class="bar-value">90.0%</span></div></td>
+              </tr>
+              <tr class="has-bar is-total">
+                <th scope="row">Overall</th>
+                <td class="num">31 / 35</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.886"></span><span class="bar-value">88.6%</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Live tests: where it held and where it broke</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr><th scope="col">Typed phrase</th><th scope="col">Predicted</th><th scope="col" class="num">Confidence</th><th scope="col">Verdict</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>"Driver won't stop the car even though I keep asking, I'm terrified"</td>
+                <td>Urgent support</td><td class="num">82%</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span></td>
+              </tr>
+              <tr>
+                <td>"Wonderful, my driver just drove past my stop again"</td>
+                <td>Positive review</td><td class="num">64%</td>
+                <td><span class="verdict is-wrong"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Wrong: sarcasm</span></td>
+              </tr>
+              <tr>
+                <td>"What payment methods do you accept?"</td>
+                <td>Positive review</td><td class="num">0%</td>
+                <td><span class="verdict is-wrong"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Wrong: off-topic</span></td>
+              </tr>
+              <tr>
+                <td>"Driver locked the doors and won't let me out, I'm scared"</td>
+                <td>Urgent support</td><td class="num">85%</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct, after adding examples</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The model matches surface word patterns, not intent: positive words in a sarcastic complaint pull it toward "positive", and a question outside its vocabulary gets a 0%-confidence guess. Adding more negative examples raised confidence on borderline cases.</p>
+
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/week_3_snapshot.png" aria-label="Open the test case screenshot full size">
+              <img data-field="screenshot-1" src="../images/week_3_snapshot.png" alt="Test case A in Machine Learning for Kids: four typed messages, each recognised as a negative complaint or urgent support with 70 to 82 percent confidence." loading="lazy">
+            </a>
+            <figcaption><strong>Test case A, clear patterns.</strong> Four typed messages in the Make stage, each placed in the right class with 70–82% confidence.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection">Testing revealed that the model performed well on phrases closely resembling its training data but struggled with sarcasm and topics outside its training vocabulary — both of which improved after targeted refinement of the training set. Building this classifier without writing a single line of model code, and then wiring it into a live App Inventor chat screen, reinforced that in deep learning systems the size, diversity, and representativeness of training data matter as much as the learning algorithm itself, and that feature extraction is a necessary bridge between data collection and model training.</p>
+      </section>
+
+      <section class="report-section" id="details">
+        <details class="report-details">
+          <summary>Technical details <span class="hint">Rules vs. learning, data, feature extraction <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <ul>
+            <li><strong>Rules vs. a trained model.</strong> Hand-written IF/ELSE keyword rules break down because the same intent can be phrased endless ways, keywords can't read context such as sarcasm, and the rule set grows without end. A model trained on tagged examples generalizes to unseen phrasing that is statistically similar.</li>
+            <li><strong>Dataset size and diversity.</strong> With only a handful of examples per class, predictions were unstable and swayed by single words. Ten or more varied examples per class broadened what the model learned and made confidence scores higher and steadier.</li>
+            <li><strong>Where feature extraction happens.</strong> In the Learn &amp; Test stage, when "Train new machine learning model" converts tagged text into numerical tokens before any weights update. It sits between collecting data (Train) and using the model (Make).</li>
+          </ul>
+          <p>The project was a "Recognizing Text" project created without account registration, with training data stored locally in the browser.</p>
+        </details>
+      </section>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+            <span class="file-name"><strong>Reflective report (IEEE format)</strong><span>PDF · prelims-02-reflection.pdf</span></span>
+            <a class="file-action" href="../docs/prelims-02-reflection.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+            <span class="file-name"><strong>Chat Analyzer app</strong><span>MIT App Inventor project</span></span>
+            <!-- TODO: replace [APP INVENTOR URL] with a link to the App Inventor project -->
+            <span class="file-pending">[APP INVENTOR URL]</span>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Training and test phrases</strong><span>35 training examples · 35 test phrases</span></span>
+            <!-- TODO: replace [DATASET URL] with a link to the phrase lists -->
+            <span class="file-pending">[DATASET URL]</span>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../docs/prelims-02-reflection.pdf" type="application/pdf" aria-label="Reflective report PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../docs/prelims-02-reflection.pdf">Open the reflection PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="prelims-01.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">WW-P2: Introduction to NLP Concepts</span>
+        </a>
+        <a class="next" href="prelims-03.html">
+          <span class="pager-label">Next report <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <span class="pager-title">PT-P2: Neural Network Training (Hyperparameters)</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
     </div>
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
-    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="../docs/prelims-02-reflection.pdf" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Open the PDF report</a>
+        <a href="../docs/prelims-02-reflection.pdf" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download the PDF</a>
+      </div>
+    </aside>
   </div>
-
-  <section class="report-section">
-    <h2>Activity Details</h2>
-    <p>Submitted as <strong>PT-P1: "No-Code Text Classification Using
-    Neural Networks"</strong>, this activity used the <strong>Machine
-    Learning for Kids</strong> platform — a no-code interface over a
-    text-classification service — to build, test, and refine a
-    three-class intent classifier for customer feedback, then wire the
-    trained model into a working mobile app via MIT App Inventor.</p>
-
-    <h3>Project Setup &amp; Data Collection</h3>
-    <p>A "Recognizing Text" project was created without account
-    registration, with training data stored locally in the browser. The
-    platform exposed three stages: <strong>Train</strong> (enter tagged
-    text examples), <strong>Learn &amp; Test</strong> (train and evaluate
-    the network), and <strong>Make</strong> (test the trained model
-    against live, freely typed input). Three intent classes were defined
-    to represent common categories of customer / ride-hailing feedback —
-    <strong>Positive_Review/Praise</strong>,
-    <strong>Negative_Review/Complaint</strong>, and
-    <strong>Urgent_Support</strong> — with a minimum of ten distinct
-    tagged example phrases entered per class (positive: praise for
-    quality or responsiveness; negative: dissatisfaction, refund
-    requests; urgent: account lockouts, failed payments, safety issues).</p>
-
-    <h3>Model Training &amp; Quantitative Results</h3>
-    <p>After training, the model was evaluated against 35 held-out test
-    phrases across the three classes:</p>
-    <ul>
-      <li>Positive_Review — 8/10 correct (<strong>80.0%</strong> accuracy)</li>
-      <li>Negative_Review — 14/15 correct (<strong>93.3%</strong> accuracy)</li>
-      <li>Urgent_Support — 9/10 correct (<strong>90.0%</strong> accuracy)</li>
-      <li><strong>Overall: 31/35 correct — 88.6% accuracy</strong></li>
-    </ul>
-    <p>Live "Try it" testing (captured in the accompanying model testing
-    snapshots) probed the model further across clear-pattern phrases,
-    sarcastic/ambiguous phrases, and out-of-vocabulary questions. Clear
-    complaints and urgent phrases were classified confidently (e.g.
-    <em>"Driver won't stop the car even though I keep asking, I'm
-    terrified"</em> → Urgent_Support at 82% confidence), while sarcastic
-    phrasing such as <em>"Wonderful, my driver just drove past my stop
-    again"</em> was misread as Positive_Praise (64% confidence), and
-    out-of-vocabulary questions like <em>"What payment methods do you
-    accept?"</em> returned Positive_Praise at 0% confidence — exposing the
-    model's reliance on surface word patterns rather than true intent
-    understanding. Adding more negative-complaint examples afterward
-    visibly improved confidence on previously borderline cases (e.g.
-    <em>"Driver locked the doors and won't let me out, I'm scared"</em>
-    rose to 85% confidence for Urgent_Support).</p>
-
-    <h3>Application Integration: Ride-Hailing Chat Analyzer</h3>
-    <p>The trained model was connected to a working prototype built in
-    <strong>MIT App Inventor</strong>: a "Chat Analyzer" screen that sends
-    typed messages to the ML4Kids classifier component (<code>ClassifyText</code>)
-    and displays the recognized label and confidence back to the user in
-    real time — demonstrating the full loop from no-code training data to
-    a deployed, interactive classification app.</p>
-
-    <h3>Discussion: Rules vs. Learning, Data Quality, and the Pipeline</h3>
-    <ul>
-      <li><strong>Rule-based vs. learned classification</strong> —
-      hand-coded IF/ELSE rules break down because natural language
-      phrasing is highly variable, keyword rules can't reliably read
-      context (e.g. sarcasm), the rule set grows unmanageably as new
-      phrasing appears, and rules can't generalize to inputs never
-      anticipated by the developer — while a model trained on tagged
-      examples generalizes to unseen but statistically similar phrasing.</li>
-      <li><strong>Dataset size &amp; diversity</strong> — with only a
-      handful of examples per class, predictions were unstable and swayed
-      by superficial word matches; expanding toward ten-plus diverse
-      examples per class broadened the vocabulary and sentence patterns
-      learned, producing higher and more consistent confidence scores.</li>
-      <li><strong>Where feature extraction happens</strong> — identified
-      as occurring in the Learn &amp; Test stage, at the point where
-      "Train (New Machine Learning Model)" converts raw tagged text into
-      numerical tokens before any weight updates — the translation layer
-      between human language and the network's internal numerical
-      operations, sitting between raw data collection (Train) and
-      inference (Make).</li>
-    </ul>
-  </section>
-
-  <section class="report-section">
-    <h2>Description</h2>
-    <p>Built a three-class intent classifier for customer/ride-hailing
-    feedback on the no-code Machine Learning for Kids platform, reaching
-    88.6% accuracy on held-out test phrases, then integrated the trained
-    model into a live MIT App Inventor chat-analyzer app.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection</h2>
-    <p>Testing revealed that the model performed well on phrases closely
-    resembling its training data but struggled with sarcasm and topics
-    outside its training vocabulary — both of which improved after
-    targeted refinement of the training set. Building this classifier
-    without writing a single line of model code, and then wiring it into
-    a live App Inventor chat screen, reinforced that in deep learning
-    systems the size, diversity, and representativeness of training data
-    matter as much as the learning algorithm itself, and that feature
-    extraction — turning raw text into a numerical form the network can
-    learn from — is a necessary bridge between data collection and model
-    training. This baseline (90.80% accuracy / 88.61% F1 in later formal
-    testing) became the point of comparison for the code-based
-    hyperparameter tuning work in the following activity.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection Document (PDF)</h2>
-    <p>Full IEEE-formatted reflective report submitted for this activity.</p>
-    <div class="pdf-viewer">
-      <object data="../docs/prelims-02-reflection.pdf" type="application/pdf">
-        <p class="pdf-viewer-fallback">
-          Your browser can't display this PDF inline.
-          <a href="../docs/prelims-02-reflection.pdf">Open the reflection PDF directly</a>.
-        </p>
-      </object>
-    </div>
-    <a class="pdf-download-link" href="../docs/prelims-02-reflection.pdf" download>&darr; Download the reflection PDF</a>
-  </section>
-
-  <a class="back-link" href="../prelims.html">&larr; Back to Prelims</a>
 </main>
 
 <footer>

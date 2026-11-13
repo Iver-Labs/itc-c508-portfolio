@@ -435,11 +435,40 @@
     update();
   }
 
+  /* Report sidebar: mark the section currently in view */
+  function initReportToc() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var sections = links
+      .map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); })
+      .filter(Boolean);
+    var visible = {};
+
+    function setCurrent(id) {
+      links.forEach(function (a) {
+        if (a === byId[id]) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { visible[e.target.id] = e.isIntersecting; });
+      var first = sections.filter(function (s) { return visible[s.id]; })[0];
+      if (first) setCurrent(first.id);
+    }, { rootMargin: '-20% 0px -55% 0px' });
+
+    sections.forEach(function (s) { observer.observe(s); });
+    setCurrent(sections[0].id);
+  }
+
   var initialized = false;
   window.initPortfolioUI = function () {
     if (initialized) return;
     initialized = true;
     initHeaderOffset();
+    initReportToc();
     initNavToggle();
     initLightbox();
     initCarousels();

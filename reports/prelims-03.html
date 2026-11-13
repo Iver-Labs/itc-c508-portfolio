@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Neural Network Training (Hyperparameters) — Report — ITC C508 Portfolio</title>
+<title>PT-P2: Neural Network Training (Hyperparameters) — Report — ITC C508 Portfolio</title>
+<meta name="description" content="More training data, not a smaller network, fixed overfitting in a Keras text classifier: 20 logged runs, validation accuracy from 20% to 86%.">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-activity-id="prelims-03">
@@ -24,135 +25,240 @@
 </header>
 
 <main>
-  <section class="hero" style="padding-bottom: 0.5rem;">
+  <section class="hero report-hero">
     <span class="kicker">Prelims &middot; Activity 03 &middot; Week 4</span>
-    <h1>Neural Network Training (Hyperparameters)</h1>
+    <h1>PT-P2: Neural Network Training (Hyperparameters)</h1>
+    <p class="report-takeaway">More training data, not a smaller network, fixed the overfitting. Dropout then closed most of the gap that was left.</p>
+    <dl class="report-facts">
+      <div><dt>Tools</dt><dd>TensorFlow · Keras</dd></div>
+      <div><dt>Data</dt><dd>Ride-hailing text, 35 → 500 rows</dd></div>
+      <div><dt>Runs</dt><dd>EXP-001 to EXP-020</dd></div>
+      <div><dt>Format</dt><dd>IEEE reflective report</dd></div>
+    </dl>
   </section>
 
-  <div class="report-gallery">
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
+  <div class="report-layout">
+    <div class="report-body">
+
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">Trained a Keras feedforward network on a ride-hailing text dataset across 20 logged runs, using training and validation loss curves to diagnose overfitting and underfitting. Growing the dataset mattered more than any single hyperparameter; dropout then stabilized the final model.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Validation accuracy</span>
+            <span class="metric-value">20% → 86%</span>
+            <span class="metric-note">35 rows (EXP-01) vs 500 rows (EXP-12)</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Generalization gap</span>
+            <span class="metric-value">1.54 → 0.13</span>
+            <span class="metric-note">Validation minus training loss, EXP-02 vs EXP-20</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Final F1 score</span>
+            <span class="metric-value">0.8275</span>
+            <span class="metric-note">EXP-20 with 0.30 dropout, 82% validation accuracy</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Logged training runs</span>
+            <span class="metric-value">20</span>
+            <span class="metric-note">Labastida-FFBP Training Log</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>This activity moved from the no-code tool of PT-P1 to a network written by hand in a Colab notebook, so every training decision could be inspected and changed.</p>
+        <ul>
+          <li><strong>Data:</strong> a 35-row ride-hailing text set first, then an expanded 500-row set. Vocabulary capped at 300 tokens, sequences padded or cut to 15 tokens, split 70 / 15 / 15 into training, validation and test.</li>
+          <li><strong>Model:</strong> Embedding → GlobalAveragePooling1D → Dense (ReLU) → Dropout → Dense (softmax).</li>
+          <li><strong>Method:</strong> change one setting per run (hidden units, learning rate, epochs, dropout), then read the training and validation loss curves to decide the next run.</li>
+        </ul>
+        <dl class="terms">
+          <div><dt>FFBP</dt><dd>Feedforward backpropagation: data flows forward through the layers, and the error flows backward to update the weights.</dd></div>
+          <div><dt>Generalization gap</dt><dd>Validation loss minus training loss. A large gap means the model memorized its training data instead of learning patterns that carry over.</dd></div>
+          <div><dt>F1 score</dt><dd>One number that balances precision (how often a predicted label is right) and recall (how many true labels were found). 1.0 is perfect.</dd></div>
+        </dl>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <p>Three phases, each answering one question. The bars show how far apart training and validation loss were at the end of each phase: shorter is better.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Generalization gap at the end of each phase</caption>
+            <thead>
+              <tr><th scope="col">Phase</th><th scope="col">Run</th><th scope="col">Gap (validation − training loss)</th></tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar">
+                <th scope="row">1 · Small data, 35 rows</th>
+                <td class="mono">EXP-02</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.9626"></span><span class="bar-value">1.54</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">2 · Expanded data, 500 rows</th>
+                <td class="mono">EXP-08</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.1839"></span><span class="bar-value">0.29</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">3 · Plus 0.30 dropout</th>
+                <td class="mono">EXP-20</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.0843"></span><span class="bar-value">0.13</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Selected runs from the training log</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Units: hidden-layer units. LR: learning rate. Val.: validation set.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Run</th>
+                <th scope="col" class="num">Rows</th>
+                <th scope="col">Units · LR</th>
+                <th scope="col" class="num">Epochs</th>
+                <th scope="col" class="num">Val. loss</th>
+                <th scope="col" class="num">Val. acc.</th>
+                <th scope="col">Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">EXP-01</td><td class="num">35</td><td>64 · 0.005</td><td class="num">15</td><td class="num">1.0781</td><td class="num">20.0%</td><td class="outcome">Baseline</td></tr>
+              <tr><td class="mono">EXP-02</td><td class="num">35</td><td>64 · 0.005</td><td class="num">30</td><td class="num">1.5693</td><td class="num">20.0%</td><td class="outcome">Overfit</td></tr>
+              <tr><td class="mono">EXP-05</td><td class="num">35</td><td>24 · 0.0001</td><td class="num">30</td><td class="num">1.0945</td><td class="num">60.0%</td><td class="outcome">Underfit</td></tr>
+              <tr><td class="mono">EXP-08</td><td class="num">500</td><td>24 · 0.001</td><td class="num">30</td><td class="num">0.3180</td><td class="num">85.0%</td><td class="outcome">More data</td></tr>
+              <tr class="is-key"><td class="mono">EXP-12</td><td class="num">500</td><td>12 · 0.0007</td><td class="num">30</td><td class="num">0.3592</td><td class="num">86.0%</td><td class="outcome">Best accuracy <span class="row-tag">Best</span></td></tr>
+              <tr><td class="mono">EXP-14</td><td class="num">500</td><td>12 · 0.0003</td><td class="num">30</td><td class="num">0.7154</td><td class="num">86.0%</td><td class="outcome">Learning rate too low</td></tr>
+              <tr><td class="mono">EXP-17</td><td class="num">500</td><td>12 · 0.0003</td><td class="num">60</td><td class="num">0.3646</td><td class="num">85.0%</td><td class="outcome">Plateau</td></tr>
+              <tr><td class="mono">EXP-18</td><td class="num">500</td><td>12 · 0.0003</td><td class="num">70</td><td class="num">0.3738</td><td class="num">85.0%</td><td class="outcome">Overfit again</td></tr>
+              <tr class="is-key"><td class="mono">EXP-20</td><td class="num">500</td><td>12 · 0.0003<br>+ dropout 0.30</td><td class="num">70</td><td class="num">0.3586</td><td class="num">82.0%</td><td class="outcome">Stable, F1 0.8275 <span class="row-tag">Final</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Code versus the no-code baseline</h3>
+        <div class="compare">
+          <div>
+            <h4>No-code baseline (PT-P1)</h4>
+            <p>90.80% accuracy and 88.61% F1 in later formal testing. Fast to build, but it gave no way to see why performance stalled.</p>
+          </div>
+          <div>
+            <h4>Code (this activity)</h4>
+            <p>Best validation accuracy 86%. Loss curves showed where the model overfit (epoch 60 to 70) and which change fixed it.</p>
+          </div>
+        </div>
+
+        <h3>From the notebook</h3>
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/prelims-03-screenshot-1.png" aria-label="Open the loss-curve chart full size">
+              <img data-field="screenshot-1" src="../images/prelims-03-screenshot-1.png" alt="Training and validation loss falling over 80 epochs; validation loss flattens near 0.33 while training loss reaches about 0.18." loading="lazy">
+            </a>
+            <figcaption><strong>Loss curves, follow-up run EXP-34-B-9</strong> (500 rows, learning rate 0.0005, 32 hidden units, dropout 0.35). Validation loss flattens near 0.33 while training loss keeps falling: the point where more epochs stop helping.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/prelims-03-training-loop.png" aria-label="Open the training log full size">
+              <img data-field="screenshot-2" src="../images/prelims-03-training-loop.png" alt="Keras training log for epochs 74 to 80, ending at 86.67% validation accuracy, validation loss 0.3298 and F1 0.8676." loading="lazy">
+            </a>
+            <figcaption><strong>Last epochs of the same run.</strong> Validation accuracy holds at 86.67%, ending with validation loss 0.3298 and F1 0.8676.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection">Running the same underlying problem through both a no-code tool and hand-written Keras code made the mechanics of overfitting and underfitting concrete rather than abstract. The clearest lesson was that no amount of architectural or learning-rate tuning rescues a model starved of data — expanding from 35 to 500 rows mattered more than any single hyperparameter choice — while dropout regularization was what finally closed the gap once enough data was in place. Having to justify every configuration change against a validation-loss curve, instead of trusting an automated score, is the habit I want to carry into the rest of this course and into the capstone project.</p>
+      </section>
+
+      <section class="report-section" id="details">
+        <details class="report-details">
+          <summary>Technical details <span class="hint">Phases and code-to-theory mapping <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <h3>The three phases</h3>
+          <ul>
+            <li><strong>Phase 1, small dataset (EXP-001 to EXP-007, 35 rows).</strong> Training loss fell to 0.0291 while validation loss rose to 1.5693. Shrinking the hidden layer from 64 to 32 to 24 units did not fix it. Lowering the learning rate to 0.0001 (EXP-005) tipped the model into underfitting instead (training loss 1.0889, validation loss 1.0945).</li>
+            <li><strong>Phase 2, expanded dataset (EXP-008 to EXP-014, 500 rows).</strong> Validation accuracy reached 86.00% with F1 0.8698, and the gap fell from 1.5402 to 0.2942: the most decisive change in the study.</li>
+            <li><strong>Phase 3, epochs and regularization (EXP-015 to EXP-020).</strong> Validation loss plateaued around epoch 60 and began rising by epoch 70 (0.3646 to 0.3738). Adding 0.30 dropout in EXP-020 settled training at 0.2238 and validation at 0.3586 (F1 0.8275).</li>
+          </ul>
+          <h3>Where each step happens in the notebook</h3>
+          <ul>
+            <li><strong>Feature extraction:</strong> the Embedding and GlobalAveragePooling1D layers (Cell 14).</li>
+            <li><strong>Forward pass:</strong> the Dense, Dropout and softmax layers (Cell 14).</li>
+            <li><strong>Loss:</strong> sparse categorical cross-entropy (Cell 16).</li>
+            <li><strong>Backward pass:</strong> automatic differentiation and Adam weight updates per mini-batch inside <code>model.fit()</code> (Cell 18).</li>
+          </ul>
+          <p>Optimizer choice (Adam vs. SGD), learning rate (tuned from 0.0050 down to 0.0003), loss function and per-layer dropout could all be set directly in code, none of which the no-code tool exposed. No-code suits quick feasibility checks; code is what you need to debug a model that fails.</p>
+        </details>
+      </section>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+            <span class="file-name"><strong>Reflective report (IEEE format)</strong><span>PDF · prelims-03-reflection.pdf</span></span>
+            <a class="file-action" href="../docs/prelims-03-reflection.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></span>
+            <span class="file-name"><strong>Training notebook</strong><span>Iverson_Neural_Network_Training_Testing.ipynb</span></span>
+            <!-- TODO: replace [NOTEBOOK URL] with a link to the notebook (GitHub or Colab) -->
+            <span class="file-pending">[NOTEBOOK URL]</span>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Datasets</strong><span>ride_hailing_dataset.csv · ride-hailing-dataset-expanded.csv</span></span>
+            <!-- TODO: replace [DATASET URL] with a link to the datasets -->
+            <span class="file-pending">[DATASET URL]</span>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+            <span class="file-name"><strong>Training log</strong><span>Labastida-FFBP Training Log, all 20 runs</span></span>
+            <!-- TODO: replace [TRAINING LOG URL] with a link to the training log -->
+            <span class="file-pending">[TRAINING LOG URL]</span>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../docs/prelims-03-reflection.pdf" type="application/pdf" aria-label="Reflective report PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../docs/prelims-03-reflection.pdf">Open the reflection PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="prelims-02.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">PT-P1: Deep Learning (Neural Networks)</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
     </div>
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
-    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="../docs/prelims-03-reflection.pdf" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Open the PDF report</a>
+        <a href="../docs/prelims-03-reflection.pdf" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download the PDF</a>
+      </div>
+    </aside>
   </div>
-
-  <section class="report-section">
-    <h2>Activity Details</h2>
-    <p>Submitted as <strong>PT-P2: "Neural Network Testing Report"</strong>,
-    this activity moved from the no-code baseline of PT-P1 into explicit,
-    code-based model development: a Feedforward Backpropagation (FFBP)
-    neural network built in <strong>TensorFlow/Keras</strong> inside the
-    notebook <code>Iverson_Neural_Network_Training_Testing.ipynb</code>,
-    trained and re-trained across <strong>20 structured experimental runs
-    (EXP-001–EXP-020)</strong> on a ride-hailing text classification
-    dataset, logged in the Labastida-FFBP Training Log.</p>
-
-    <h3>Data &amp; Model Architecture</h3>
-    <p>Two dataset scales were used: an initial 35-row set
-    (<code>ride_hailing_dataset.csv</code>) and an expanded 500-row set
-    (<code>ride-hailing-dataset-expanded.csv</code>). Text was
-    preprocessed with a custom vocabulary builder (max vocabulary size
-    300, fixed sequence length of 15 tokens, zero-padding/truncation),
-    then split 70/15/15 into train/validation/test with
-    <code>random_state=42</code> for reproducibility. The Keras Sequential
-    model consisted of: an <strong>Embedding</strong> layer mapping token
-    indices to dense vectors, <strong>GlobalAveragePooling1D</strong> for
-    sequence-length-independent feature reduction, a
-    <strong>Dense(ReLU)</strong> hidden layer, a <strong>Dropout</strong>
-    regularization layer, and a final <strong>Dense(softmax)</strong>
-    classification layer.</p>
-
-    <h3>Three Experimental Phases</h3>
-    <ul>
-      <li><strong>Phase 1 — Small dataset (EXP-001–EXP-007, N=35):</strong>
-      revealed severe overfitting — training loss collapsed to 0.0291
-      while validation loss exploded to 1.5693 (a 1.54 generalization
-      gap), capping validation accuracy at 20.00%. Reducing architectural
-      capacity (hidden_dim from 64 → 32 → 24) alone failed to fix it,
-      proving that capacity tuning cannot compensate for insufficient
-      data. Aggressively lowering the learning rate to 0.0001 (EXP-005)
-      instead pushed the model into underfitting (training loss 1.0889,
-      validation loss 1.0945).</li>
-      <li><strong>Phase 2 — Expanded dataset (EXP-008–EXP-014,
-      N=500):</strong> validation accuracy jumped to 86.00% and F1-score
-      to 0.8698; the generalization gap collapsed from 1.5402 down to
-      0.2942 — the single most decisive factor in the whole study.</li>
-      <li><strong>Phase 3 — Epoch scaling &amp; regularization
-      (EXP-015–EXP-020):</strong> identified an operational plateau
-      around 60 epochs, with overfitting re-emerging by epoch 70
-      (validation loss rising from 0.3646 to 0.3738). Applying a 0.30
-      dropout rate in EXP-020 eliminated the generalization gap,
-      converging cleanly to a training loss of 0.2238 and validation loss
-      of 0.3586 (F1-score 0.8275).</li>
-    </ul>
-
-    <h3>Code-Based Control vs. the No-Code Baseline (PT-P1)</h3>
-    <p>The no-code PT-P1 baseline reached a strong 90.80% accuracy /
-    88.61% F1 out of the box, but offered no way to diagnose <em>why</em>
-    performance stalled. Explicit Keras code restored that visibility and
-    control: real-time loss tracking pinpointed the exact epoch (60)
-    where validation loss plateaued before diverging; optimizer choice
-    (Adam vs. SGD), learning rate (tuned across two orders of magnitude,
-    0.0050 → 0.0003), loss formulation, and layer-specific dropout could
-    all be adjusted directly — none of which the no-code heuristics
-    exposed. The trade-off identified: no-code automation is best for
-    rapid feasibility checks and non-technical demos, while code-based
-    FFBP is what production work needs for debugging loss curves and
-    preventing catastrophic failure on out-of-distribution input.</p>
-
-    <h3>Pipeline Mapping (Code ↔ Theory)</h3>
-    <p>The report also traces the theoretical deep learning pipeline
-    directly onto notebook cells: <strong>feature extraction</strong> in
-    the Embedding and GlobalAveragePooling1D layers (Cell 14), the
-    <strong>forward pass</strong> through the Dense/Dropout/Softmax layers
-    (Cell 14), <strong>loss computation</strong> via sparse categorical
-    cross-entropy (Cell 16), and the <strong>backward pass</strong> —
-    automatic differentiation and Adam weight updates per mini-batch —
-    inside <code>model.fit()</code> (Cell 18).</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Description</h2>
-    <p>Trained a Keras feedforward backpropagation network across 20
-    experimental runs on a ride-hailing text dataset, diagnosing
-    overfitting and underfitting through loss curves and tuning dataset
-    size, learning rate, and dropout to close the generalization gap
-    against a no-code baseline.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection</h2>
-    <p>Running the same underlying problem through both a no-code tool and
-    hand-written Keras code made the mechanics of overfitting and
-    underfitting concrete rather than abstract. The clearest lesson was
-    that no amount of architectural or learning-rate tuning rescues a
-    model starved of data — expanding from 35 to 500 rows mattered more
-    than any single hyperparameter choice — while dropout regularization
-    was what finally closed the gap once enough data was in place. Having
-    to justify every configuration change against a validation-loss curve,
-    instead of trusting an automated score, is the habit I want to carry
-    into the rest of this course and into the capstone project.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection Document (PDF)</h2>
-    <p>Full IEEE-formatted reflective report submitted for this activity.</p>
-    <div class="pdf-viewer">
-      <object data="../docs/prelims-03-reflection.pdf" type="application/pdf">
-        <p class="pdf-viewer-fallback">
-          Your browser can't display this PDF inline.
-          <a href="../docs/prelims-03-reflection.pdf">Open the reflection PDF directly</a>.
-        </p>
-      </object>
-    </div>
-    <a class="pdf-download-link" href="../docs/prelims-03-reflection.pdf" download>&darr; Download the reflection PDF</a>
-  </section>
-
-  <a class="back-link" href="../prelims.html">&larr; Back to Prelims</a>
 </main>
 
 <footer>

@@ -149,6 +149,14 @@
     applyImage(shots[0], a['Screenshot 1']);
     applyImage(shots[1], a['Screenshot 2']);
 
+    // v2 report layout: fields are marked with data-field instead of h2 labels
+    fillText(document.querySelector('[data-field="description"]'), a['Description']);
+    fillText(document.querySelector('[data-field="reflection"]'), a['Reflection']);
+    [['screenshot-1', 'Screenshot 1'], ['screenshot-2', 'Screenshot 2']].forEach(function (pair) {
+      var img = document.querySelector('img[data-field="' + pair[0] + '"]');
+      if (img && a[pair[1]]) img.src = resolveImagePath(a[pair[1]]);
+    });
+
     document.querySelectorAll('.report-section').forEach(function (sec) {
       var h2 = sec.querySelector('h2');
       var p = sec.querySelector('p');

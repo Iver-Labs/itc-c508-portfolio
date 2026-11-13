@@ -7,7 +7,7 @@
   <meta name="description" content="Iverson Labastida's coursework portfolio for ITC C508: deep learning and neural networks for NLP, with lab write-ups and reflective reports." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <style>
     /* ==========================================================================
@@ -33,15 +33,20 @@
       --image-outline: oklch(1 0 0 / 0.1);
 
       --ease-out-strong: cubic-bezier(0.2, 0, 0, 1);
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-mono: 'IBM Plex Mono', monospace;
+      --font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html {
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     html, body {
@@ -184,7 +189,7 @@
       background: transparent;
       border: none;
       color: rgba(255, 255, 255, 0.82);
-      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: 500;
       white-space: nowrap;
       padding: 7px 16px;
@@ -221,7 +226,7 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       color: #ffffff;
-      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: 600;
       text-decoration: none;
       transition-property: color, background-color, border-color, scale;
@@ -237,7 +242,7 @@
       fill: currentColor;
     }
     /* Trailing "opens elsewhere" arrow, 2px stroke to match the 600-weight label */
-    .gh-pill .icon { font-size: 14px; opacity: 0.7; transition-property: opacity; transition-duration: 150ms; transition-timing-function: ease-out; }
+    .gh-pill .icon { font-size: 0.875rem; opacity: 0.7; transition-property: opacity; transition-duration: 150ms; transition-timing-function: ease-out; }
 
     /* Main View Panels — neutralises style.css `main` */
     .page-shell > main {
@@ -304,11 +309,12 @@
     .hero-title-wrap { max-width: 620px; }
 
     .hero-main-title {
-      font-family: var(--font-sans);
+      font-family: var(--font-display);
       font-size: clamp(2.75rem, 6.8vw, 6.4rem);
       font-weight: 800;
-      line-height: 0.98;
-      letter-spacing: -0.04em;
+      font-stretch: 112%;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
       color: #ffffff;
       margin: 0;
       text-shadow: 0 14px 42px rgba(0, 0, 0, 0.75);
@@ -316,7 +322,7 @@
 
     .hero-meta-label {
       --i: 1;
-      font-size: clamp(14px, 1.4vw, 17px);
+      font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
       font-weight: 500;
       line-height: 1.35;
       color: rgba(255, 255, 255, 0.9);
@@ -374,7 +380,9 @@
       background: transparent;
       border: none;
       color: rgba(255, 255, 255, 0.38);
-      font-size: 26px;
+      font-family: var(--font-display);
+      font-stretch: 110%;
+      font-size: 1.625rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       font-variant-numeric: tabular-nums;
@@ -416,7 +424,7 @@
       background: none;
       border: 0;
       padding: 4px 0;
-      font-size: 11.5px;
+      font-size: 0.7188rem;
       font-weight: 500;
       color: var(--text-muted);
       letter-spacing: 0.02em;
@@ -445,7 +453,7 @@
       background: transparent;
       border: 1px solid transparent;
       color: rgba(255, 255, 255, 0.85);
-      font-size: 16px;
+      font-size: 1rem;
       width: 36px;
       height: 36px;
       border-radius: 999px;
@@ -458,7 +466,7 @@
     }
 
     .nav-indicator-text {
-      font-size: 13.5px;
+      font-size: 0.8438rem;
       font-weight: 600;
       color: #ffffff;
       letter-spacing: 0.01em;
@@ -470,7 +478,7 @@
       display: flex;
       justify-content: flex-end;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 0.6875rem;
       color: rgba(255, 255, 255, 0.45);
     }
 
@@ -482,7 +490,7 @@
 
     .kicker-pill {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 0.6875rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--accent-cyan);
@@ -496,15 +504,16 @@
     .panel-title {
       font-size: clamp(2rem, 3.8vw, 3rem);
       font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
+      font-stretch: 110%;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
       margin: 0 0 10px;
       text-wrap: balance;
     }
 
     .panel-lead {
       color: var(--text-body);
-      font-size: 15px;
+      font-size: 0.9375rem;
       max-width: 65ch;
       line-height: 1.55;
       margin: 0;
@@ -565,24 +574,24 @@
 
     .card-meta {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 0.6875rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--accent-cyan);
     }
 
     .glass-card h3.card-h3 {
-      font-size: 18px;
+      font-size: 1.125rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: #ffffff;
-      line-height: 1.25;
+      line-height: 1.3;
       margin: 0;
       text-wrap: balance;
     }
 
     .glass-card p.card-p {
-      font-size: 13.5px;
+      font-size: 0.8438rem;
       color: var(--text-body);
       line-height: 1.6;
       margin: 0;
@@ -599,7 +608,7 @@
 
     .tag-chip {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 0.6875rem;
       padding: 3px 8px;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.08);
@@ -616,7 +625,7 @@
       margin-top: auto;
       padding-top: 10px;
       color: #ffffff;
-      font-size: 12.5px;
+      font-size: 0.7812rem;
       font-weight: 600;
       text-decoration: none;
       transition-property: color;
@@ -652,8 +661,8 @@
       gap: 12px;
     }
 
-    .glass-card h3.card-h3.lg { font-size: 22px; }
-    .glass-card h3.card-h3.sm { font-size: 16px; }
+    .glass-card h3.card-h3.lg { font-size: 1.375rem; }
+    .glass-card h3.card-h3.sm { font-size: 1rem; }
     .about-copy .tag-row { margin: 2px 0 10px; }
 
     .profile-photo {
@@ -679,14 +688,42 @@
       border-radius: 12px;
     }
 
+    /* Empty state for periods whose reports aren't written yet */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 520px;
+      padding: 8px 0 24px;
+    }
+    .empty-icon { font-size: 1.75rem; color: var(--text-muted); }
+    .empty-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin: 4px 0 0; }
+    .empty-text { font-size: 0.9375rem; line-height: 1.55; color: var(--text-body); margin: 0; max-width: 60ch; }
+    .empty-action {
+      appearance: none;
+      margin-top: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 0;
+      background: #ffffff;
+      color: #0b0d10;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition-property: background-color, scale;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
     /* ==========================================================================
        Interaction states
        ========================================================================== */
-    :is(.nav-tab, .gh-pill, .arrow-btn, .step-item, .site-logo):not(:disabled):active {
+    :is(.nav-tab, .gh-pill, .arrow-btn, .step-item, .site-logo, .empty-action):not(:disabled):active {
       scale: 0.96;
     }
 
-    :is(.nav-tab, .gh-pill, .arrow-btn, .step-item, .site-logo, .explore-btn, .view-link, .inline-link):focus-visible {
+    :is(.nav-tab, .gh-pill, .arrow-btn, .step-item, .site-logo, .explore-btn, .view-link, .inline-link, .empty-action):focus-visible {
       outline: 2px solid var(--accent-cyan);
       outline-offset: 3px;
     }
@@ -715,6 +752,7 @@
       }
       .view-link:hover { color: var(--accent-cyan); }
       .inline-link:hover { text-decoration-color: currentColor; }
+      .empty-action:hover { background-color: #dfe3e8; }
     }
 
     /* ==========================================================================
@@ -760,7 +798,8 @@
       }
       .hero-main-title { font-size: clamp(2.75rem, 13vw, 3.4rem); }
       .glass-card.padded, .about-card { padding: 18px; }
-      .step-item { font-size: 22px; gap: 10px; }
+      .step-item { font-size: 1.375rem; gap: 10px; }
+      .hero-main-title, .panel-title { font-stretch: 100%; }
       .stepper-nav { gap: 18px; }
       .step-item .active-line { width: 56px; }
     }
@@ -960,40 +999,13 @@
           </p>
         </div>
 
-        <div class="cards-grid-2 panel-content">
-          <article class="glass-card">
-            <img class="card-thumb" src="images/hayler-se-core.jpg" alt="" loading="lazy" />
-            <div class="card-body">
-              <span class="card-meta">Activity 01 · Week 7</span>
-              <h3 class="card-h3">Text Preprocessing &amp; Word Embeddings</h3>
-              <p class="card-p">
-                Cleaned and tokenized raw text corpora, then trained continuous Word2Vec vector embeddings with Gensim to evaluate semantic similarity clusters.
-              </p>
-              <div class="tag-row">
-                <span class="tag-chip">Python</span>
-                <span class="tag-chip">Gensim</span>
-                <span class="tag-chip">Word2Vec</span>
-              </div>
-              <a class="view-link" href="reports/midterms-01.html">Read the embeddings report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          </article>
-
-          <article class="glass-card">
-            <img class="card-thumb" src="images/hayler-se-telemetry.jpg" alt="" loading="lazy" />
-            <div class="card-body">
-              <span class="card-meta">Activity 02 · Week 9</span>
-              <h3 class="card-h3">Sentiment Classification with an LSTM</h3>
-              <p class="card-p">
-                Trained a recurrent neural network with LSTM cells to classify sentiment, establishing benchmarks against a baseline feedforward architecture.
-              </p>
-              <div class="tag-row">
-                <span class="tag-chip">TensorFlow</span>
-                <span class="tag-chip">LSTM</span>
-                <span class="tag-chip">RNN</span>
-              </div>
-              <a class="view-link" href="reports/midterms-02.html">Read the LSTM report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          </article>
+        <div class="panel-content empty-state">
+          <!-- Midterms report cards are hidden until the reports are written.
+               The pages still exist in reports/ (midterms-01.html, midterms-02.html). -->
+          <svg class="icon empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
+          <h3 class="empty-title">Midterm reports aren't posted yet</h3>
+          <p class="empty-text">They'll appear here once each activity and its reflection are finished. In the meantime, the Prelims reports cover the work so far.</p>
+          <button class="empty-action" type="button" data-page="prelims">See the Prelims reports</button>
         </div>
       </section>
 
@@ -1007,40 +1019,13 @@
           </p>
         </div>
 
-        <div class="cards-grid-2 panel-content">
-          <article class="glass-card">
-            <img class="card-thumb" src="images/hayler-se-workstation.jpg" alt="" loading="lazy" />
-            <div class="card-body">
-              <span class="card-meta">Activity 01 · Week 12</span>
-              <h3 class="card-h3">Sequence-to-Sequence Text Summarization</h3>
-              <p class="card-p">
-                Constructed an encoder-decoder neural network with Bahdanau attention to generate concise summaries, evaluated rigorously with ROUGE metrics.
-              </p>
-              <div class="tag-row">
-                <span class="tag-chip">TensorFlow</span>
-                <span class="tag-chip">Seq2Seq</span>
-                <span class="tag-chip">Attention</span>
-              </div>
-              <a class="view-link" href="reports/finals-01.html">Read the summarization report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          </article>
-
-          <article class="glass-card">
-            <img class="card-thumb" src="images/hayler-se-telemetry.jpg" alt="" loading="lazy" />
-            <div class="card-body">
-              <span class="card-meta">Activity 02 · Week 14</span>
-              <h3 class="card-h3">Fine-Tuning a Transformer for Text Classification</h3>
-              <p class="card-p">
-                Fine-tuned a pretrained transformer encoder on domain-specific classification benchmarks in PyTorch, analyzing attention heads and performance gains.
-              </p>
-              <div class="tag-row">
-                <span class="tag-chip">PyTorch</span>
-                <span class="tag-chip">Hugging Face</span>
-                <span class="tag-chip">Transformers</span>
-              </div>
-              <a class="view-link" href="reports/finals-02.html">Read the transformer report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
-            </div>
-          </article>
+        <div class="panel-content empty-state">
+          <!-- Finals report cards are hidden until the reports are written.
+               The pages still exist in reports/ (finals-01.html, finals-02.html). -->
+          <svg class="icon empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
+          <h3 class="empty-title">Final reports aren't posted yet</h3>
+          <p class="empty-text">They'll appear here once each activity and its reflection are finished. In the meantime, the Prelims reports cover the work so far.</p>
+          <button class="empty-action" type="button" data-page="prelims">See the Prelims reports</button>
         </div>
       </section>
 
