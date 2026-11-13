@@ -38,7 +38,7 @@
 ## prelims-01
 - Activity Number: Activity 01
 - Week: Week 2
-- Title: WW-P2 : Introduction to NLP Concepts
+- Title: WW-P2: Introduction to NLP Concepts
 - Description: Completed Microsoft Learn's "Introduction to NLP Concepts"
   module (assessment passed), studying the text-processing pipeline behind
   modern NLP systems — word/sub-word/character tokenization, frequency-based
@@ -72,7 +72,7 @@
 ## prelims-02
 - Activity Number: Activity 02
 - Week: Week 3
-- Title: Exercise PT-P1: Deep Learning (Neural Networks)
+- Title: PT-P1: Deep Learning (Neural Networks)
 - Description: Built a three-class no-code neural network text classifier
   (Positive Review, Negative Review, Urgent Support) on the Machine Learning
   for Kids platform, training it through the platform's Train → Learn & Test
@@ -106,7 +106,7 @@
 ## prelims-03
 - Activity Number: Activity 03
 - Week: Week 4
-- Title: PT-P2 - Neural Network Training (Hyperparameters)
+- Title: PT-P2: Neural Network Training (Hyperparameters)
 - Description: Designed and trained a Keras Sequential feedforward network
   (Embedding → GlobalAveragePooling1D → Dense(ReLU) → Dropout →
   Dense(Softmax)) on a tokenized ride-hailing text dataset — vocabulary
@@ -148,8 +148,9 @@
 - Tags: Python, Gensim
 - Screenshot 1:
 - Screenshot 2:
-- Reflection: Reflection pending — add your thoughts on what you learned, what
-  was difficult, or what you'd do differently.
+<!-- TODO: replace with your reflection — what you learned, what was
+     difficult, or what you'd do differently. -->
+- Reflection: Reflection coming soon.
 
 ## midterms-02
 - Activity Number: Activity 02
@@ -161,8 +162,9 @@
 - Tags: TensorFlow, LSTM
 - Screenshot 1:
 - Screenshot 2:
-- Reflection: Reflection pending — add your thoughts on what you learned, what
-  was difficult, or what you'd do differently.
+<!-- TODO: replace with your reflection — what you learned, what was
+     difficult, or what you'd do differently. -->
+- Reflection: Reflection coming soon.
 
 # Finals
 
@@ -176,8 +178,9 @@
 - Tags: TensorFlow, Seq2Seq
 - Screenshot 1:
 - Screenshot 2:
-- Reflection: Reflection pending — add your thoughts on what you learned, what
-  was difficult, or what you'd do differently.
+<!-- TODO: replace with your reflection — what you learned, what was
+     difficult, or what you'd do differently. -->
+- Reflection: Reflection coming soon.
 
 ## finals-02
 - Activity Number: Activity 02
@@ -189,5 +192,6 @@
 - Tags: PyTorch, Transformers
 - Screenshot 1:
 - Screenshot 2:
-- Reflection: Reflection pending — add your thoughts on what you learned, what
-  was difficult, or what you'd do differently.
+<!-- TODO: replace with your reflection — what you learned, what was
+     difficult, or what you'd do differently. -->
+- Reflection: Reflection coming soon.

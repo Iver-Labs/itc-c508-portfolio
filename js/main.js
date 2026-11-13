@@ -380,7 +380,7 @@
       var end = mainTop + main.offsetHeight - window.innerHeight;
       var progress = end > start ? (window.scrollY - start) / (end - start) : 0;
       progress = Math.min(1, Math.max(0, progress));
-      fill.style.width = (progress * 100) + '%';
+      fill.style.transform = 'scaleX(' + progress + ')';
     }
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
@@ -423,10 +423,23 @@
     });
   }
 
+  /* Publish the sticky header's height so scroll-padding clears it at every width */
+  function initHeaderOffset() {
+    var header = document.querySelector('.site-header');
+    if (!header || getComputedStyle(header).position !== 'sticky') return;
+    function update() {
+      document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(update).observe(header);
+    else window.addEventListener('resize', update);
+    update();
+  }
+
   var initialized = false;
   window.initPortfolioUI = function () {
     if (initialized) return;
     initialized = true;
+    initHeaderOffset();
     initNavToggle();
     initLightbox();
     initCarousels();
