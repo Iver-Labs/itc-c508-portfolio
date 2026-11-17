@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WW-F1 &amp; WW-F2: RAG Optimization and GPU Benchmarking — Report — ITC C508 Portfolio</title>
+<meta name="description" content="Tuned chunk size, overlap, top-k, and a safety-first prompt across 15 RAG runs for the trilingual AlalayOFW chatbot, and benchmarked CPU vs. Tesla T4 GPU speedup (>53x faster responses and 27-32x faster embeddings).">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-activity-id="finals-03">
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="wordmark">ITC <span>C508</span> <span class="wordmark-sub">· Deep Learning &amp; NLP</span></div>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation"><span></span></button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About Me</a>
+      <a href="../prelims.html">Prelims</a>
+      <a href="../midterms.html">Midterms</a>
+      <a href="../finals.html">Finals</a>
+      <a href="../report.html" aria-current="page">Reports</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero report-hero">
+    <span class="kicker">Finals &middot; Activity 03 &middot; Week 15</span>
+    <h1>WW-F1 &amp; WW-F2: RAG Optimization and GPU Benchmarking</h1>
+    <p class="report-takeaway">An 800-character window with 100-character overlap and top-3 retrieval on a Tesla T4 GPU gave AlalayOFW its strongest balance across seminar prose and 3,792 agency records—while 25% overlap collapsed retrieval and unquantized CPU inference timed out past 600 seconds.</p>
+    <dl class="report-facts">
+      <div><dt>System</dt><dd>AlalayOFW · Chroma · MiniLM · SEA-LION v3-8B</dd></div>
+      <div><dt>Corpus</dt><dd>PEOS (18p prose) + DMW Registry (335p, 3,792 records)</dd></div>
+      <div><dt>Experiments</dt><dd>Part A: 15 GPU runs · Part B: CPU vs. T4 GPU</dd></div>
+      <div><dt>Recommended</dt><dd>800 / 100 · k = 3 · Stricter prompt · T4 GPU</dd></div>
+    </dl>
+  </section>
+
+  <div class="report-layout">
+    <div class="report-body">
+
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">Optimized and benchmarked AlalayOFW, our group's trilingual (English, Tagalog, and Taglish) RAG assistant designed to help aspiring Overseas Filipino Workers verify licensed recruitment agencies and answer pre-departure orientation questions. Combining an 18-page POEA PEOS prose PDF with a 335-page PDF of 3,792 DMW agency records inside a single Chroma vector store powered by all-MiniLM-L6-v2 and Llama-SEA-LION-v3-8B-IT, we evaluated 15 parameter and prompt configurations in Part A and measured Google Colab CPU versus Tesla T4 GPU execution times in Part B.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Recommended balance</span>
+            <span class="metric-value">800 / 100 · k=3</span>
+            <span class="metric-note">0.500 mean correctness · 0.531 MRR · 74.1% supported</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">GPU response speedup</span>
+            <span class="metric-value">&gt; 53× – 57×</span>
+            <span class="metric-note">10.58–11.47s on T4 GPU vs &gt; 600s timeout on CPU</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">GPU embedding speedup</span>
+            <span class="metric-value">27.4× – 31.8×</span>
+            <span class="metric-note">12.45–18.49s total index vs 228.7–325.2s on CPU</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Strict prompt impact</span>
+            <span class="metric-value">11.2s → 4.9s</span>
+            <span class="metric-note">56% faster generation · 0 unsupported DMW verdicts</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>Unlike single-document labs, <strong>AlalayOFW</strong> (aligned with UN SDG 8, Target 8.8) answers questions across two sharply different knowledge sources stored together in Chroma: the 18-page <code>PRE-EMPLOYMENT_ORIENTATION_SEMINAR_(PEOS ONLINE)_MODULE.pdf</code> (narrative rules that extract with a line break after almost every word) and the 335-page <code>dmw_licensed_agencies.pdf</code> (3,792 structured agency records converted from CSV, each roughly 400 to 500 characters long). Our notebook adapts the LangChain + Hugging Face RAG template to support per-document chunking (<code>SOURCE_SETTINGS</code>) and controlled hardware timing.</p>
+        <ol>
+          <li><strong>Trilingual Benchmark &amp; Safety-First Grading (Part A, Runs A–N*):</strong> Six verified test questions (Easy, Average, and Difficult across both PDFs) were authored in English, Tagalog, and Taglish, producing 18 query versions per run. Runs <code>A</code> through <code>E</code> tested the core parameter matrix, Runs <code>F</code> and <code>G</code> tested settings carried over from our PEOS-only study, Run <code>B2</code> measured run-to-run sampling variance, Runs <code>H</code> through <code>K</code> tuned one PDF at a time, and Runs <code>L*</code> through <code>N*</code> tested a stricter grounding prompt. Because falsely telling an OFW whether an agency is licensed carries real financial harm, a refusal when a record is missing scored zero on correctness yet counted as <em>supported</em>, while guessing a verdict counted as <em>unsupported</em>.</li>
+          <li><strong>CPU vs. GPU Benchmarking Under Controlled Timing (Part B):</strong> Three representative configurations—Small (<code>400/50</code>), Medium (<code>800/100</code>), and Large (<code>1200/150</code>), all with <code>TOP_K = 3</code>—were benchmarked after restarting the Colab runtime between hardware types. Each GPU session executed an unrecorded warm-up query before averaging three full repetitions, using <code>torch.cuda.synchronize()</code> so asynchronous GPU work finished before stopping the timer. Because 4-bit <code>BitsAndBytesConfig</code> requires CUDA, the CPU runtime fell back to 16-bit precision, forcing a 600-second per-question timeout guard after the initial attempt stalled past 20 minutes.</li>
+        </ol>
+        <dl class="terms">
+          <div><dt>Per-PDF SOURCE_SETTINGS</dt><dd>Allows <code>RecursiveCharacterTextSplitter</code> to assign different chunk sizes and overlaps to prose manuals versus structured agency directory entries before merging them into one Chroma collection.</dd></div>
+          <div><dt>Safety-first support metric</dt><dd>Distinguishes factual accuracy from hallucination risk: saying no matching record was found in the retrieved passages is treated as a safe, supported answer rather than an invented license verdict.</dd></div>
+          <div><dt>4-bit NF4 vs. disk offload</dt><dd>On a Tesla T4 GPU, 4-bit quantization compresses the 8-billion-parameter SEA-LION model comfortably inside 16 GB of VRAM; on CPU without 4-bit support, 16-bit weights exceed 13.6 GB of RAM and spill 24 of 36 model layers onto slow disk storage.</dd></div>
+          <div><dt>Chroma cache clear</dt><dd>Calling <code>SharedSystemClient.clear_system_cache()</code> before deleting and rebuilding the vector directory prevents Chroma from crashing with a missing tenants table error on consecutive runs in the same session.</dd></div>
+        </dl>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <p>Averaged across every GPU session sharing the same parameters (Table VIII), the <strong>Medium (<code>800/100</code>)</strong> setting achieved the highest overall correctness (<code>0.500</code>), the highest MRR (<code>0.531</code>—nearly 1.6 times higher than Small or Large), and the highest share of supported answers (<code>74.1%</code>). Meanwhile, running on a Tesla T4 GPU accelerated embedding by roughly 27 to 32 times and total response time by well over 53 times compared with the timed-out CPU runtime.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Mean retrieval and answer quality across all GPU runs per core chunking setting (Table VIII)</caption>
+            <thead>
+              <tr>
+                <th scope="col">Setting (Size / Overlap)</th>
+                <th scope="col">Runs Averaged</th>
+                <th scope="col" class="num">PEOS</th>
+                <th scope="col" class="num">DMW</th>
+                <th scope="col" class="num">MRR@3</th>
+                <th scope="col">Mean Answer Correctness (0–1)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar">
+                <th scope="row">Small · 400 / 50</th>
+                <td class="mono">A, A-B</td>
+                <td class="num">0.278</td>
+                <td class="num">0.417</td>
+                <td class="num">0.333</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.347"></span><span class="bar-value">0.347</span></div></td>
+              </tr>
+              <tr class="has-bar is-key">
+                <th scope="row">Medium · 800 / 100 <span class="row-tag">Recommended</span></th>
+                <td class="mono">B, B2, B-B</td>
+                <td class="num">0.611</td>
+                <td class="num">0.389</td>
+                <td class="num">0.531</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.500"></span><span class="bar-value">0.500</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Large · 1200 / 150</th>
+                <td class="mono">C, C-B</td>
+                <td class="num">0.694</td>
+                <td class="num">0.167</td>
+                <td class="num">0.329</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.431"></span><span class="bar-value">0.431</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Part A: All 15 parameter and prompt configurations (Tesla T4 GPU, 18 question versions)</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Runs marked * use the stricter grounding prompt. Retrieval took 0.012–0.014s across every run.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Run</th>
+                <th scope="col">PEOS · DMW · k</th>
+                <th scope="col" class="num">Chunks</th>
+                <th scope="col" class="num">Index (s)</th>
+                <th scope="col" class="num">Gen (s)</th>
+                <th scope="col" class="num">P@k</th>
+                <th scope="col" class="num">R@k</th>
+                <th scope="col" class="num">MRR@k</th>
+                <th scope="col" class="num">Correct</th>
+                <th scope="col" class="num">Supp.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="mono">A</td><td>400/50 · 400/50 · 3</td><td class="num">3,961</td><td class="num">17.50</td><td class="num">11.65</td><td class="num">0.185</td><td class="num">0.278</td><td class="num">0.306</td><td class="num">0.306</td><td class="num">66.7%</td></tr>
+              <tr class="is-key"><td class="mono">B</td><td>800/100 · 800/100 · 3 <span class="row-tag">Top Base</span></td><td class="num">2,079</td><td class="num">16.58</td><td class="num">11.24</td><td class="num">0.222</td><td class="num">0.528</td><td class="num"><strong>0.537</strong></td><td class="num"><strong>0.556</strong></td><td class="num"><strong>83.3%</strong></td></tr>
+              <tr><td class="mono">C</td><td>1200/150 · 1200/150 · 3</td><td class="num">1,385</td><td class="num">12.05</td><td class="num">11.70</td><td class="num">0.222</td><td class="num">0.472</td><td class="num">0.324</td><td class="num">0.417</td><td class="num">72.2%</td></tr>
+              <tr><td class="mono">D</td><td>800/200 · 800/200 · 3 (25% ovl.)</td><td class="num">2,387</td><td class="num">16.35</td><td class="num">11.34</td><td class="num">0.019</td><td class="num">0.028</td><td class="num">0.056</td><td class="num">0.028</td><td class="num">55.6%</td></tr>
+              <tr><td class="mono">E</td><td>800/100 · 800/100 · 5</td><td class="num">2,079</td><td class="num">29.00</td><td class="num">13.02</td><td class="num">0.167</td><td class="num">0.583</td><td class="num"><strong>0.537</strong></td><td class="num">0.528</td><td class="num">66.7%</td></tr>
+              <tr><td class="mono">F</td><td>1500/300 · 700/70 · 3</td><td class="num">2,208</td><td class="num">15.08</td><td class="num">10.90</td><td class="num">0.130</td><td class="num">0.278</td><td class="num">0.250</td><td class="num">0.278</td><td class="num">77.8%</td></tr>
+              <tr><td class="mono">G</td><td>2000/500 · 700/70 · 3</td><td class="num">2,196</td><td class="num">15.03</td><td class="num">11.58</td><td class="num">0.167</td><td class="num">0.500</td><td class="num">0.407</td><td class="num">0.500</td><td class="num"><strong>83.3%</strong></td></tr>
+              <tr><td class="mono">B2</td><td>800/100 · 800/100 · 3 (noise check)</td><td class="num">2,079</td><td class="num">21.75</td><td class="num">11.48</td><td class="num">0.222</td><td class="num">0.528</td><td class="num"><strong>0.537</strong></td><td class="num">0.528</td><td class="num">72.2%</td></tr>
+              <tr><td class="mono">H</td><td>800/100 · 700/70 · 3</td><td class="num">2,235</td><td class="num">14.60</td><td class="num">11.24</td><td class="num">0.204</td><td class="num">0.500</td><td class="num">0.463</td><td class="num">0.528</td><td class="num">77.8%</td></tr>
+              <tr><td class="mono">I</td><td>800/100 · 500/50 · 3</td><td class="num">3,082</td><td class="num">26.80</td><td class="num">12.40</td><td class="num">0.204</td><td class="num">0.417</td><td class="num">0.472</td><td class="num">0.500</td><td class="num">61.1%</td></tr>
+              <tr><td class="mono">J</td><td>1000/120 · 800/100 · 3</td><td class="num">2,067</td><td class="num">15.19</td><td class="num">11.91</td><td class="num">0.185</td><td class="num">0.444</td><td class="num">0.370</td><td class="num">0.417</td><td class="num">72.2%</td></tr>
+              <tr><td class="mono">K</td><td>600/75 · 800/100 · 3</td><td class="num">2,098</td><td class="num">15.65</td><td class="num">12.20</td><td class="num">0.241</td><td class="num">0.528</td><td class="num">0.435</td><td class="num">0.500</td><td class="num">72.2%</td></tr>
+              <tr class="is-key"><td class="mono">L*</td><td>800/100 · 800/100 · 3 <span class="row-tag">Deploy</span></td><td class="num">2,079</td><td class="num">68.20</td><td class="num">4.91</td><td class="num">0.222</td><td class="num">0.528</td><td class="num"><strong>0.537</strong></td><td class="num">0.500</td><td class="num">77.8%</td></tr>
+              <tr><td class="mono">M*</td><td>600/75 · 800/100 · 3</td><td class="num">2,098</td><td class="num">16.72</td><td class="num"><strong>4.76</strong></td><td class="num"><strong>0.278</strong></td><td class="num"><strong>0.611</strong></td><td class="num">0.481</td><td class="num"><strong>0.556</strong></td><td class="num">72.2%</td></tr>
+              <tr><td class="mono">N*</td><td>800/100 · 800/100 · 5</td><td class="num">2,079</td><td class="num">16.17</td><td class="num">6.03</td><td class="num">0.122</td><td class="num">0.472</td><td class="num">0.463</td><td class="num">0.417</td><td class="num">72.2%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Part B: CPU vs. Tesla T4 GPU execution times and speedup (Tables V &amp; VI)</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>GPU values average 3 measured repetitions after warm-up; CPU timed out at 600s on the first question in all 3 settings.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Config · Chunks</th>
+                <th scope="col">Device</th>
+                <th scope="col" class="num">Index (s)</th>
+                <th scope="col" class="num">Loading Speedup</th>
+                <th scope="col" class="num">Embed Speedup</th>
+                <th scope="col" class="num">Total Index Speedup</th>
+                <th scope="col" class="num">Retrieval (s)</th>
+                <th scope="col" class="num">Gen (s)</th>
+                <th scope="col" class="num">Resp (s)</th>
+                <th scope="col">Resp. Speedup</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">Small (400/50) · 3,961</td>
+                <td>CPU (16-bit)</td><td class="num">325.24</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">n/a</td><td class="num">&gt; 603</td><td class="num">&gt; 603</td><td>Timeout (0/18)</td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Small (400/50) · 3,961</td>
+                <td>T4 GPU (4-bit)</td><td class="num">18.49</td><td class="num">0.95×</td><td class="num">29.31×</td><td class="num">17.59×</td><td class="num">0.013</td><td class="num">11.01</td><td class="num">11.03</td><td><strong>&gt; 55× faster</strong></td>
+              </tr>
+              <tr>
+                <td class="mono">Medium (800/100) · 2,079</td>
+                <td>CPU (16-bit)</td><td class="num">232.90</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">n/a</td><td class="num">&gt; 606</td><td class="num">&gt; 606</td><td>Timeout (0/18)</td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Medium (800/100) · 2,079</td>
+                <td>T4 GPU (4-bit)</td><td class="num">15.36</td><td class="num">1.24×</td><td class="num">27.43×</td><td class="num">15.17×</td><td class="num">0.012</td><td class="num">11.46</td><td class="num">11.47</td><td><strong>&gt; 53× faster</strong> <span class="row-tag">Winner</span></td>
+              </tr>
+              <tr>
+                <td class="mono">Large (1200/150) · 1,385</td>
+                <td>CPU (16-bit)</td><td class="num">228.69</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">n/a</td><td class="num">&gt; 604</td><td class="num">&gt; 604</td><td>Timeout (0/18)</td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Large (1200/150) · 1,385</td>
+                <td>T4 GPU (4-bit)</td><td class="num">12.45</td><td class="num">1.40×</td><td class="num">31.75×</td><td class="num">18.37×</td><td class="num">0.013</td><td class="num">10.56</td><td class="num">10.58</td><td><strong>&gt; 57× faster</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Key structural trade-offs in AlalayOFW</h3>
+        <div class="compare">
+          <div>
+            <h4>PEOS prose vs. DMW agency directory</h4>
+            <p>Because <code>PyPDFLoader</code> extracts PEOS with word-per-line breaks, 400-character chunks hold only 20 to 30 real words and cut answers like the OEC's 2-month validity (<code>0.278</code> PEOS correctness). Expanding chunks to 1,200 characters lifted PEOS to <code>0.694</code>, but merged roughly three DMW records per vector and crashed DMW accuracy to <code>0.167</code>. Medium <code>800/100</code> keeps PEOS clauses intact without merging excessive records.</p>
+          </div>
+          <div>
+            <h4>Template prompt vs. Stricter safety prompt (<code>L*–N*</code>)</h4>
+            <p>When an agency record missed top-3 retrieval under the template prompt, Runs <code>B</code>, <code>B2</code>, and Part B Medium each produced 2 to 3 unsupported verdicts (often declaring an agency "hindi lisensyado" in Tagalog). Adding explicit rules in Runs <code>L*–N*</code> dropped unsupported DMW verdicts to <code>0–1</code> per run and cut generation time by 56% (<code>4.76–4.91s</code> vs. <code>11.24s</code>).</p>
+          </div>
+        </div>
+
+        <h3>Experiment charts &amp; qualitative answer traces</h3>
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/finals-03-screenshot-1.svg" aria-label="Open the Part A 15-configuration RAG parameter matrix chart full size">
+              <img data-field="screenshot-1" src="../images/finals-03-screenshot-1.svg" alt="Horizontal grouped bar chart of MRR@k, Answer Correctness, and Supported percentage across Runs A through N* on a Tesla T4 GPU." loading="lazy">
+            </a>
+            <figcaption><strong>Part A 15-configuration parameter matrix (Runs A–N*).</strong> Shows the sharp rise from <code>400/50</code> to <code>800/100</code>, the 25% overlap collapse in Run <code>D</code> (<code>0.028</code>), and the 56% latency drop from the stricter prompt in Runs <code>L*–M*</code>.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-03-screenshot-2.svg" aria-label="Open the Part B CPU vs GPU speedup and document/language breakdown chart full size">
+              <img data-field="screenshot-2" src="../images/finals-03-screenshot-2.svg" alt="Two-panel chart comparing CPU vs Tesla T4 GPU indexing and response times alongside PEOS vs DMW correctness and trilingual English/Taglish/Tagalog scores." loading="lazy">
+            </a>
+            <figcaption><strong>Part B CPU vs. T4 GPU speedup &amp; trilingual split.</strong> Left: embedding runs 27–32× faster on GPU while 16-bit CPU generation offloads 24/36 parts to disk and stalls past 600s. Right: opposite document pulls and the Tagalog retrieval gap.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-03-screenshot-3.svg" aria-label="Open the qualitative model answer audit table full size">
+              <img src="../images/finals-03-screenshot-3.svg" alt="Qualitative audit of verbatim SEA-LION v3-8B-IT answers showing hallucination when chunks are cut or missing versus safe refusal under the stricter prompt." loading="lazy">
+            </a>
+            <figcaption><strong>Verbatim qualitative trace audit.</strong> Contrasts Run <code>A</code>'s guessed "6 na buwan", Run <code>D</code>'s duplicate saturation, Run <code>I</code>'s half-record date hallucination, and Run <code>L*</code>'s safe refusal on <code>D2-TL</code>.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection-1">Working through this combined WW-F1 and WW-F2 experiment taught me what actually happens when a RAG system has to serve two completely different document formats inside the same knowledge base. In our earlier exercises, every source followed one style, whereas <strong>AlalayOFW</strong> combines the 18-page POEA Pre-Employment Orientation Seminar prose module with a 335-page registry of 3,792 structured DMW agency records. Seeing how <code>PyPDFLoader</code> extracts the PEOS module with a line break after almost every single word explained why nominal character counts can be misleading: a 400-character PEOS chunk held only twenty to thirty real words, which cut the Overseas Employment Certificate rule right before its two-month validity period and caused the model to guess "6 na buwan" in Tagalog. At the same time, shrinking DMW chunks to 500 characters in Run <code>I</code> helped retrieve <code>101 MOJO</code> for the first time, yet sliced other 450-character agency entries right down the middle before their expiration date, pushing the model to invent fake validity dates. Meanwhile, widening chunks to 1,200 characters in Run <code>C</code> helped multi-sentence PEOS answers but blended roughly three separate agencies into one embedding vector, causing licensing accuracy to drop sharply. Even more surprising was Run <code>D</code>, where raising overlap from 100 to 200 characters added 308 near-duplicate chunks that crowded the top three retrieval slots with repeats and dragged correctness down to near zero.</p>
+        <p data-field="reflection-2">Inspecting how Chroma and <code>all-MiniLM-L6-v2</code> behaved across Sections 4, 5, and 10 of the notebook gave me a much clearer mental model of shared vector indexing and multilingual retrieval. Keeping both PDFs inside one Chroma collection while tuning per-file chunk settings in <code>SOURCE_SETTINGS</code> revealed an unexpected coupling: even when we left the PEOS chunks untouched and only shrunk the DMW chunk size in Run <code>H</code>, a Taglish PEOS question suddenly dropped because the newly shaped DMW vectors shifted in similarity and outranked the true PEOS page inside the shared index. I also discovered two practical engineering quirks from debugging the notebook cells directly. First, rebuilding Chroma twice in a single Colab session crashed until we added <code>SharedSystemClient.clear_system_cache()</code> to close the cached database client before deleting the folder. Second, analyzing our 18 trilingual test versions exposed the limitations of an English-centric embedder: Taglish queries still retrieved the right passages whenever they kept English terms like "placement fee" or "licensed," whereas pure Tagalog questions regularly drifted toward DMW records on PEOS topics, and short unique agency names like <code>101 MOJO</code> proved hard for pure semantic similarity to match without exact keyword or fuzzy lookup.</p>
+        <p data-field="reflection-3">In Part B, benchmarking the exact same pipeline on Colab's CPU runtime versus a Tesla T4 GPU showed me the critical difference between hardware bottlenecks across the RAG stages. Separating Section 4 (loading and chunking PDFs) from Section 5 (encoding chunks into embeddings) proved that document parsing runs at essentially the same speed on both devices because reading PDFs and splitting strings are CPU-bound work. By contrast, turning chunks into dense vectors with <code>all-MiniLM-L6-v2</code> accelerated dramatically on the GPU—cutting indexing from several minutes down to around fifteen seconds—while answer generation exposed an outright memory wall. Because <code>BitsAndBytesConfig</code> 4-bit quantization requires CUDA, the CPU runtime was forced to load <code>Llama-SEA-LION-v3-8B-IT</code> in unquantized 16-bit precision, which requires more memory than the CPU runtime's 13.6 GB of RAM. As a result, Transformers split the model and offloaded 24 of its 36 parts onto disk, starving inference so severely that not a single CPU run finished even one question before hitting our 600-second timeout guard. On the Tesla T4 GPU, the 4-bit model fit cleanly in memory and answered each query in roughly eleven seconds—making the GPU essential for usability rather than just a convenience.</p>
+        <p data-field="reflection-4">Finally, combining the parameter sweep, prompt engineering in Section 10.4, and hardware telemetry showed me how every adjustment works together to build a trustworthy system for real Filipino jobseekers. Raising <code>TOP_K</code> from three to five in Runs <code>E</code> and <code>N*</code> increased raw recall on paper, yet actually lowered answer accuracy and slowed down generation because the extra slots brought in unrelated agency records that distracted the model. Keeping <code>800/100</code> with <code>TOP_K = 3</code> on the T4 GPU preserved consistent top-rank retrieval across repetitions, and layering our stricter system prompt on top—explicitly telling the model to inspect the <code>Currently Valid:</code> field, never combine fields from separate records, and state clearly when a record is missing instead of guessing "not licensed"—cut generation time more than in half while eliminating unsupported verdicts. Looking ahead to our capstone deployment of <strong>AlalayOFW</strong>, these findings give us a concrete roadmap: clean the word-per-line breaks in the PEOS PDF before chunking, separate structured agency verification into a hybrid keyword-plus-vector search index, swap in a multilingual embedding model so pure Tagalog questions retrieve accurately, and use greedy decoding during automated benchmarks so sampling noise never obscures real improvements.</p>
+      </section>
+
+      <section class="report-section" id="details">
+        <details class="report-details">
+          <summary>Technical details <span class="hint">Notebook adaptations, timing protocol, and limitations <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <h3>Notebook architecture &amp; template modifications (Sections 1–10)</h3>
+          <ul>
+            <li><strong>4-bit dependency &amp; GPU quantization (Sections 1 &amp; 6):</strong> Added <code>bitsandbytes</code> alongside LangChain, Chroma, and Sentence-Transformers so <code>AutoModelForCausalLM</code> loads <code>aisingapore/Llama-SEA-LION-v3-8B-IT</code> with NF4 4-bit quantization and <code>float16</code> compute whenever CUDA is detected, while automatically falling back to default precision on CPU runtimes.</li>
+            <li><strong>Per-document chunking &amp; Chroma cache reset (Sections 2, 4 &amp; 5):</strong> Introduced <code>SOURCE_SETTINGS</code> so PEOS and DMW PDFs can test independent <code>RecursiveCharacterTextSplitter</code> sizes while tagging every chunk with its source filename, page number, and chunk parameters; added <code>SharedSystemClient.clear_system_cache()</code> prior to rebuilding the Chroma directory so multi-run notebook sessions avoid database client lock errors.</li>
+            <li><strong>Isolated telemetry &amp; timeout safety (Section 10):</strong> Wrapped <code>retriever.invoke()</code> and <code>model.generate()</code> (paired with <code>torch.cuda.synchronize()</code> on GPU) in independent wall-clock timers while excluding one-time model loading; added a 600-second <code>signal</code> alarm timeout for CPU runs and an unrecorded warm-up query before the three timed GPU repetitions in Part B.</li>
+          </ul>
+          <h3>Experimental limitations &amp; next engineering steps</h3>
+          <ul>
+            <li><strong>Sampling variance &amp; test-set granularity:</strong> Because generation uses sampling (<code>temperature = 0.2</code>) and 6 questions across 3 languages (18 versions), Run <code>B</code> and unchanged repeat <code>B2</code> differed by one half-graded answer even with identical retrieved chunks, and Part B medium shifted between <code>0.556</code> and <code>0.417</code> across sessions—supporting multi-run averaging in Table VIII and recommending greedy decoding for future benchmarks.</li>
+            <li><strong>Precision asymmetry between CPU and GPU:</strong> Since 4-bit quantization is GPU-only on Colab, the CPU benchmark measured unquantized 16-bit disk-offloaded execution rather than equal-precision arithmetic; deploying on a CPU-only server would require switching to a much smaller CPU-quantized model.</li>
+            <li><strong>Next upgrades for AlalayOFW:</strong> Add exact/fuzzy agency name lookup ahead of semantic vector search (to fix <code>101 MOJO</code>-style misses), normalize PEOS line breaks prior to splitting, separate the seminar manual and agency directory into distinct indexes, and adopt a multilingual sentence embedder for Tagalog queries.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+            <span class="file-name"><strong>WW-F1 &amp; WW-F2 IEEE technical report</strong><span>PDF · DaBig3_RAG_Experiment_Report (1).pdf (5 pages)</span></span>
+            <a class="file-action" href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Report%20%281%29.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></span>
+            <span class="file-name"><strong>RAG optimization &amp; GPU benchmark notebook</strong><span>Jupyter Notebook · DaBig3_RAG_Experiment_Notebook.ipynb (Part A &amp; Part B)</span></span>
+            <a class="file-action" href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Notebook.ipynb" download>Download .ipynb <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Complete experiment tracker &amp; logs</strong><span>XLSX · DaBig3_RAG_Experiment_Results.xlsx (6 sheets, 15 Part A + Part B runs)</span></span>
+            <a class="file-action" href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Results.xlsx" download>Download .xlsx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span>
+            <span class="file-name"><strong>Knowledge base PDFs archive</strong><span>ZIP · DaBig3_RAG_Experiment_Data 1.zip (PEOS module + DMW 3,792-record PDF)</span></span>
+            <a class="file-action" href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Data%201.zip" download>Download .zip <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Report%20%281%29.pdf" type="application/pdf" aria-label="WW-F1 and WW-F2 IEEE technical report PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Report%20%281%29.pdf">Open the WW-F1 &amp; WW-F2 IEEE report PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="finals-02.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">PT-F2: Experimenting to Determine the Best Chunk Size and Overlap</span>
+        </a>
+        <a class="next" href="finals-04.html">
+          <span class="pager-label">Next report <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <span class="pager-title">P-F1: Individual ePortfolio Completion &amp; AlalayOFW Project Reflection</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
+    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Report%20%281%29.pdf" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Open the PDF report</a>
+        <a href="../portfolio_activities/ww_f1_f2_final/DaBig3_RAG_Experiment_Report%20%281%29.pdf" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download the PDF</a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ITC C508 · Deep Learning &amp; Neural Networks for NLP</span>
+    <span><a href="../index.html">Back to home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+<script src="../js/content-loader.js" defer></script>
+</body>
+</html>

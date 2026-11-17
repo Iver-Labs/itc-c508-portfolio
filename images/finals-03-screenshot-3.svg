@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-label="WW-F1 and WW-F2 Qualitative Trace Audit Across Prompt Strictness, Overlap Collapse, and Record Splits">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .excel-hdr { fill: #1f4e78; }
+      .row-hit { fill: #132429; }
+      .row-miss { fill: #25191c; }
+      .row-safe { fill: #17231e; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .kicker { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; }
+      .th { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .td { fill: #e5e9f0; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .mono { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .ok { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="540" class="bg"/>
+
+  <text x="28" y="32" class="kicker">QUALITATIVE OUTPUT AUDIT · DABIG3_RAG_EXPERIMENT_RESULTS.XLSX (A - FULL QUESTION RESULTS)</text>
+  <text x="28" y="56" class="title">How Chunking, 25% Overlap &amp; the Stricter Prompt Changed Verbatim SEA-LION v3-8B-IT Answers</text>
+
+  <rect x="24" y="72" width="1152" height="444" rx="8" class="panel"/>
+  <rect x="24" y="72" width="1152" height="36" rx="8" class="excel-hdr"/>
+
+  <text x="38" y="94" class="th">Run · Config</text>
+  <text x="175" y="94" class="th">Query ID</text>
+  <text x="265" y="94" class="th">Retrieved Top-3</text>
+  <text x="415" y="94" class="th">Verbatim Model Answer Excerpt &amp; Diagnosis</text>
+  <text x="1030" y="94" class="th">Corr · Supp</text>
+
+  <!-- Row 1: Run A P1-TL -->
+  <rect x="25" y="108" width="1150" height="62" class="row-miss"/>
+  <text x="38" y="132" class="warn">Run A (400/50)</text>
+  <text x="175" y="132" class="td">P1-TL (OEC)</text>
+  <text x="265" y="132" class="td">PEOS p.6, p.4;</text>
+  <text x="265" y="148" class="td">DMW p.227</text>
+  <text x="415" y="130" class="td">"Ang OEC ay may validity period na <tspan class="warn">6 na buwan</tspan> mula sa petsa ng pag-isyu..."</text>
+  <text x="415" y="148" class="td">PyPDFLoader breaks left ~20–30 words in a 400-char chunk; clipped "2-month validity" → guessed 6 mos.</text>
+  <text x="1030" y="136" class="warn">0.0 · No</text>
+
+  <!-- Row 2: Run B P1-TL -->
+  <rect x="25" y="170" width="1150" height="60" class="row-hit"/>
+  <text x="38" y="194" class="mono">Run B (800/100)</text>
+  <text x="175" y="194" class="td">P1-TL (OEC)</text>
+  <text x="265" y="194" class="td">PEOS p.6, p.4;</text>
+  <text x="265" y="210" class="td">DMW p.204</text>
+  <text x="415" y="192" class="td">"Ang OEC ay may <tspan class="mono">2-buwang</tspan> pagkakataon mula sa petsa ng paglabas nito. Ayon sa PEOS (Source 1, pahina 6)..."</text>
+  <text x="415" y="210" class="td">800-char chunk kept OEC context + "2-month validity" intact; R=1.0 and RR=1.0 across EN, TL, and TGL.</text>
+  <text x="1030" y="198" class="ok">1.0 · Yes</text>
+
+  <!-- Row 3: Run D (25% overlap collapse) -->
+  <rect x="25" y="230" width="1150" height="62" class="row-miss"/>
+  <text x="38" y="254" class="warn">Run D (800/200)</text>
+  <text x="175" y="254" class="td">P2-EN (Fee)</text>
+  <text x="265" y="254" class="warn">DMW p.8, p.101,</text>
+  <text x="265" y="270" class="warn">DMW p.5</text>
+  <text x="415" y="252" class="td">"The available information does not contain specific details regarding the maximum placement fee..."</text>
+  <text x="415" y="270" class="td">25% overlap (+308 duplicate chunks) flooded Chroma top-3 with DMW records; overall correctness collapsed to <tspan class="warn">0.028</tspan>.</text>
+  <text x="1030" y="258" class="warn">0.0 · Yes (0 R)</text>
+
+  <!-- Row 4: Run I DMW 500/50 split -->
+  <rect x="25" y="292" width="1150" height="62" class="row-miss"/>
+  <text x="38" y="316" class="warn">Run I (DMW 500)</text>
+  <text x="175" y="316" class="td">D2-EN (Ephes.)</text>
+  <text x="265" y="316" class="td">DMW p.1 (cut),</text>
+  <text x="265" y="332" class="td">p.175, p.268</text>
+  <text x="415" y="314" class="td">Found "101 MOJO" on D1-EN (<tspan class="mono">Corr 1.0</tspan>), <tspan class="warn">BUT</tspan> 500-char chunk split Record 2 mid-record before expiry date →</text>
+  <text x="415" y="332" class="td">Model hallucinated <tspan class="warn">"valid as of 2023"</tspan> / <tspan class="warn">"valid to 2026-03-17"</tspan> (6 unsupported DMW claims in Run I).</text>
+  <text x="1030" y="320" class="warn">0.0 · No</text>
+
+  <!-- Row 5: Run B vs Run L* Safety Contrast -->
+  <rect x="25" y="354" width="1150" height="80" class="row-safe"/>
+  <text x="38" y="378" class="warn">Run B (Template)</text>
+  <text x="38" y="398" class="mono">vs. Run L* (Strict)</text>
+  <text x="175" y="388" class="td">D2-TL</text>
+  <text x="175" y="404" class="td">(No record hit)</text>
+  <text x="265" y="388" class="td">DMW p.323,</text>
+  <text x="265" y="404" class="td">p.134, p.177</text>
+  <text x="415" y="376" class="td"><tspan class="warn">Template (11.2s):</tspan> "Hindi, hindi lehitimo at hindi may lisensya ang 1010 EPHESIANS..." (unsafe hallucination!)</text>
+  <text x="415" y="398" class="td"><tspan class="mono">Strict Prompt (4.9s):</tspan> "Hindi natagpuan ang rekord... Hindi ito napatunayan kung lehitimo at may lisensya."</text>
+  <text x="415" y="418" class="td">On identical missing retrieval, Rules 4–6 eliminated all unsupported licensing verdicts (0 in L* vs 2 in B).</text>
+  <text x="1030" y="378" class="warn">0.0 · No</text>
+  <text x="1030" y="398" class="ok">0.0 · Yes ✓</text>
+
+  <!-- Row 6: Run C 1200/150 -->
+  <rect x="25" y="434" width="1150" height="74" class="row-miss"/>
+  <text x="38" y="460" class="warn">Run C (1200/150)</text>
+  <text x="175" y="460" class="td">P3-EN / P3-TL /</text>
+  <text x="175" y="476" class="td">P3-TGL</text>
+  <text x="265" y="460" class="td">PEOS p.17,</text>
+  <text x="265" y="476" class="td">p.17, p.14</text>
+  <text x="415" y="458" class="td">1,200-char PEOS chunk bundled both repatriation clauses (misconduct + illness) + merged ~3 DMW agencies:</text>
+  <text x="415" y="476" class="td">All 3 P3 versions in Run C misread who pays ("employer pays" for misconduct), while DMW fell to <tspan class="warn">0.167</tspan>.</text>
+  <text x="1030" y="466" class="warn">0.5 · No</text>
+</svg>

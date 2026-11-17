@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-label="WW-F2 Part B CPU vs GPU Benchmark, Indexing Breakdown, and PEOS vs DMW Trade-Off">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .grid { stroke: #232934; stroke-width: 1; stroke-dasharray: 4 4; }
+      .axis { stroke: #3b4352; stroke-width: 1.2; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 16px; font-weight: 700; }
+      .subtitle { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.05em; }
+      .label { fill: #c3c9d2; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .label-b { fill: #ffffff; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; font-weight: 700; }
+      .mono { fill: #c3c9d2; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; }
+      .hi { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; }
+      .warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .bar-cpu { fill: #ffb4a8; }
+      .bar-gpu { fill: #5ce1e6; }
+      .bar-peos { fill: #3b82f6; }
+      .bar-dmw { fill: #10b981; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" class="bg"/>
+
+  <text x="28" y="32" class="subtitle">WW-F2 PART B · HARDWARE BENCHMARKING (CPU 13.6 GB RAM VS. TESLA T4 16 GB) &amp; DOCUMENT / LANGUAGE SPLITS</text>
+  <text x="28" y="56" class="title" style="font-size: 19px;">CPU vs. GPU Speedup Analysis and Multi-Document / Trilingual Quality Trade-Offs</text>
+
+  <!-- LEFT PANEL: CPU vs GPU -->
+  <rect x="24" y="76" width="570" height="520" rx="10" class="panel"/>
+  <text x="44" y="106" class="title">A. CPU vs. Tesla T4 GPU Execution Speedup (Tables V &amp; VI)</text>
+  <text x="44" y="124" class="subtitle">EMBEDDING: 27.4–31.8× FASTER · GENERATION &amp; RESPONSE: &gt;53–57× FASTER (600s TIMEOUT)</text>
+
+  <!-- Indexing Comparison (scale: max 340s = 360px => 1.05px per sec) -->
+  <text x="44" y="152" class="label-b">1. Indexing Time Breakdown (CPU-Bound PDF Loading vs. Model Embedding)</text>
+
+  <text x="155" y="182" text-anchor="end" class="mono">Small (400/50)</text>
+  <rect x="165" y="168" width="341.5" height="11" rx="2" class="bar-cpu"/>
+  <text x="513" y="177" class="warn">325.2s (CPU)</text>
+  <rect x="165" y="182" width="19.4" height="11" rx="2" class="bar-gpu"/>
+  <text x="191" y="191" class="hi">18.5s (GPU) · 17.6× (Embed 29.3×)</text>
+
+  <text x="155" y="222" text-anchor="end" class="mono">Medium (800/100)</text>
+  <rect x="165" y="208" width="244.5" height="11" rx="2" class="bar-cpu"/>
+  <text x="416" y="217" class="warn">232.9s (CPU)</text>
+  <rect x="165" y="222" width="16.1" height="11" rx="2" class="bar-gpu"/>
+  <text x="188" y="231" class="hi">15.4s (GPU) · 15.2× (Embed 27.4×)</text>
+
+  <text x="155" y="262" text-anchor="end" class="mono">Large (1200/150)</text>
+  <rect x="165" y="248" width="240.1" height="11" rx="2" class="bar-cpu"/>
+  <text x="412" y="257" class="warn">228.7s (CPU)</text>
+  <rect x="165" y="262" width="13.1" height="11" rx="2" class="bar-gpu"/>
+  <text x="185" y="271" class="hi">12.5s (GPU) · 18.4× (Embed 31.8×)</text>
+
+  <text x="44" y="294" class="label">• PDF loading/chunking stayed CPU-bound on both runtimes (~7.1–8.9s, 0.95–1.40×).</text>
+
+  <!-- Response Time Comparison (scale: max 620s = 360px => 0.58px per sec) -->
+  <text x="44" y="328" class="label-b">2. Average Response Time per Question (Chroma Retrieval ~0.012s + SEA-LION 8B Gen.)</text>
+
+  <text x="155" y="358" text-anchor="end" class="mono">Small (400/50)</text>
+  <rect x="165" y="344" width="350" height="11" rx="2" class="bar-cpu"/>
+  <text x="521" y="353" class="warn">&gt;603s (Timeout)</text>
+  <rect x="165" y="358" width="6.4" height="11" rx="2" class="bar-gpu"/>
+  <text x="178" y="367" class="hi">11.03s (GPU) · &gt;55× faster</text>
+
+  <text x="155" y="398" text-anchor="end" class="mono">Medium (800/100)</text>
+  <rect x="165" y="384" width="351.5" height="11" rx="2" class="bar-cpu"/>
+  <text x="522" y="393" class="warn">&gt;606s (Timeout)</text>
+  <rect x="165" y="398" width="6.7" height="11" rx="2" class="bar-gpu"/>
+  <text x="178" y="407" class="hi">11.47s (GPU) · &gt;53× faster (4.9s strict)</text>
+
+  <text x="155" y="438" text-anchor="end" class="mono">Large (1200/150)</text>
+  <rect x="165" y="424" width="350.3" height="11" rx="2" class="bar-cpu"/>
+  <text x="521" y="433" class="warn">&gt;604s (Timeout)</text>
+  <rect x="165" y="438" width="6.1" height="11" rx="2" class="bar-gpu"/>
+  <text x="178" y="447" class="hi">10.58s (GPU) · &gt;57× faster</text>
+
+  <!-- Memory Diagnosis Box -->
+  <rect x="44" y="468" width="530" height="110" rx="8" fill="#12151b" stroke="#28303d"/>
+  <text x="60" y="490" class="subtitle">WHY CPU TIMED OUT: PRECISION &amp; MEMORY OFFLOADING BOTTLENECK</text>
+  <text x="60" y="512" class="label">• <tspan class="warn">CPU Runtime (13.6 GB RAM):</tspan> BitsAndBytes 4-bit loading requires CUDA, so CPU loads</text>
+  <text x="70" y="530" class="label">SEA-LION 8B in 16-bit (~16 GB) and offloads <tspan class="warn">24 of 36 model parts to disk</tspan> (0/18 finished).</text>
+  <text x="60" y="552" class="label">• <tspan class="hi">Tesla T4 GPU (16 GB VRAM):</tspan> Loads 4-bit NF4 cleanly in memory (~11s/query; 3.5 min/run).</text>
+
+  <!-- RIGHT PANEL: Document Pull-Apart & Language Breakdown -->
+  <rect x="614" y="76" width="562" height="520" rx="10" class="panel"/>
+  <text x="634" y="106" class="title">B. Opposite Document Pulls &amp; Trilingual Quality Gap</text>
+  <text x="634" y="124" class="subtitle">MEAN ACROSS ALL GPU RUNS (TABLE VIII) + LANGUAGE CORRECTNESS BREAKDOWN</text>
+
+  <!-- Top Right: PEOS vs DMW Pull-Apart (scale: 1.0 = 300px) -->
+  <text x="634" y="152" class="label-b">1. PEOS Prose vs. DMW Agency Records by Chunk Size (Mean Correctness)</text>
+
+  <rect x="634" y="164" width="12" height="10" rx="2" class="bar-peos"/>
+  <text x="652" y="173" class="label">PEOS Module (18p prose, word-per-line breaks)</text>
+  <rect x="920" y="164" width="12" height="10" rx="2" class="bar-dmw"/>
+  <text x="938" y="173" class="label">DMW Records (335p, ~450c/record)</text>
+
+  <text x="748" y="202" text-anchor="end" class="mono">Small (400/50)</text>
+  <rect x="758" y="188" width="83.4" height="10" rx="2" class="bar-peos"/>
+  <text x="848" y="197" class="mono">0.278 PEOS</text>
+  <rect x="758" y="201" width="125.1" height="10" rx="2" class="bar-dmw"/>
+  <text x="890" y="210" class="mono">0.417 DMW (Mean 0.347 · Supp 63.9%)</text>
+
+  <rect x="630" y="220" width="530" height="40" rx="6" fill="#13252c" stroke="#5ce1e6"/>
+  <text x="748" y="242" text-anchor="end" class="hi">★ Medium (800/100)</text>
+  <rect x="758" y="226" width="183.3" height="10" rx="2" class="bar-peos"/>
+  <text x="948" y="235" class="hi">0.611 PEOS</text>
+  <rect x="758" y="239" width="116.7" height="10" rx="2" class="bar-dmw"/>
+  <text x="882" y="248" class="hi">0.389 DMW (Mean 0.500 · MRR 0.531 · Supp 74.1%)</text>
+
+  <text x="748" y="280" text-anchor="end" class="mono">Large (1200/150)</text>
+  <rect x="758" y="266" width="208.2" height="10" rx="2" class="bar-peos"/>
+  <text x="973" y="275" class="mono">0.694 PEOS</text>
+  <rect x="758" y="279" width="50.1" height="10" rx="2" class="bar-dmw"/>
+  <text x="815" y="288" class="warn">0.167 DMW (3 records mixed/chunk)</text>
+
+  <!-- Bottom Right: Trilingual Language Breakdown -->
+  <text x="634" y="330" class="label-b">2. Trilingual Correctness Breakdown (English vs. Taglish vs. Tagalog)</text>
+
+  <text x="748" y="360" text-anchor="end" class="mono">Run B (800/100)</text>
+  <rect x="758" y="348" width="175" height="9" rx="2" fill="#5ce1e6"/><text x="940" y="356" class="mono">EN 0.583</text>
+  <rect x="758" y="359" width="225" height="9" rx="2" fill="#10b981"/><text x="990" y="367" class="hi">TGL 0.750</text>
+  <rect x="758" y="370" width="100" height="9" rx="2" fill="#ffb4a8"/><text x="865" y="378" class="warn">TL 0.333</text>
+
+  <text x="748" y="408" text-anchor="end" class="mono">Run L* (Strict)</text>
+  <rect x="758" y="396" width="175" height="9" rx="2" fill="#5ce1e6"/><text x="940" y="404" class="mono">EN 0.583</text>
+  <rect x="758" y="407" width="175" height="9" rx="2" fill="#10b981"/><text x="940" y="415" class="mono">TGL 0.583</text>
+  <rect x="758" y="418" width="100" height="9" rx="2" fill="#ffb4a8"/><text x="865" y="426" class="warn">TL 0.333 (0 bad DMW claims)</text>
+
+  <text x="748" y="456" text-anchor="end" class="mono">Run M* (600/800)</text>
+  <rect x="758" y="444" width="250" height="9" rx="2" fill="#5ce1e6"/><text x="1015" y="452" class="hi">EN 0.833</text>
+  <rect x="758" y="455" width="150" height="9" rx="2" fill="#10b981"/><text x="915" y="463" class="mono">TGL 0.500</text>
+  <rect x="758" y="466" width="100" height="9" rx="2" fill="#ffb4a8"/><text x="865" y="474" class="warn">TL 0.333</text>
+
+  <!-- Bottleneck summary -->
+  <rect x="634" y="492" width="522" height="86" rx="8" fill="#12151b" stroke="#28303d"/>
+  <text x="650" y="514" class="subtitle">REMAINING WEAKNESSES IN THE RECOMMENDED PIPELINE</text>
+  <text x="650" y="536" class="label">1. <tspan class="warn">Pure Tagalog queries (max 0.333):</tspan> English-centric MiniLM pulled DMW chunks for P2/P3-TL.</text>
+  <text x="650" y="556" class="label">2. <tspan class="warn">Exact agency lookups:</tspan> "101 MOJO" retrieved in only 2 of 18 runs → needs hybrid keyword search.</text>
+</svg>

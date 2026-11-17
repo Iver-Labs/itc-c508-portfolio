@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P-F1: Final Project Learning Reflection &amp; Deliverables (AlalayOFW) — Report — ITC C508 Portfolio</title>
+<meta name="description" content="P-F1 Individual ePortfolio Completion and Final Project Learning Reflection for AlalayOFW (Group DaBig3): detailing my contributions as Website Programmer, Architecture Designer, and Deployment Lead (github.com/Iver-Labs/dmw-demo), 7/7 configuration parity tests, and 33/33 (100%) live Cloud Run accuracy across English, Tagalog, and Taglish.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..800;1,100..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-activity-id="finals-04">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">ITC <span>C508</span> &middot; PORTFOLIO</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
+      <span></span>
+    </button>
+    <nav class="primary" id="primary-nav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../prelims.html">Prelims</a>
+      <a href="../midterms.html">Midterms</a>
+      <a href="../finals.html">Finals</a>
+      <a href="../report.html" aria-current="page">Reports</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero report-hero">
+    <span class="kicker">Finals &middot; P-F1 Capstone Project Reflection &middot; Week 18</span>
+    <h1>P-F1: Individual ePortfolio Completion &amp; AlalayOFW Final Project Reflection</h1>
+    <p class="report-takeaway">
+      As Website Programmer, Architecture Designer, and Deployment Lead for Group DaBig3, I architected and deployed the AlalayOFW trilingual RAG web platform on Google Cloud Run (<a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener">github.com/Iver-Labs/dmw-demo</a>), achieving 7/7 automated configuration parity with the Python research notebook and 33/33 (100%) live accuracy across English, Tagalog, and Taglish OFW queries.
+    </p>
+    <dl class="report-facts">
+      <div>
+        <dt>My Role (MRM D6)</dt>
+        <dd>Website Programmer, Architecture Designer &amp; Deployment Lead</dd>
+      </div>
+      <div>
+        <dt>Stack &amp; Cloud</dt>
+        <dd>Next.js 16 &middot; ONNX e5-small &middot; Hybrid RRF &middot; SEA-LION 70B &middot; Cloud Run</dd>
+      </div>
+      <div>
+        <dt>GitHub &amp; Live Demo</dt>
+        <dd><a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener">Iver-Labs/dmw-demo</a> &middot; <a href="https://dmw-demo-vsicb5dr2a-as.a.run.app/" target="_blank" rel="noopener">Live Cloud Run App</a></dd>
+      </div>
+      <div>
+        <dt>Deliverables</dt>
+        <dd>D1 IEEE Paper &middot; D2–D5 Workbooks/Repo &middot; D6 MRM &middot; D7 Integrity PDF</dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="report-layout">
+    <div class="report-body">
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">For P-F1 (Individual ePortfolio Completion and Final Project Learning Reflection), Group DaBig3 completed the end-to-end development, empirical evaluation, and public cloud deployment of AlalayOFW—a trilingual Retrieval-Augmented Generation (RAG) assistant that helps Overseas Filipino Workers (OFWs) verify recruitment agency licensing from the 3,792-record Department of Migrant Workers (DMW) directory and answer pre-departure policy questions from the Pre-Employment Orientation Seminar (PEOS) module across English, Tagalog, and Taglish. Across our seven final deliverables (D1–D7), systematic pipeline engineering raised end-to-end correctness from 54.5% in the raw baseline (R0) to 97.0% (32/33) in the final notebook configuration (R6 / FINAL). As Website Programmer, Architecture Designer, and Deployment Lead in our Member Responsibility Matrix (D6), I designed the single-container Google Cloud Run architecture, built the Next.js 16 DMW Info Demo web application and GitHub repository (https://github.com/Iver-Labs/dmw-demo), implemented a 7-test automated configuration parity suite, executed the 33-question Playwright live evaluation (achieving 33/33 or 100% live correctness at 2.44 s mean browser latency), and authored the AlalayOFW Deployment, Integration and Parity Report alongside IEEE Section V.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Live website accuracy</span>
+            <span class="metric-value">33 / 33</span>
+            <span class="metric-note">100% correct on live Cloud Run (vs 32/33 in notebook FINAL)</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Config parity tests</span>
+            <span class="metric-value">7 / 7</span>
+            <span class="metric-note">100% pass rate in tests/notebook-parity.test.ts CI suite</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Top-3 &amp; fallback parity</span>
+            <span class="metric-value">85% / 97%</span>
+            <span class="metric-note">28/33 identical top-3 chunks &middot; 32/33 same fallback decision</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">End-to-end latency</span>
+            <span class="metric-value">2.44 s</span>
+            <span class="metric-note">Browser round-trip (1.55–3.62 s range) on asia-southeast1</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>Our capstone workflow connected controlled notebook experimentation (Stage 1 baseline diagnosis and Stage 2 component-by-component ablation) with a zero-drift production handoff to a containerized web application:</p>
+        <ol>
+          <li><strong>Stage 1 Baseline Diagnosis (18 Question Versions):</strong> Evaluated a standard vector-only pipeline (<code>all-MiniLM-L6-v2</code> + 4-bit quantized 8B SEA-LION) across chunk sizes and top-k depths, discovering that uniform character splitting blended adjacent DMW recruitment agency records into noisy multi-agency vectors and failed on Tagalog queries (correctness capped at <code>0.556</code>, Tagalog <code>&le; 0.333</code>).</li>
+          <li><strong>Stage 2 Controlled Component Ablation (<code>R0</code> &rarr; <code>R6</code> / <code>FINAL</code> on 33 Versions):</strong> Expanded the benchmark to 33 trilingual question versions (11 base questions across English, Tagalog, and Taglish: 15 PEOS, 12 DMW agency, and 6 unanswerable trap queries) and tested one architectural change per run using <code>Llama-SEA-LION-v3-70B-IT</code>: raw baseline retrieval (<code>R0</code>), PEOS text cleaning plus 1-record-per-chunk DMW indexing totaling <code>3,849</code> chunks (<code>R1</code>), hybrid dense vector + BM25 retrieval fused via Reciprocal Rank Fusion (<code>R2</code>), multilingual embedding upgrade to <code>intfloat/multilingual-e5-small</code> vs. <code>EmbeddingGemma</code> (<code>R3a</code> / <code>R3b</code>), and PEOS chunk/overlap tuning across <code>500/50</code>, <code>800/100</code>, <code>1200/150</code>, and <code>800/200</code> (<code>R4</code>–<code>R6</code>).</li>
+          <li><strong>Zero-Drift Notebook-to-Website Handoff (<code>D3</code> Codebase):</strong> Exported the exact <code>3,849</code> indexed chunks, the 11-rule grounding prompt (<code>system_prompt.txt</code>), the <code>R6</code> hyperparameter manifest, and the 33-question notebook evaluation outputs into <code>content/handoff/</code> inside <a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener"><code>github.com/Iver-Labs/dmw-demo</code></a> so the web application never re-chunks or alters the verified knowledge base.</li>
+          <li><strong>Single-Container Cloud Run Architecture &amp; Automated Parity Verification:</strong> Packaged the Next.js 16 application, prebuilt 3,849-chunk index, and CPU ONNX runtime for <code>multilingual-e5-small</code> into a single container deployed on Google Cloud Run (<code>asia-southeast1</code>), guarded by 7 automated configuration parity unit tests and audited via a 33-question Playwright live browser evaluation.</li>
+        </ol>
+
+        <dl class="terms">
+          <div>
+            <dt>Document-Specific Hybrid Indexing (3,849 Chunks)</dt>
+            <dd>Separating narrative prose from structured directory records: the PEOS module is cleaned and split into 57 overlapping prose chunks (800 characters, 200 overlap), whereas each of the 3,792 DMW licensed recruitment agencies is preserved intact as a single self-contained record chunk.</dd>
+          </div>
+          <div>
+            <dt>Reciprocal Rank Fusion (RRF, k = 60)</dt>
+            <dd>A rank-merging method that combines the top 20 semantic candidates from <code>multilingual-e5-small</code> cosine similarity with the top 20 lexical candidates from BM25 (<code>k1 = 1.5, b = 0.75</code>), ensuring exact agency names and Tagalog policy phrasings both surface in the final top 3 chunks.</dd>
+          </div>
+          <div>
+            <dt>Two-Level Parity Verification</dt>
+            <dd>A deployment validation discipline verifying both <em>configuration parity</em> (automated unit tests asserting identical prompt rules, chunk counts, tokenizer splits, and BM25 scores) and <em>behavioural parity</em> (live browser testing across all 33 evaluation questions against the notebook's <code>FINAL</code> run).</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <p>Table 1 tracks the Stage 2 experimental progression across all 33 trilingual question versions from the raw 70B baseline (<code>R0</code>) to the selected notebook configuration (<code>R6 / FINAL</code>) and the live deployed website on Google Cloud Run.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Table 1. AlalayOFW Stage 2 redesign progression and live website evaluation (33 trilingual question versions).</caption>
+            <thead>
+              <tr>
+                <th>Run ID</th>
+                <th>Architectural Change Isolated</th>
+                <th class="num">Chunks</th>
+                <th class="num">Recall@3</th>
+                <th class="num">MRR@3</th>
+                <th class="num">Tagalog Corr.</th>
+                <th>Overall Correctness (33 Qs)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar">
+                <td class="mono">Baseline</td>
+                <td>Best Stage 1 (8B model, MiniLM, 800/100, vector-only, 18 Qs)</td>
+                <td class="num">2,080</td>
+                <td class="num">0.528</td>
+                <td class="num">0.537</td>
+                <td class="num">0.333</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.556"></span><span class="bar-value">55.6% (10/18)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R0</td>
+                <td>Upgrade generator only to <code>Llama-SEA-LION-v3-70B-IT</code> (raw chunks)</td>
+                <td class="num">2,080</td>
+                <td class="num">0.463</td>
+                <td class="num">0.475</td>
+                <td class="num">0.409</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.545"></span><span class="bar-value">54.5% (18/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R1</td>
+                <td>Clean PEOS text + 1-record-per-chunk DMW agency directory</td>
+                <td class="num">3,849</td>
+                <td class="num">0.593</td>
+                <td class="num">0.543</td>
+                <td class="num">0.636</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.697"></span><span class="bar-value">69.7% (23/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R2</td>
+                <td>Add Hybrid Retrieval: Dense Vector + BM25 fused via RRF (<code>k=60</code>)</td>
+                <td class="num">3,849</td>
+                <td class="num">0.889</td>
+                <td class="num">0.772</td>
+                <td class="num">0.727</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.909"></span><span class="bar-value">90.9% (30/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R3a</td>
+                <td>Upgrade embeddings to <code>intfloat/multilingual-e5-small</code> (800/100)</td>
+                <td class="num">3,849</td>
+                <td class="num">0.944</td>
+                <td class="num">0.920</td>
+                <td class="num">0.909</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.970"></span><span class="bar-value">97.0% (32/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R4</td>
+                <td>PEOS chunk tuning: smaller 500-char chunks, 50-char overlap (93 PEOS)</td>
+                <td class="num">3,885</td>
+                <td class="num">0.944</td>
+                <td class="num">0.914</td>
+                <td class="num">0.909</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.970"></span><span class="bar-value">97.0% (32/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R5</td>
+                <td>PEOS chunk tuning: larger 1200-char chunks, 150-char overlap (40 PEOS)</td>
+                <td class="num">3,832</td>
+                <td class="num">0.852</td>
+                <td class="num">0.809</td>
+                <td class="num">0.727</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.879"></span><span class="bar-value">87.9% (29/33)</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <td class="mono">R6 / FINAL</td>
+                <td>Selected Notebook Config: PEOS 800/200 (57 PEOS + 3,792 DMW)</td>
+                <td class="num">3,849</td>
+                <td class="num">0.944</td>
+                <td class="num">0.901</td>
+                <td class="num">0.909</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.970"></span><span class="bar-value">97.0% (32/33)</span></div></td>
+              </tr>
+              <tr class="has-bar is-key">
+                <td class="mono">LIVE SITE <span class="row-tag">Deployed</span></td>
+                <td>Google Cloud Run Website (ONNX CPU + RRF + SEA-LION 70B)</td>
+                <td class="num">3,849</td>
+                <td class="num">0.981</td>
+                <td class="num">0.957</td>
+                <td class="num">1.000</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 1.000"></span><span class="bar-value">100.0% (33/33)</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Table 2 summarizes the live website's evaluation across language and document groups, alongside its direct behavioural parity comparison against the notebook's <code>FINAL</code> run.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Table 2. Notebook FINAL run vs. live deployed website on Google Cloud Run across all 33 evaluation versions.</caption>
+            <thead>
+              <tr>
+                <th>Evaluation Measure / Subgroup</th>
+                <th class="num">Total Versions</th>
+                <th class="num">Notebook FINAL</th>
+                <th class="num">Live Website</th>
+                <th class="num">Supported by Sources</th>
+                <th>Parity / Verification Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-key">
+                <td><strong>All Evaluation Versions</strong> <span class="row-tag">33 Qs</span></td>
+                <td class="num">33</td>
+                <td class="num">32 / 33 (97.0%)</td>
+                <td class="num">33 / 33 (100%)</td>
+                <td class="num">32 / 33 (97.0%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>P4-TL rescued on live site</span></td>
+              </tr>
+              <tr>
+                <td>Answerable Questions (PEOS + DMW)</td>
+                <td class="num">27</td>
+                <td class="num">26 / 27 (96.3%)</td>
+                <td class="num">27 / 27 (100%)</td>
+                <td class="num">26 / 27 (96.3%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>0 false fallbacks on site</span></td>
+              </tr>
+              <tr>
+                <td>Unanswerable Trap Questions (U1 &amp; U2)</td>
+                <td class="num">6</td>
+                <td class="num">6 / 6 (100%)</td>
+                <td class="num">6 / 6 (100%)</td>
+                <td class="num">6 / 6 (100%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Zero hallucinated fees/licenses</span></td>
+              </tr>
+              <tr>
+                <td>English / Taglish Versions (11 each)</td>
+                <td class="num">22</td>
+                <td class="num">22 / 22 (100%)</td>
+                <td class="num">22 / 22 (100%)</td>
+                <td class="num">22 / 22 (100%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>100% accuracy &amp; citation support</span></td>
+              </tr>
+              <tr>
+                <td>Tagalog Versions (TL)</td>
+                <td class="num">11</td>
+                <td class="num">10 / 11 (90.9%)</td>
+                <td class="num">11 / 11 (100%)</td>
+                <td class="num">10 / 11 (90.9%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>P3-TL correct (partial support)</span></td>
+              </tr>
+              <tr>
+                <td>Automated Configuration Parity Tests</td>
+                <td class="num">7</td>
+                <td class="num">Handoff Baseline</td>
+                <td class="num">7 / 7 Passed</td>
+                <td class="num">100% Match</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Zero config drift in CI</span></td>
+              </tr>
+              <tr class="is-total">
+                <td>Behavioural Agreement (Site vs. FINAL)</td>
+                <td class="num">33</td>
+                <td class="num">0.42 s (API only)</td>
+                <td class="num">2.44 s (Browser)</td>
+                <td class="num">32/33 Fallback (97%)</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>28/33 (85%) identical top-3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/finals-04-screenshot-1.svg" target="_blank" rel="noopener">
+              <img data-field="screenshot-1" src="../images/finals-04-screenshot-1.svg" alt="AlalayOFW Stage 2 redesign progression from R0 to R6/FINAL and Live Cloud Run 100% accuracy" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 1 — Stage 2 Redesign to Live Cloud Run Progression.</strong> Upgrading the language model alone (<code>R0</code>) left correctness at 54.5%; cleaning PEOS text + 1-record-per-chunk DMW indexing (<code>+15.2%</code>), hybrid BM25 + vector RRF retrieval (<code>+21.2%</code>), and <code>multilingual-e5-small</code> embeddings (<code>+6.1%</code>) drove the jump to 97.0% in the notebook and 100% (33/33) on the live website.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-04-screenshot-2.svg" target="_blank" rel="noopener">
+              <img data-field="screenshot-2" src="../images/finals-04-screenshot-2.svg" alt="7/7 Automated Configuration Parity Tests and 33-Question Live Behavioural Parity Breakdown" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 2 — Configuration &amp; Behavioural Parity Verification.</strong> All 7 automated parity tests in <code>tests/notebook-parity.test.ts</code> pass, and the 5 top-3 retrieval differences between the Python GPU runtime and ONNX CPU runtime either ranked the ground-truth passage higher (rescuing <code>P4-TL</code>) or swapped an unrelated lower-ranked chunk.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-04-screenshot-3.svg" target="_blank" rel="noopener">
+              <img src="../images/finals-04-screenshot-3.svg" alt="Group DaBig3 Member Responsibility Matrix D6 and End-to-End Deliverables Traceability D1 to D7" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 3 — Group DaBig3 Member Responsibility Matrix (D6).</strong> Non-overlapping task ownership across Iverson Labastida (Website, Architecture, Cloud Run Deployment &amp; Parity), Antonio Lontoc (Group Leader, RAG Notebook &amp; Logs), and Isabela Loraine Reyes (Evaluation Set, Chunking &amp; IEEE Assembly).</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="contribution">
+        <h2>Individual contribution</h2>
+        <p>In accordance with our signed <strong>Member Responsibility Matrix (Deliverable D6)</strong> and the <strong>AlalayOFW Deployment, Integration and Parity Report (<code>DaBig3_AlalayOFW_Deliverables_Report.docx</code>)</strong>, I served as <strong>Website Programmer, Architecture Designer, and Deployment Lead</strong> for Group DaBig3. My primary responsibility was transforming our group's final Python research pipeline (Configuration <code>R6</code>) into a public, production-hardened web application on Google Cloud Run and proving with automated tests and live browser evidence that the deployed site reproduces our notebook findings.</p>
+
+        <div class="compare">
+          <div>
+            <h4>Public GitHub Repository (D3 Codebase)</h4>
+            <p><strong><a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener">https://github.com/Iver-Labs/dmw-demo</a></strong><br>Contains the full Next.js 16 / TypeScript source code, in-process hybrid RAG engine (<code>lib/rag/</code>), verbatim notebook handoff package (<code>content/handoff/</code>), prebuilt 3,849-chunk index (<code>data/</code>), 7-test parity suite (<code>tests/notebook-parity.test.ts</code>), Playwright evaluation harness, and Cloud Build / Cloud Run deployment manifests (commit <code>f649404</code> on <code>main</code>).</p>
+          </div>
+          <div>
+            <h4>Live Hosted Website (Google Cloud Run)</h4>
+            <p><strong><a href="https://dmw-demo-vsicb5dr2a-as.a.run.app/" target="_blank" rel="noopener">https://dmw-demo-vsicb5dr2a-as.a.run.app/</a></strong><br>Publicly deployed in <code>asia-southeast1</code> (Singapore) as a single stateless container (<code>1 vCPU</code>, <code>2 GiB</code> RAM, <code>0–2</code> instances) serving 5 DMW information portals and the trilingual <em>Ask the Assistant</em> RAG drawer with Secret Manager API key injection and civic safety guardrails.</p>
+          </div>
+        </div>
+
+        <h3>Member Responsibility Matrix (Deliverable D6)</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Table 3. Group DaBig3 Member Responsibility Matrix (sourced verbatim from Deliverable D6).</caption>
+            <thead>
+              <tr>
+                <th>Member &amp; Role</th>
+                <th>Primary Non-Overlapping Tasks</th>
+                <th>Deliverables &amp; Identifiable Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-key">
+                <td><strong>Iverson Labastida</strong> <span class="row-tag">My Role</span><br><span class="mono">Website programmer, architecture designer &amp; deployment lead</span></td>
+                <td>
+                  1. Designed the chatbot integration architecture (connecting retrieval + LLM to the website)<br>
+                  2. Built the AlalayOFW website and implemented the in-process RAG chatbot integration<br>
+                  3. Hosted and deployed the container service on Google Cloud Run<br>
+                  4. Set up and maintained the public GitHub repository (<a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener">Iver-Labs/dmw-demo</a>)<br>
+                  5. Tested chatbot functionality and built the 7-test configuration parity suite<br>
+                  6. Ran the live behavioural parity check (33 question versions on the site vs. notebook)<br>
+                  7. Captured all 39 evaluation screenshots and authored the Deployment &amp; Parity Report<br>
+                  8. Wrote IEEE Section V (Website Architecture, Implementation &amp; Testing Results)
+                </td>
+                <td class="mono">
+                  &bull; Hosted Cloud Run URL<br>
+                  &bull; GitHub repo (D3 codebase)<br>
+                  &bull; DaBig3_AlalayOFW_Deliverables_Report.docx &amp; 39-screenshot archive<br>
+                  &bull; Integration architecture diagram<br>
+                  &bull; Parity check results &amp; IEEE Section V
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Antonio Lontoc</strong><br><span class="mono">Group leader; notebook &amp; experiment logs lead</span></td>
+                <td>
+                  Led development of the final RAG notebook (D3); led experiment logs and checkpoints (D4) including file-name fixes; assigned team tasks and verified the MRM (D6); prepared the signed Integrity &amp; AI Usage Statement (D7); authored IEEE pipeline and methodology sections.
+                </td>
+                <td class="mono">
+                  &bull; DaBig3_D3_RAG_Final_Notebook.ipynb<br>
+                  &bull; DaBig3_D4_Experiment_Logs_and_Checkpoints.xlsx<br>
+                  &bull; D6 &amp; D7 documents<br>
+                  &bull; IEEE methodology sections
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Isabela Loraine Reyes</strong><br><span class="mono">Evaluation, chunking experiments &amp; report assembly lead</span></td>
+                <td>
+                  Wrote the 11-question trilingual evaluation set (33 versions in EN, TL, TGL) with reference answers; led the chunking experiments (D2); led the chatbot response evaluation (D5); completed final assembly, editing, and formatting of the IEEE report (D1).
+                </td>
+                <td class="mono">
+                  &bull; DaBig3_D2_Chunking_Experiments.xlsx<br>
+                  &bull; DaBig3_D5_Response_Evaluation.xlsx<br>
+                  &bull; 33-question evaluation rubric<br>
+                  &bull; DaBig3_D1_IEEE_Report_PDF.docx
+                </td>
+              </tr>
+              <tr class="is-total">
+                <td><strong>Joint Team Contributions</strong><br><span class="mono">All 3 Members</span></td>
+                <td colspan="2">
+                  <strong>Working Dataset:</strong> Combined from the PEOS and DMW datasets prepared by all three members.<br>
+                  <strong>System Prompt:</strong> The 11-rule grounding prompt (<code>system_prompt.txt</code>) was written jointly by all three members.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Deep Dive into My Technical Contributions</h3>
+        <ul>
+          <li><strong>1. Single-Container Cloud Run Integration Architecture:</strong> I designed the production topology (Figure 4 below) so the entire application runs inside a single stateless container on Google Cloud Run in <code>asia-southeast1</code> (<code>1 vCPU</code>, <code>2 GiB</code> RAM, scaling <code>0–2</code> instances for zero idle cost). Rather than provisioning an external vector database, I baked the prebuilt <code>3,849</code>-chunk search index and the full-precision <code>intfloat/multilingual-e5-small</code> ONNX model directly into the container image. Each <code>POST /api/chat</code> request embeds the user query on the CPU via ONNX Runtime, executes both 384-d cosine vector search and BM25 lexical search (<code>k1 = 1.5, b = 0.75</code>) in-process, fuses the top 20 candidates from each retriever via Reciprocal Rank Fusion (<code>k = 60</code>), and sends the top 3 chunks plus the system prompt over HTTPS to AI Singapore's <code>Llama-SEA-LION-v3-70B-IT</code> API. The API key is injected at runtime from Google Cloud Secret Manager and never appears in the repository, container image, or browser.</li>
+          <li><strong>2. Next.js 16 DMW Info Demo Portal &amp; Civic Safety Guardrails:</strong> I built the front-end portal reproducing five core DMW information pages (<em>FAQs</em>, <em>OEC &amp; Balik-Manggagawa</em>, <em>Guides</em>, <em>Office Directory</em>, and <em>Contact &amp; Hotlines</em>) plus a home page, each integrated with the <em>Ask the Assistant</em> slide-over chat panel (<code>components/chat/</code>). Because the interface resembles a public government portal, I engineered four explicit safety guardrails: (a) a permanent top disclaimer banner stating it is an unofficial demo and linking to <code>dmw.gov.ph</code>, (b) omission of the official DMW seal, (c) <code>noindex</code> robots headers on every route so search engines never list the demo as an official agency page, and (d) an explicit privacy rule forbidding the assistant from ever asking for passport, OEC, or personal identification numbers, paired with a per-visitor rate limit of 5 requests per minute.</li>
+          <li><strong>3. Automated 7-Test Configuration Parity Suite (<code>tests/notebook-parity.test.ts</code>):</strong> To guarantee that the TypeScript web application never drifts from Antonio's Python notebook (<code>R6</code>), I copied the notebook handoff artifacts verbatim into <code>content/handoff/</code> and wrote 7 automated unit tests verifying: (1) system prompt parity, (2) hybrid retrieval parameters, (3) generation settings (<code>temp = 0</code>, <code>max_tokens = 400</code>, <code>FALLBACK</code> token), (4) embedding model and <code>query:</code> / <code>passage:</code> prefixes, (5) exact 3,849-chunk index match, (6) identical BM25 tokenization against the Python regex splitter, and (7) exact numerical BM25 score agreement with Python's <code>rank_bm25 0.2.2</code> library. All 7 tests pass and run automatically inside <code>npm run verify</code> and Cloud Build prior to deployment.</li>
+          <li><strong>4. Automated Playwright 33-Question Live Evaluation &amp; Cross-Runtime Diagnostics:</strong> On November 11, 2026, I wrote and executed a headless Chromium evaluation script (Playwright at <code>1440 &times; 1000</code> pixels) that asked all 33 evaluation question versions on the live Cloud Run URL in isolated browser sessions spaced 13 seconds apart, capturing 39 full and cropped evidence screenshots (including <code>_b</code> continuation captures for 6 long responses) and logging end-to-end browser response times (`2.44 s` mean, `1.55–3.62 s` range). I also built the local comparison tool (<code>npm run eval</code>) and diagnosed why 5 of the 33 versions retrieved a slightly different top-3 order than the notebook: small floating-point differences between Python's PyTorch embedding runtime and the container's ONNX CPU runtime shifted near-tied cosine scores, which promoted the PEOS evidence to Rank 1 on <code>P2-EN</code>, <code>P4-EN</code>, and <code>P4-TL</code>—turning the notebook's sole fallback error (<code>P4-TL</code>) into a verified correct answer (`33/33` on the live site).</li>
+        </ul>
+
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/finals-04-arch.png" target="_blank" rel="noopener">
+              <img src="../images/finals-04-arch.png" alt="Figure 1 from Deliverables Report: Production deployment of the DMW Info Demo on Google Cloud Run (region asia-southeast1)" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 4 — Production Cloud Run Architecture (from my Deliverables Report &amp; IEEE Fig. 4).</strong> Solid blue arrows trace a live user question (Steps 1–4: HTTPS POST &rarr; in-process ONNX embedding + hybrid BM25/vector RRF search &rarr; SEA-LION 70B generation &rarr; cited response); dashed arrows trace CI/CD deployment via Cloud Build and Artifact Registry (Steps A–E).</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-04-live-p1en.png" target="_blank" rel="noopener">
+              <img src="../images/finals-04-live-p1en.png" alt="Live website screenshot P1-EN: English easy question on OEC validity answered with numbered PEOS source cards" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 5 — Live Website Evaluation Evidence (<code>P1-EN</code>, English PEOS Query).</strong> The deployed chatbot answers the OEC validity question in 2.90 s and cites <code>[1] PEOS module, page 6</code> via interactive source cards.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-04-live-d3tgl.png" target="_blank" rel="noopener">
+              <img src="../images/finals-04-live-d3tgl.png" alt="Live website screenshot D3-TGL: Taglish difficult question distinguishing valid and expired records for 1015 Brilliant Minds Inc." loading="lazy">
+            </a>
+            <figcaption><strong>Figure 6 — Live Website Evaluation Evidence (<code>D3-TGL</code>, Taglish Multi-Record Agency Query).</strong> Hybrid BM25 + vector retrieval surfaces both the valid 2028 license record (<code>record 4</code>) and the historical expired 2019 record (<code>record 3</code>) for <em>1015 Brilliant Minds Inc.</em> in 2.49 s.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-04-live-u2tgl.png" target="_blank" rel="noopener">
+              <img src="../images/finals-04-live-u2tgl.png" alt="Live website screenshot U2-TGL: Unanswerable Taglish salary question triggering the verified bilingual fallback UI" loading="lazy">
+            </a>
+            <figcaption><strong>Figure 7 — Live Website Evaluation Evidence (<code>U2-TGL</code>, Unanswerable Salary Trap Query).</strong> When asked for a specific household service worker salary not stated in either document, the model emits <code>FALLBACK</code> and the UI renders the bilingual verification warning with a direct link to the official DMW Helpdesk.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection-1">Taking ownership of the web architecture, RAG integration, and cloud deployment for AlalayOFW taught me that turning a research notebook into a real public application starts with respecting the structure of the underlying documents and the safety needs of the end users. Early in our project, I saw how our baseline pipeline struggled whenever the Pre-Employment Orientation Seminar prose and the Department of Migrant Workers recruitment agency directory were sliced with the same uniform character splitter, because cutting across agency rows merged fragments of different companies into a single vector while applying overlap created hundreds of near-duplicate directory chunks. Working with my teammates to separate those two data sources—keeping every single one of the 3,792 recruitment agency records intact as its own self-contained chunk while applying text cleaning and sliding-window chunking only to the 57 narrative orientation passages—showed me why data representation must match document structure before any web integration begins. When I designed the Next.js 16 DMW Info Demo platform and baked that exact 3,849-chunk index directly into our container image, I also learned that deploying civic-facing AI for Overseas Filipino Workers carries real ethical design responsibilities: adding a permanent unofficial demo banner linking to the official government portal, stripping official seals, marking every page so search engines do not index it, rate-limiting requests, and enforcing a strict privacy rule so the chatbot never asks for passport or Overseas Employment Certificate numbers are just as critical as retrieval accuracy.</p>
+        <p data-field="reflection-2">The second major group of concepts I learned centered on porting a hybrid retrieval pipeline across programming languages and proving zero configuration drift between Python research code and a TypeScript production server. While implementing the retrieval engine inside our GitHub repository, I learned how dense semantic embeddings and lexical keyword search solve complementary failure modes: our multilingual embedding model maps English, Tagalog, and Taglish phrasings into a shared 384-dimensional space when given proper query and passage prefixes, while BM25 lexical scoring excels at pinpointing rare, exact agency names and license numbers that dense vectors often smooth over. Combining the top twenty candidates from both retrievers through Reciprocal Rank Fusion allowed our system to reach perfect agency recall across all three languages without requiring fragile score calibration between cosine similarity and keyword weights. More importantly, building the seven automated parity tests taught me how easily a web deployment can silently diverge from a notebook if a tokenizer splits punctuation differently or a parameter changes; writing unit tests that verify the exact system prompt, chunk count, embedding prefixes, tokenizer rules, and BM25 numerical scores against the Python reference library gave me a repeatable engineering workflow for guaranteeing that what we evaluated in research is truly what runs in production.</p>
+        <p data-field="reflection-3">In leading the live website evaluation and authoring both the deployment deliverables report and Section V of our IEEE paper, I learned how to audit end-to-end system behavior under real browser conditions and diagnose subtle runtime differences. By building an automated Playwright testing harness that launched a fresh headless browser session for each of the 33 trilingual evaluation questions and captured 39 full and cropped evidence screenshots, I was able to measure realistic user-facing latency alongside factual correctness and source support. Investigating the five questions where the live website retrieved a slightly different top-three chunk order than the final notebook run taught me an eye-opening lesson about cross-platform machine learning deployment: even when every hyperparameter and index file is proven identical by automated tests, tiny floating-point differences between a Python GPU embedding runtime and a CPU ONNX runtime can nudge nearly tied similarity scores across rank boundaries. Seeing that shift promote the relevant orientation passage to the top rank on our hardest Tagalog license-verification question—turning the notebook's sole fallback refusal into a correct answer and achieving 33 out of 33 on the live site—reinforced why empirical parity auditing and prompt-driven fallback rules are far more reliable than arbitrary similarity score thresholds when protecting users from hallucinated legal or financial advice.</p>
+        <p data-field="reflection-4">Finally, collaborating with Antonio Lontoc and Isabela Loraine Reyes across our seven project deliverables reshaped how I view both full-stack AI engineering and team accountability. Our stage-by-stage ablation results gave me a permanent engineering takeaway: swapping an eight-billion-parameter language model for a seventy-billion-parameter model while keeping broken retrieval left our accuracy virtually unchanged at just over fifty percent, whereas fixing document boundaries, adding hybrid retrieval, and switching to a compact multilingual embedding model drove correctness to ninety-seven percent in the notebook and one hundred percent on our deployed website. On a personal level, owning the cloud deployment pipeline—from containerizing the ONNX embedding model and configuring Google Cloud Build and Artifact Registry to injecting API credentials securely through Secret Manager—gave me hands-on confidence in shipping serverless AI systems that scale to zero cost when idle. Working under a clear Member Responsibility Matrix where Antonio led the notebook architecture and experiment checkpoints, Isabela designed the trilingual evaluation rubric and chunking workbooks, and I owned the web platform, repository, and parity verification showed me how disciplined handoffs and honest scientific reporting turn an ambitious classroom concept into a cohesive, trustworthy capstone product.</p>
+      </section>
+
+      <details class="report-details" id="details">
+        <summary>Technical details <span class="hint">Deliverables D1–D7, Cloud Run container specs &amp; parity architecture <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+        <ul>
+          <li><strong>Complete Capstone Deliverables Package (<code>D1</code>–<code>D7</code>):</strong>
+            <ul>
+              <li><code>D1</code> (<code>DaBig3_D1_IEEE_Report_PDF.docx</code>): Two-column IEEE paper detailing the Stage 1 baseline study, Stage 2 ablation (<code>R0</code>–<code>R6</code>), run-to-run stability analysis, and Section V website deployment &amp; parity evaluation.</li>
+              <li><code>D2</code> (<code>DaBig3_D2_Chunking_Experiments.xlsx</code>): 6-sheet workbook comparing PEOS chunk configurations (<code>500/50</code>, <code>800/100</code>, <code>800/200</code>, <code>1200/150</code>) and Stage 1 vs. Stage 2 retrieval metrics.</li>
+              <li><code>D3</code> (<code>DaBig3_D3_RAG_Final_Notebook.ipynb</code> + <code>DaBig3_AlalayOFW_Deliverables_Report.docx</code> + <a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener"><code>github.com/Iver-Labs/dmw-demo</code></a>): The Google Colab Tesla T4 notebook, the deployed Cloud Run web application codebase, and the 39-screenshot live parity report.</li>
+              <li><code>D4</code> (<code>DaBig3_D4_Experiment_Logs_and_Checkpoints.xlsx</code>): 8-sheet engineering log tracking document processing, index builds, retrieval logs, LLM generation telemetry, and environment manifests.</li>
+              <li><code>D5</code> (<code>DaBig3_D5_Response_Evaluation (1).xlsx</code>): Trilingual 33-question response grading rubric and per-language/per-source correctness and citation support breakdowns.</li>
+              <li><code>D6</code> (<code>DaBig3_D6_Member_Responsibility_Matrix (2).docx</code>): Signed non-overlapping task ownership matrix for Iverson Labastida, Antonio Lontoc, and Isabela Loraine Reyes.</li>
+              <li><code>D7</code> (<code>DaBig3_D7_Integrity_AI_Usage_Statement (1).pdf</code>): Signed declaration of work authenticity, empirical accuracy, and transparent AI assistance disclosure.</li>
+            </ul>
+          </li>
+          <li><strong>Cloud Run Container &amp; RAG Pipeline Specifications (Commit <code>f649404</code>):</strong> Next.js 16 on Node 24 container deployed to Google Cloud Run (<code>asia-southeast1</code> Singapore), provisioned with <code>1 vCPU</code>, <code>2 GiB</code> memory, and <code>0–2</code> auto-scaling instances. Uses <code>intfloat/multilingual-e5-small</code> (384-d cosine similarity via CPU ONNX Runtime) + BM25 (<code>k1 = 1.5, b = 0.75</code>), retrieving 20 candidates from each and fusing into the top 3 chunks via RRF (<code>k = 60</code>) with no similarity score gate, followed by <code>Llama-SEA-LION-v3-70B-IT</code> generation (<code>temperature = 0</code>, <code>max_tokens = 400</code>) and bilingual <code>FALLBACK</code> handling.</li>
+        </ul>
+      </details>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <p>All P-F1 project deliverables (<code>D1</code>–<code>D7</code>), my standalone AlalayOFW Deployment, Integration and Parity Report, and the live GitHub repository and Cloud Run deployment are linked below:</p>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span>
+            <span class="file-name"><strong>GitHub repository (D3 website &amp; parity codebase)</strong><span>GitHub &middot; https://github.com/Iver-Labs/dmw-demo (Commit f649404 on main)</span></span>
+            <a class="file-action" href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener">Open GitHub repo <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="file-name"><strong>Live hosted AlalayOFW website (Google Cloud Run)</strong><span>Web App &middot; https://dmw-demo-vsicb5dr2a-as.a.run.app/ (asia-southeast1)</span></span>
+            <a class="file-action" href="https://dmw-demo-vsicb5dr2a-as.a.run.app/" target="_blank" rel="noopener">Launch live app <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+            <span class="file-name"><strong>AlalayOFW Deployment, Integration &amp; Parity Report (My Deliverable)</strong><span>DOCX &middot; DaBig3_AlalayOFW_Deliverables_Report.docx (2.88 MB &middot; Architecture, 7/7 tests &amp; 39 screenshots)</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_AlalayOFW_Deliverables_Report.docx" download>Download .docx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+            <span class="file-name"><strong>Deliverable D6 — Member Responsibility Matrix (MRM)</strong><span>DOCX &middot; DaBig3_D6_Member_Responsibility_Matrix (2).docx (Signed team role &amp; evidence breakdown)</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D6_Member_Responsibility_Matrix%20%282%29.docx" download>Download .docx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+            <span class="file-name"><strong>Deliverable D1 — Final IEEE Technical Report (includes my Section V)</strong><span>DOCX &middot; DaBig3_D1_IEEE_Report_PDF.docx (501 KB &middot; Full Stage 1, Stage 2 &amp; Deployment paper)</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D1_IEEE_Report_PDF.docx" download>Download .docx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></span>
+            <span class="file-name"><strong>Deliverable D3 — Final RAG Experiment Notebook</strong><span>IPYNB &middot; DaBig3_D3_RAG_Final_Notebook.ipynb (1.42 MB &middot; R0–R6, FINAL &amp; handoff export)</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D3_RAG_Final_Notebook.ipynb" download>Download .ipynb <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Deliverables D2, D4 &amp; D5 — Chunking, Logs &amp; Response Evaluation Workbooks</strong><span>XLSX &middot; D2 Chunking Experiments, D4 Experiment Logs &amp; Checkpoints, D5 Response Evaluation</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D2_Chunking_Experiments.xlsx" download>Download D2 .xlsx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Deliverable D4 &amp; D5 Workbooks — Experiment Logs &amp; 33-Question Rubric</strong><span>XLSX &middot; DaBig3_D4_Experiment_Logs_and_Checkpoints.xlsx &amp; DaBig3_D5_Response_Evaluation (1).xlsx</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D5_Response_Evaluation%20%281%29.xlsx" download>Download D5 .xlsx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+            <span class="file-name"><strong>Deliverable D7 — Signed Integrity &amp; AI Usage Statement</strong><span>PDF &middot; DaBig3_D7_Integrity_AI_Usage_Statement (1).pdf (Signed Nov 11, 2026 by all 3 members)</span></span>
+            <a class="file-action" href="../portfolio_activities/p_f1_final/DaBig3_D7_Integrity_AI_Usage_Statement%20%281%29.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../portfolio_activities/p_f1_final/DaBig3_D7_Integrity_AI_Usage_Statement%20%281%29.pdf" type="application/pdf" aria-label="Deliverable D7 Final Project Integrity and AI Usage Statement PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../portfolio_activities/p_f1_final/DaBig3_D7_Integrity_AI_Usage_Statement%20%281%29.pdf">Open the Deliverable D7 Integrity Statement PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="finals-03.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">WW-F1 &amp; WW-F2: Optimization and GPU Testing</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
+    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#contribution">Individual contribution</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="https://github.com/Iver-Labs/dmw-demo" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg> Open GitHub Repository</a>
+        <a href="https://dmw-demo-vsicb5dr2a-as.a.run.app/" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg> Open Live Cloud Run Site</a>
+        <a href="../portfolio_activities/p_f1_final/DaBig3_AlalayOFW_Deliverables_Report.docx" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download My D3 Report</a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>ITC C508 &middot; Deep Learning &amp; Neural Networks for NLP</span>
+    <span><a href="../index.html">Back to home</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js" defer></script>
+<script src="../js/content-loader.js" defer></script>
+</body>
+</html>

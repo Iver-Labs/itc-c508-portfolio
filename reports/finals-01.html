@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sequence-to-Sequence Text Summarization — Report — ITC C508 Portfolio</title>
-<meta name="robots" content="noindex">
+<title>PT-F1: Optimizing Chunk Size and Overlap — Report — ITC C508 Portfolio</title>
+<meta name="description" content="Built a FAISS + MiniLM Retrieval-Augmented Generation pipeline over a 12-page DMW/POEA guidance compilation (50 chunks at 1,000/200 chars) and audited SEA-LION v3-8B-IT across 12 legal/OFW test questions.">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-activity-id="finals-01">
@@ -25,37 +25,404 @@
 </header>
 
 <main>
-  <section class="hero" style="padding-bottom: 0.5rem;">
+  <section class="hero report-hero">
     <span class="kicker">Finals &middot; Activity 01 &middot; Week 12</span>
-    <h1>Sequence-to-Sequence Text Summarization</h1>
+    <h1>PT-F1: Optimizing Chunk Size and Overlap</h1>
+    <p class="report-takeaway">A 1,000-character window with 200-character overlap preserved multi-chunk legal context for 5 of 7 evaluated SEA-LION runs, while exposing how topic dilution and page-tail fragments derail Top-3 retrieval.</p>
+    <dl class="report-facts">
+      <div><dt>Pipeline</dt><dd>FAISS · all-MiniLM-L6-v2 · SEA-LION v3-8B-IT</dd></div>
+      <div><dt>Source corpus</dt><dd>DMW / POEA Source B · 12 pages · 50 chunks</dd></div>
+      <div><dt>Chunk config</dt><dd>1,000 chars · 200 overlap · top_k = 3</dd></div>
+      <div><dt>Hardware</dt><dd>Tesla T4 GPU · NF4 4-bit double quant</dd></div>
+    </dl>
   </section>
 
-  <div class="report-gallery">
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
+  <div class="report-layout">
+    <div class="report-body">
+
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">Built and audited a two-component Retrieval-Augmented Generation (RAG) document-indexing and question-answering pipeline in Google Colab over the 12-page AlalayOFW Source B compilation of Department of Migrant Workers (DMW) and POEA advisories (95 passages). The pipeline slices each page into 1,000-character chunks with 200-character overlap (50 chunks total), exports an Excel inspection workbook, indexes 384-dimensional MiniLM embeddings in FAISS, and evaluates grounded generation with 4-bit quantized Llama-SEA-LION-v3-8B-IT across bilingual and multi-hop legal test questions.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Generated chunks</span>
+            <span class="metric-value">50</span>
+            <span class="metric-note">12 pages · mean 859.3 chars (min 20, max 1,000)</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Grounded accuracy</span>
+            <span class="metric-value">5 / 7 (71.4%)</span>
+            <span class="metric-note">Exact grounded answers on logged SEA-LION runs</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Peak cosine similarity</span>
+            <span class="metric-value">0.7877</span>
+            <span class="metric-note">Q01 (English) · 0.7824 on Q04 (Filipino)</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Prompt context fit</span>
+            <span class="metric-value">100%</span>
+            <span class="metric-note">552–899 input tokens · 0 chunks truncated (2,048 cap)</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>This activity investigates how chunk size, chunk overlap, and retrieval depth (<code>top_k</code>) govern evidence quality in a domain-specific RAG system for Overseas Filipino Workers (<strong>AlalayOFW</strong>). The source document, <code>dmw_source_b_guidance.pdf</code>, compiles 95 verbatim passages across three parts: <strong>Part A</strong> (Pages 1–5, RA 8042 / RA 10022 illegal recruitment definitions, Filipino red-flag signs, avoidance tips, and <em>modus operandi</em> schemes), <strong>Part B</strong> (Pages 5–9, ten 2020–2021 POEA scam advisories), and <strong>Part C</strong> (Pages 10–12, eight services from the 2026 DMW Citizen's Charter 1st Edition).</p>
+        <ol>
+          <li><strong>Component I — Extraction, Sliding-Window Chunking &amp; Excel Audit (Steps I-1 to I-11):</strong> <code>pypdf.PdfReader</code> extracts text page-by-page and collapses whitespace runs via <code>re.sub(r"\s+", " ", page_text).strip()</code>. The <code>create_chunks()</code> function applies a page-scoped sliding window of <code>CHUNK_SIZE = 1000</code> characters and <code>CHUNK_OVERLAP = 200</code> characters (<code>step_size = 800</code> chars), ensuring chunks never cross page boundaries. All 50 resulting chunks are exported to a formatted <code>openpyxl</code> workbook (<code>dmw_source_b_guidance_chunks_inspection.xlsx</code>) with frozen headers and auto-filters for manual boundary inspection.</li>
+          <li><strong>Dense Embedding &amp; FAISS Vector Indexing (Steps I-12 to I-22):</strong> Each chunk is encoded on CPU with <code>sentence-transformers/all-MiniLM-L6-v2</code> using <code>normalize_embeddings=True</code>, producing a <code>(50, 384)</code> <code>float32</code> matrix stored in <code>faiss.IndexFlatIP(384)</code>. The index, chunk metadata, and run parameters are persisted to <code>rag_faiss.index</code>, <code>rag_chunks.json</code>, and <code>rag_config.json</code>.</li>
+          <li><strong>Component II — Token-Budgeted Prompting &amp; SEA-LION v3-8B-IT Evaluation (Steps II-1 to II-10 &amp; Step 4):</strong> Given a user query, <code>retrieve_documents()</code> fetches the <code>TOP_K = 3</code> closest chunks and <code>create_rag_prompt()</code> assembles a strict evidence-only prompt labeled with <code>[Page p, Chunk c]</code> citations. While the baseline notebook demonstrates CPU/GPU generation with <code>google/flan-t5-base</code> (<code>512</code> input / <code>32</code> output tokens), Step 4 upgrades the generator to <code>aisingapore/Llama-SEA-LION-v3-8B-IT</code> in 4-bit NF4 double quantization on a Tesla T4 GPU (<code>max_input_tokens = 2048</code>, <code>max_new_tokens = 256</code>) and evaluates it against the 12-question Source B benchmark.</li>
+        </ol>
+        <dl class="terms">
+          <div><dt>Sliding-window overlap</dt><dd>Moving the 1,000-character window forward by 800 characters at a time repeats the last 200 characters of one chunk at the beginning of the next, preventing sentences cut at a boundary from losing context.</dd></div>
+          <div><dt>L2-normalized IndexFlatIP</dt><dd>Rescaling every 384-dimensional embedding vector to the same unit length lets FAISS compare passages purely by semantic direction (cosine similarity) using exact search.</dd></div>
+          <div><dt>NF4 double quantization</dt><dd>Compresses 8-billion LLM weights into 4-bit NormalFloat tensors and quantizes the scaling constants as well, fitting SEA-LION v3-8B-IT comfortably inside a single 15 GB Tesla T4 GPU.</dd></div>
+          <div><dt>Token-boundary budgeting</dt><dd>Measuring the question, instructions, and a small safety margin first before packing ranked chunks ensures the prompt never silently cuts off the user's question or trailing instructions.</dd></div>
+        </dl>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <p>Of the 12 benchmark questions defined for Source B (<code>Q01</code>–<code>Q12</code> across Easy, Average, and Difficult tiers), 7 runs were captured in <code>question_history.json</code>. Whenever the ground-truth passage ranked <code>#1</code> with cosine similarity above <code>0.59</code>, SEA-LION produced a complete, citation-grounded answer.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Rank #1 FAISS cosine similarity across the 7 logged benchmark runs (chunk_size = 1000, overlap = 200, top_k = 3)</caption>
+            <thead>
+              <tr>
+                <th scope="col">Question · Tier</th>
+                <th scope="col">Top-1 Chunk</th>
+                <th scope="col">Rank #1 Cosine Similarity (all-MiniLM-L6-v2)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar is-key">
+                <th scope="row">Q01 · Easy (Online dating scam countries)</th>
+                <td class="mono">Chunk 32 (p.8)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.7877"></span><span class="bar-value">0.7877</span></div></td>
+              </tr>
+              <tr class="has-bar is-key">
+                <th scope="row">Q04 · Easy · Filipino (Saan nakikipag-transaksiyon)</th>
+                <td class="mono">Chunk 8 (p.2)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.7824"></span><span class="bar-value">0.7824</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Q12 · Difficult (Citizen's Charter &amp; RTC venue)</th>
+                <td class="mono">Chunk 40 (p.10)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.7487"></span><span class="bar-value">0.7487</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Q03 · Easy (Backdoor Points Scheme)</th>
+                <td class="mono">Chunk 13 (p.4)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.7443"></span><span class="bar-value">0.7443</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Q07 · Average (Visa consultants &amp; language centers)</th>
+                <td class="mono">Chunk 18 (p.5)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.7060"></span><span class="bar-value">0.7060</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Q10 · Difficult (Travel agency with DTI certificate)</th>
+                <td class="mono">Chunk 25 (p.6)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.5912"></span><span class="bar-value">0.5912</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">Q06 · Average (Placement fee conditions — missed #10)</th>
+                <td class="mono">Chunk 6 (p.2)</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.4478"></span><span class="bar-value">0.4478</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Source B benchmark audit: retrieval vs. SEA-LION generation</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Complete 12-question evaluation matrix from PT-F1_Step4_SEA-LION_Results.pdf and question_history.json</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Level</th>
+                <th scope="col">Question &amp; Expected Ground Truth</th>
+                <th scope="col">Top-3 Retrieved (Chunk · Page · Score)</th>
+                <th scope="col" class="num">Tokens</th>
+                <th scope="col">SEA-LION Output &amp; Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-key">
+                <td class="mono">Q01</td>
+                <td>Easy</td>
+                <td>POEA online dating scam target countries?<br><small>Expected: <strong>United States and Canada</strong> (<code>p8-s14-par1</code>, B-79)</small></td>
+                <td class="mono">#1 c32·p8·0.7877<br>#2 c20·p5·0.7161<br>#3 c25·p6·0.7021</td>
+                <td class="num">783</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span><br><small>Cited Advisory No. 116 (2021) for US &amp; Canada; also noted South Korea &amp; NZ from Rank #3.</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q02</td>
+                <td>Easy</td>
+                <td>How many modules does the PEOS online seminar have?<br><small>Expected: <strong>Eight (8) modules</strong> (<code>p12-s25</code>, B-96, Chunk 48)</small></td>
+                <td class="mono">—</td>
+                <td class="num">—</td>
+                <td><small>Not logged in <code>question_history.json</code> (target resides in Chunk 48, p.12).</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q03</td>
+                <td>Easy</td>
+                <td>In the "Backdoor Points Scheme," how are workers sent abroad?<br><small>Expected: <strong>Through cargo ships, not airports</strong> (<code>p4-s5-item6</code>, B-49)</small></td>
+                <td class="mono">#1 c13·p4·0.7443<br>#2 c12·p3·0.6416<br>#3 c11·p3·0.5966</td>
+                <td class="num">723</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span><br><small>Stated verbatim: deployed through cargo ships, not regular exit channels like airports.</small></td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Q04</td>
+                <td>Easy</td>
+                <td>Ayon sa POEA, saan karaniwang nakikipag-transaksiyon ang illegal recruiter?<br><small>Expected: <strong>Pampublikong lugar (restaurant, mall), hindi sa opisina</strong> (<code>p2-s3-sign4</code>)</small></td>
+                <td class="mono">#1 c8·p2·0.7824<br>#2 c9·p3·0.6632<br>#3 c28·p7·0.5881</td>
+                <td class="num">899</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span> <span class="row-tag">Bilingual</span><br><small>Matched Filipino query to Chunk 8 and answered fluently in Tagalog.</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q05</td>
+                <td>Average</td>
+                <td>When is illegal recruitment considered economic sabotage?<br><small>Expected: <strong>By a syndicate (3+ conspiring) or large scale (3+ victims)</strong> (<code>p2-s2-par3</code>)</small></td>
+                <td class="mono">—</td>
+                <td class="num">—</td>
+                <td><small>Not logged in <code>question_history.json</code> (target resides in Chunk 7, p.2).</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q06</td>
+                <td>Average</td>
+                <td>What conditions should be met before a jobseeker pays a placement fee?<br><small>Expected: <strong>Valid contract + official receipt; fee &le; 1 month salary</strong> (<code>p3-s4-tip5/6</code>, Chunk 10)</small></td>
+                <td class="mono">#1 c6·p2·0.4478<br>#2 c3·p1·0.4310<br>#3 c49·p12·0.4241</td>
+                <td class="num">552</td>
+                <td><span class="verdict is-wrong"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Retrieval miss</span><br><small>Missed Chunk 10; tail Chunk 49 (109 chars) took #3. Model listed 6 RA 8042 rules from Chunks 3 &amp; 6 and cut off at 256 tokens.</small></td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Q07</td>
+                <td>Average</td>
+                <td>Can visa consultants or language training centers recruit OFWs?<br><small>Expected: <strong>Consultants only with POEA license; language centers never</strong> (<code>p5-s8</code>)</small></td>
+                <td class="mono">#1 c18·p5·0.7060<br>#2 c19·p5·0.6873<br>#3 c17·p5·0.6529</td>
+                <td class="num">797</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span> <span class="row-tag">Overlap win</span><br><small>200-char overlap across Chunks 17–19 preserved both rules from Advisory No. 19 (2020).</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q08</td>
+                <td>Average</td>
+                <td>What is a No Objection Certification (NOC) for SRA, and who may avail?<br><small>Expected: <strong>DMW clearance to recruit outside office; licensed agencies</strong> (<code>p11-s22</code>)</small></td>
+                <td class="mono">—</td>
+                <td class="num">—</td>
+                <td><small>Not logged in <code>question_history.json</code> (target spans Chunks 44–46, p.11).</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q09</td>
+                <td>Difficult</td>
+                <td>Scam fee amounts and pretexts in Advisory No. 83 (2020) vs No. 32 (2021)?<br><small>Expected: <strong>P3k–P3.8k reservation fee vs P3k–P5k processing/slots</strong> (<code>p5-s9; p7-s13</code>)</small></td>
+                <td class="mono">—</td>
+                <td class="num">—</td>
+                <td><small>Not logged in <code>question_history.json</code> (targets reside in Chunk 20, p.5 and Chunk 30, p.7).</small></td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">Q10</td>
+                <td>Difficult</td>
+                <td>Can a travel agency showing a valid DTI certificate legally recruit abroad?<br><small>Expected: <strong>No; DTI certificate does not authorize recruitment; no POEA license</strong> (<code>p6-s11</code>)</small></td>
+                <td class="mono">#1 c25·p6·0.5912<br>#2 c26·p6·0.5781<br>#3 c18·p5·0.5397</td>
+                <td class="num">690</td>
+                <td><span class="verdict is-right"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Correct</span> <span class="row-tag">Overlap win</span><br><small>Chunks 25 &amp; 26 bridged the exact DTI clause and POLO NZ / South Korea non-accreditation notice.</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q11</td>
+                <td>Difficult</td>
+                <td>Recruiter offers deployment on a tourist visa: scheme name and warnings?<br><small>Expected: <strong>Tourist–Worker Scheme; tip 9; Filipino sign 8</strong> (<code>p3-s5/s4/s3</code>)</small></td>
+                <td class="mono">—</td>
+                <td class="num">—</td>
+                <td><small>Not logged in <code>question_history.json</code> (targets span Chunks 9, 10, 11 on Page 3).</small></td>
+              </tr>
+              <tr>
+                <td class="mono">Q12</td>
+                <td>Difficult</td>
+                <td>Charter services for (a) licensed agency, (b) illegal recruiter, &amp; criminal court?<br><small>Expected: <strong>(a) RV Case; (b) IR/TIP Case at RTC; Legal Assistance covers both</strong> (<code>p10–11</code>)</small></td>
+                <td class="mono">#1 c40·p10·0.7487<br>#2 c47·p11·0.6717<br>#3 c46·p11·0.6076</td>
+                <td class="num">844</td>
+                <td><span class="verdict is-wrong"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Partial (top_k cap)</span><br><small>Got Legal Assistance (p.335) &amp; RTC, but missed Chunks 43–44 so cited IR Cert (p.801) instead of RV Case (p.717).</small></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Chunk inspection findings (<code>dmw_source_b_guidance_chunks_inspection.xlsx</code>)</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Structural breakdown of the 50 generated chunks under CHUNK_SIZE = 1000 and CHUNK_OVERLAP = 200</caption>
+            <thead>
+              <tr>
+                <th scope="col">Chunk Category</th>
+                <th scope="col" class="num">Count</th>
+                <th scope="col" class="num">Length Range</th>
+                <th scope="col">Example Chunks</th>
+                <th scope="col">Observed Impact on Retrieval</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Full sliding windows</th>
+                <td class="num">36</td>
+                <td class="num">999–1,000 chars</td>
+                <td class="mono">Chunks 0–2, 5–7, 9–11, 13–15, 17–19, 22–25, 27–30, 32–34, 36–38, 40–42, 44–46</td>
+                <td>Strong context coverage for single-topic advisories; dilutes embeddings when 7–10 short numbered tips share one 1,000-char block (e.g., <code>Chunk 10</code> in Q06).</td>
+              </tr>
+              <tr>
+                <th scope="row">Page-end partial windows</th>
+                <td class="num">11</td>
+                <td class="num">440–909 chars</td>
+                <td class="mono">Chunk 3 (820c), Chunk 8 (697c), Chunk 12 (440c), Chunk 20 (827c), Chunk 43 (643c), Chunk 48 (909c)</td>
+                <td>Focused semantic vectors; <code>Chunk 8</code> (697 chars, Filipino signs 1–4) achieved <code>0.7824</code> similarity on Q04.</td>
+              </tr>
+              <tr class="is-key">
+                <th scope="row">Redundant overlap tails</th>
+                <td class="num">3</td>
+                <td class="num">20–109 chars</td>
+                <td class="mono">Chunk 4 (20c, p.1)<br>Chunk 21 (27c, p.5)<br>Chunk 49 (109c, p.12)</td>
+                <td>100% duplicated inside the last 200 chars of the preceding chunk. <code>Chunk 49</code> (<code>"...Total Standard Fee: None."</code>) scored <code>0.4241</code> on Q06 and stole Rank #3.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Notebook baseline vs. Step 4 SEA-LION evaluation</h3>
+        <div class="compare">
+          <div>
+            <h4>Notebook baseline (<code>google/flan-t5-base</code>)</h4>
+            <p>250M-parameter encoder–decoder with a strict <code>512</code>-token input cap (<code>16</code>-token safety margin) and <code>32</code>-token output limit. Three 1,000-character chunks (~650–850 tokens) exceed the 512-token budget, forcing <code>create_rag_prompt()</code> to truncate the 2nd or 3rd chunk and limiting answers to short phrases.</p>
+          </div>
+          <div>
+            <h4>Step 4 evaluation (<code>Llama-SEA-LION-v3-8B-IT</code>)</h4>
+            <p>8B Southeast Asian instruction-tuned model quantized to 4-bit NF4 on a Tesla T4 GPU with a <code>2,048</code>-token input budget and <code>256</code>-token output cap. All 3 retrieved chunks fit completely (<code>truncated: false</code> across all runs, 552–899 tokens) and supported fluent Tagalog and multi-paragraph legal citations.</p>
+          </div>
+        </div>
+
+        <h3>Diagnostic visualizations &amp; workbook captures</h3>
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/finals-01-screenshot-1.svg" aria-label="Open the chunk length distribution and FAISS similarity chart full size">
+              <img data-field="screenshot-1" src="../images/finals-01-screenshot-1.svg" alt="Two-panel chart showing character counts across all 50 generated chunks (mean 859.3 chars, tail chunks #4, #21, #49) and Top-3 FAISS cosine similarity scores across Q01 to Q12." loading="lazy">
+            </a>
+            <figcaption><strong>Chunk length distribution &amp; Top-3 cosine similarity.</strong> Left: 36 chunks hit the 1,000-char cap while pages 1, 5, and 12 end with short redundant tails (<code>#4</code>, <code>#21</code>, <code>#49</code>). Right: Q06 similarity drops below <code>0.45</code> when <code>Chunk 10</code> is diluted across seven tips.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-01-screenshot-2.svg" aria-label="Open the SEA-LION v3-8B-IT evaluation summary table full size">
+              <img data-field="screenshot-2" src="../images/finals-01-screenshot-2.svg" alt="Audit table of PT-F1 Step 4 SEA-LION v3-8B-IT configuration, Top-3 retrieved chunks, input token counts, and verbatim answers across the 7 logged benchmark questions." loading="lazy">
+            </a>
+            <figcaption><strong>Step 4 SEA-LION v3-8B-IT evaluation matrix.</strong> Summarizes the Tesla T4 4-bit NF4 configuration, Top-3 retrieved chunks, token budgets, and diagnosis for each logged query.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-01-screenshot-3.svg" aria-label="Open the Excel chunk inspection workbook preview full size">
+              <img src="../images/finals-01-screenshot-3.svg" alt="Preview of dmw_source_b_guidance_chunks_inspection.xlsx showing 200-character overlap bridges on Chunks 0-1 and 18-19 contrasted against redundant tail Chunks 4, 21, and 49." loading="lazy">
+            </a>
+            <figcaption><strong>Excel chunk inspection audit (<code>Generated_Chunks</code>).</strong> Shows how the 200-char overlap preserves context across <code>Chunks 18–19</code> (Q07), while the <code>start &lt; len(page_text)</code> loop condition emits redundant tail slices (<code>#4</code>, <code>#21</code>, <code>#49</code>).</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection-1">Working through Component I of the notebook taught me what actually happens between uploading a raw PDF and turning it into searchable knowledge. Before a language model can read a document, <code>pypdf</code> has to extract the text layer page by page, and regular-expression cleanup is needed to collapse messy line breaks, tabs, and extra spaces into clean, continuous sentences—while also checking that the file is not just a scanned image that would require Optical Character Recognition (OCR). From there, I learned how <strong>sliding-window chunking</strong> balances context and precision through two settings: <strong>chunk size</strong> and <strong>chunk overlap</strong>. Because the splitter cuts purely by character count rather than grammar, a fixed window can easily slice a sentence or a legal rule right down the middle. Setting a 200-character overlap solves this by repeating the ending of one chunk at the beginning of the next chunk on the same page, acting as a bridge so the full thought stays intact in at least one chunk. Exporting all 50 chunks into a formatted Excel workbook with <code>pandas</code> and <code>openpyxl</code> (complete with frozen headers and filter drop-downs) showed me why manual inspection is so important: I could see how the overlap kept multi-sentence POEA advisories together in <code>Q07</code> and <code>Q10</code>, while also spotting where a wide 1,000-character window bundled too many separate checklist tips into one chunk (<code>Q06</code>) or left behind tiny, repetitive tail fragments at the very end of a page.</p>
+        <p data-field="reflection-2">The second major group of concepts I learned centered on how <strong>dense embeddings</strong> and <strong>FAISS vector indexing</strong> turn text search into meaning search. Instead of looking for exact word matches like a standard search bar, the <code>SentenceTransformer</code> model (<code>all-MiniLM-L6-v2</code>) converts each chunk into a 384-dimensional vector where passages with similar meanings point in similar directions—which is why even our Tagalog question in <code>Q04</code> matched the right Filipino passage so accurately. Going through the notebook's code explanations also revealed a crucial hidden constraint: MiniLM only reads up to 256 word-piece tokens per chunk and silently ignores anything past that limit, meaning that if we set our chunk size too large, the tail end of a chunk is never even represented in its embedding vector. I also learned why the pipeline <strong>normalizes embeddings</strong> to unit length and converts them to 32-bit floats before adding them to <code>faiss.IndexFlatIP</code>: normalizing puts every vector on the same scale so inner-product search measures pure semantic angle (cosine similarity) without favoring longer chunks. Just as importantly, because FAISS only stores numbers and returns integer row positions, we have to maintain a <strong>chunk lookup dictionary</strong> and serialize the index, chunk metadata, and configuration settings together using <code>pickle</code> so our retrieval results can be mapped back to actual page numbers and text across sessions.</p>
+        <p data-field="reflection-3">In Component II, I learned that retrieval is only half the battle—how we prioritize, budget, and format the prompt determines whether the language model succeeds or fails. Testing retrieval on its own before involving the LLM made it clear that a generator is completely bound by what <code>top_k</code> retrieval brings back: if the right chunk does not make the top three results, the model has no way to answer accurately from the document. Once chunks are retrieved, <strong>token-limited prompt construction</strong> prevents silent errors. Language models read sub-word tokens rather than characters, and every model has a strict input token ceiling. Instead of dumping all retrieved text into a prompt and letting the tokenizer blindly chop off the bottom, the notebook taught me how to keep the user's question and grounding instructions safe at the top of the prompt, reserve a small token safety margin for special end-of-sequence tokens, and pack the highest-scoring chunks into the remaining budget one by one—trimming only at clean token boundaries if space runs out. Pairing that structured prompt with strict <strong>anti-hallucination instructions</strong> (telling the model to match people and departments only to explicitly stated roles and refuse to guess) and <strong>deterministic generation</strong> (switching the model to evaluation mode, disabling gradient tracking to save memory, and using beam search instead of random sampling) ensures that the system gives repeatable, evidence-backed answers.</p>
+        <p data-field="reflection-4">Finally, comparing the notebook's baseline <code>google/flan-t5-base</code> model against our Step 4 evaluation with <code>Llama-SEA-LION-v3-8B-IT</code> showed me how all of these technical concepts must work together when tuning a RAG pipeline. Under a smaller encoder–decoder model like FLAN-T5, a 512-token input limit is too tight to hold three 1,000-character chunks at once, and a 32-token output limit cuts off detailed legal answers. By using <strong>4-bit quantization</strong> (<code>bitsandbytes</code> NF4) on a Tesla T4 GPU, we were able to fit an 8-billion-parameter Southeast Asian instruction-tuned model into memory and expand the input budget to 2,048 tokens and the output cap to 256 tokens, allowing all three retrieved chunks to fit without any truncation and enabling natural bilingual responses in both English and Filipino. At the same time, the remaining misses in <code>Q06</code> and <code>Q12</code> taught me what each parameter adjustment actually fixes: tightening chunk size (or splitting by section headers) stops individual tips from getting lost inside crowded chunks; stopping the page-chunking window once it reaches the end of a page removes duplicate tail fragments that distract the retriever; and raising <code>top_k</code> gives multi-part questions enough slots to gather facts spread across multiple pages. Understanding the role of every step in the notebook gave me the practical foundation to tune our <strong>AlalayOFW</strong> system with confidence.</p>
+      </section>
+
+      <section class="report-section" id="details">
+        <details class="report-details">
+          <summary>Technical details <span class="hint">Concepts from Component I &amp; Component II in the notebook <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <h3>Component I — Vector indexing &amp; embedding concepts</h3>
+          <ul>
+            <li><strong>Parameter validation as a guardrail (Step I-4):</strong> Before reading any files, the notebook checks that chunk size is positive, overlap is non-negative, and overlap is strictly smaller than chunk size. If overlap were equal to or larger than chunk size, the sliding window would never move forward and would get stuck in an infinite loop.</li>
+            <li><strong>Page-isolated chunking &amp; Excel auditing (Steps I-6 to I-10):</strong> Each PDF page is normalized and chunked independently so a chunk never blends text from two different pages. Exporting the result to <code>dmw_source_b_guidance_chunks_inspection.xlsx</code> lets us inspect character counts, verify that the 200-character overlap repeats across consecutive chunks, and spot short page-end tail chunks.</li>
+            <li><strong>Embedding token limits &amp; normalization (Steps I-12 to I-15):</strong> <code>all-MiniLM-L6-v2</code> maps each chunk into 384 numbers but only reads up to 256 word-piece tokens, which is why keeping chunks around or below 1,000 characters prevents the embedding model from ignoring the end of a passage. Normalizing every vector to unit length allows <code>faiss.IndexFlatIP</code> to perform exact cosine-similarity search.</li>
+            <li><strong>Index persistence &amp; lookup mapping (Steps I-16 to I-21):</strong> Because FAISS only stores raw float32 vectors and returns integer positions, <code>chunk_lookup</code> reconnects each vector ID to its page number and text, while saving <code>rag_faiss.index</code>, <code>rag_chunks.pkl</code>, and <code>rag_config.pkl</code> makes each parameter run reproducible.</li>
+          </ul>
+          <h3>Component II — Prompt budgeting &amp; generation concepts</h3>
+          <ul>
+            <li><strong>Question-first prompt layout &amp; token budgeting (Steps II-4 to II-6):</strong> The prompt places the question and grounding instructions at the very beginning so they are never cut off, reserves a small token buffer for special tokens, and fills the remaining input budget with the highest-ranked chunks first—cutting only at clean token boundaries if a chunk exceeds the remaining space.</li>
+            <li><strong>Deterministic inference with beam search (Step II-7):</strong> Calling <code>llm.eval()</code> turns off training dropout, <code>torch.no_grad()</code> disables gradient tracking to save GPU memory, and deterministic beam search explores the top candidate phrasings simultaneously without randomness so identical prompts always produce identical answers.</li>
+            <li><strong>How the adjustments work together:</strong> Stopping the sliding window as soon as it reaches the end of a page removes duplicate tail chunks (<code>#4</code>, <code>#21</code>, <code>#49</code>); using a slightly smaller chunk size keeps individual checklist items focused for the embedding model; and pairing a higher <code>top_k</code> with SEA-LION's 2,048-token input window lets multi-section questions gather all required passages without truncation.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+            <span class="file-name"><strong>Step 4 SEA-LION evaluation report</strong><span>PDF · PT-F1_Step4_SEA-LION_Results.pdf (3 pages)</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f1_final/PT-F1_Step4_SEA-LION_Results.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></span>
+            <span class="file-name"><strong>Annotated RAG pipeline notebook</strong><span>Jupyter Notebook · Labastida_PT_F1_explanation of code only.ipynb</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f1_final/Labastida_PT_F1_explanation%20of%20code%20only.ipynb" download>Download .ipynb <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Excel chunk inspection workbook</strong><span>XLSX · dmw_source_b_guidance_chunks_inspection.xlsx (50 chunks)</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f1_final/dmw_source_b_guidance_chunks_inspection.xlsx" download>Download .xlsx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+            <span class="file-name"><strong>SEA-LION query &amp; retrieval log</strong><span>JSON · question_history.json (7 logged runs with prompts &amp; scores)</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f1_final/question_history.json" target="_blank" rel="noopener">View JSON <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
+            <span class="file-name"><strong>Generated chunks &amp; pipeline config</strong><span>JSON · rag_chunks.json (50 chunks) · rag_config.json · rag_faiss.index</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f1_final/rag_config.json" target="_blank" rel="noopener">View Config <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../portfolio_activities/pt_f1_final/PT-F1_Step4_SEA-LION_Results.pdf" type="application/pdf" aria-label="PT-F1 Step 4 SEA-LION evaluation results PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../portfolio_activities/pt_f1_final/PT-F1_Step4_SEA-LION_Results.pdf">Open the PT-F1 Step 4 SEA-LION results PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="prelims-03.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">PT-P2: Neural Network Training (Hyperparameters)</span>
+        </a>
+        <a class="next" href="finals-02.html">
+          <span class="pager-label">Next report <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <span class="pager-title">PT-F2: Experimenting to Determine the Best Chunk Size and Overlap</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
     </div>
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
-    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="../portfolio_activities/pt_f1_final/PT-F1_Step4_SEA-LION_Results.pdf" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Open the PDF report</a>
+        <a href="../portfolio_activities/pt_f1_final/PT-F1_Step4_SEA-LION_Results.pdf" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download the PDF</a>
+      </div>
+    </aside>
   </div>
-
-  <section class="report-section">
-    <h2>Description</h2>
-    <p>Built an encoder-decoder model with attention to generate short
-    summaries of news articles, evaluating output quality with ROUGE scores
-    against reference summaries.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection</h2>
-    <!-- TODO: add your reflection here (or in content.md) — what you learned,
-         what was difficult, or what you'd do differently. -->
-    <p style="color:var(--muted);">Reflection coming soon.</p>
-  </section>
-
-  <a class="back-link" href="../finals.html">&larr; Back to Finals</a>
 </main>
 
 <footer>

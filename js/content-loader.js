@@ -151,7 +151,13 @@
 
     // v2 report layout: fields are marked with data-field instead of h2 labels
     fillText(document.querySelector('[data-field="description"]'), a['Description']);
-    fillText(document.querySelector('[data-field="reflection"]'), a['Reflection']);
+    if (a['Reflection'] && a['Reflection'].indexOf('||') !== -1) {
+      a['Reflection'].split(/\s*\|\|\s*/).forEach(function (para, idx) {
+        fillText(document.querySelector('[data-field="reflection-' + (idx + 1) + '"]'), para);
+      });
+    } else {
+      fillText(document.querySelector('[data-field="reflection"]'), a['Reflection']);
+    }
     [['screenshot-1', 'Screenshot 1'], ['screenshot-2', 'Screenshot 2']].forEach(function (pair) {
       var img = document.querySelector('img[data-field="' + pair[0] + '"]');
       if (img && a[pair[1]]) img.src = resolveImagePath(a[pair[1]]);

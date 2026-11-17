@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-label="PT-F2 Table C Retrieval Log Audit Comparing C1 (300/0), C11 (1000/100), and C12 (1000/200)">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .excel-hdr { fill: #1f4e78; }
+      .row-hit { fill: #132429; }
+      .row-miss { fill: #25191c; }
+      .row-ovr { fill: #1e2216; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .kicker { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; }
+      .th { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .td { fill: #e5e9f0; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .mono { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .ok { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="540" class="bg"/>
+
+  <text x="28" y="32" class="kicker">STEP 10 TABLE C RETRIEVAL LOG AUDIT (432 ROWS) · DMW_SOURCE_B_GUIDANCE_PT-F2_CHUNKING_EXPERIMENT 1.XLSX</text>
+  <text x="28" y="56" class="title">How Chunk Size &amp; Overlap Changed Evidence Coverage Across Key Failure &amp; Success Cases</text>
+
+  <rect x="24" y="72" width="1152" height="444" rx="8" class="panel"/>
+  <rect x="24" y="72" width="1152" height="36" rx="8" class="excel-hdr"/>
+
+  <text x="38" y="94" class="th">Config</text>
+  <text x="125" y="94" class="th">Q_ID · Diff</text>
+  <text x="215" y="94" class="th">Rank · Chunk · Page</text>
+  <text x="365" y="94" class="th">Cosine</text>
+  <text x="430" y="94" class="th">Rel?</text>
+  <text x="485" y="94" class="th">Evidence Covered &amp; Diagnostic Excerpt from Table_C_Retrieval_Log.csv</text>
+
+  <!-- Row 1: C1 on Q02 (300-char heading fragmentation) -->
+  <rect x="25" y="108" width="1150" height="56" class="row-miss"/>
+  <text x="38" y="132" class="warn">C1 (300/0)</text>
+  <text x="125" y="132" class="td">Q02 · Easy</text>
+  <text x="125" y="148" class="warn">PEOS modules</text>
+  <text x="215" y="132" class="td">#1 · Chunk 124 · p.12</text>
+  <text x="365" y="132" class="td">0.6841</text>
+  <text x="430" y="132" class="warn">No</text>
+  <text x="485" y="130" class="td">Retrieved heading "25. PRE-EMPLOYMENT OVERSEAS SEMINAR (PEOS)..." but 300-char window cut off</text>
+  <text x="485" y="148" class="warn">before "comprises of eight (8) modules" (~400 chars later). Every config &gt;= 500 chars answered Q02.</text>
+
+  <!-- Row 2: C11 on Q06 (1000/100 fixes Part 1 Q06 miss!) -->
+  <rect x="25" y="164" width="1150" height="58" class="row-hit"/>
+  <text x="38" y="188" class="mono">★ C11 (1000/100)</text>
+  <text x="125" y="188" class="td">Q06 · Average</text>
+  <text x="125" y="204" class="mono">Placement fee</text>
+  <text x="215" y="188" class="td">#3 · Chunk 9 · p.3</text>
+  <text x="365" y="188" class="td">0.4318</text>
+  <text x="430" y="188" class="ok">Yes</text>
+  <text x="485" y="186" class="td">Covers BOTH <tspan class="mono">Q06:p3-s4-tip5</tspan> ("equivalent to one month salary") AND <tspan class="mono">Q06:p3-s4-tip6</tspan> ("valid employment</text>
+  <text x="485" y="204" class="td">contract and an official receipt") in one chunk! Reducing overlap from 200 (C12) to 100 (C11) recovered Q06.</text>
+
+  <!-- Row 3: C12 on Q06 (Baseline 1000/200 miss) -->
+  <rect x="25" y="222" width="1150" height="56" class="row-miss"/>
+  <text x="38" y="246" class="warn">† C12 (1000/200)</text>
+  <text x="125" y="246" class="td">Q06 · Average</text>
+  <text x="125" y="262" class="warn">Baseline miss</text>
+  <text x="215" y="246" class="td">#1 c6 · #2 c3 · #3 c49</text>
+  <text x="365" y="246" class="td">0.4478</text>
+  <text x="430" y="246" class="warn">No</text>
+  <text x="485" y="244" class="td">200-char overlap shifted Page 3 window and created 109-char tail <tspan class="warn">Chunk 49</tspan> (p.12, 0.4241), displacing</text>
+  <text x="485" y="262" class="warn">the Page 3 jobseeker tips with look-alike recruiter overcharging prohibitions (Chunks 6 &amp; 3).</text>
+
+  <!-- Row 4: C11 on Q11 (Difficult 3-unit tourist visa question) -->
+  <rect x="25" y="278" width="1150" height="58" class="row-hit"/>
+  <text x="38" y="302" class="mono">★ C11 (1000/100)</text>
+  <text x="125" y="302" class="td">Q11 · Difficult</text>
+  <text x="125" y="318" class="mono">Tourist visa (2/3)</text>
+  <text x="215" y="302" class="td">#1 · Chunk 10 · p.3</text>
+  <text x="365" y="302" class="td">0.6295</text>
+  <text x="430" y="302" class="ok">Yes</text>
+  <text x="485" y="300" class="td">Covers <tspan class="mono">Q11:p3-s5-item2</tspan> ("purportedly as tourist") + <tspan class="mono">Q11:p3-s4-tip9</tspan> ("Do not accept a tourist visa."). C11 was</text>
+  <text x="485" y="318" class="td">the ONLY configuration out of all 12 to achieve 0.667 recall (2 of 3 units) on Q11.</text>
+
+  <!-- Row 5: C10 on Q04 (Manual relevance override audit) -->
+  <rect x="25" y="336" width="1150" height="56" class="row-ovr"/>
+  <text x="38" y="360" class="mono">C10 (1000/0)</text>
+  <text x="125" y="360" class="td">Q04 · Easy (Fil)</text>
+  <text x="125" y="376" class="mono">Manual override</text>
+  <text x="215" y="360" class="td">#1 · Chunk 6 · p.2</text>
+  <text x="365" y="360" class="td">0.7612</text>
+  <text x="430" y="360" class="ok">Yes*</text>
+  <text x="485" y="358" class="td">Judgment: <tspan class="mono">manual override</tspan> — 0% overlap clipped check phrase right after "sa mga pampublikong lugar",</text>
+  <text x="485" y="376" class="td">while the core answer words were present. Recorded transparently in RELEVANCE_OVERRIDES (5 total).</text>
+
+  <!-- Row 6: All C1-C12 on Q09 (Look-alike disambiguation failure) -->
+  <rect x="25" y="392" width="1150" height="60" class="row-miss"/>
+  <text x="38" y="418" class="warn">C1–C12 (All)</text>
+  <text x="125" y="418" class="td">Q09 · Difficult</text>
+  <text x="125" y="434" class="warn">Adv. 83 vs 32</text>
+  <text x="215" y="418" class="td">Pages 5, 7, 9</text>
+  <text x="365" y="418" class="td">0.64–0.71</text>
+  <text x="430" y="418" class="warn">No (0%)</text>
+  <text x="485" y="414" class="td">0.000 recall across all 12 configs: retrieval reached Pages 5 &amp; 7, but look-alike scam narrative chunks</text>
+  <text x="485" y="432" class="warn">(including Advisory No. 159 on p.9) outscored the specific paragraphs holding "P3,000 to P3,800" &amp; "P3,000 to P5,000".</text>
+
+  <!-- Row 7: All C1-C12 on Q03 & Q05 -->
+  <rect x="25" y="452" width="1150" height="56" class="row-hit"/>
+  <text x="38" y="476" class="ok">C1–C12 (All)</text>
+  <text x="125" y="476" class="td">Q03 &amp; Q05</text>
+  <text x="125" y="492" class="mono">100% Recall</text>
+  <text x="215" y="476" class="td">Rank #1 in all 12</text>
+  <text x="365" y="476" class="td">0.72–0.81</text>
+  <text x="430" y="476" class="ok">Yes</text>
+  <text x="485" y="474" class="td">Distinctive single-sentence facts ("deployed usually through cargo ships" &amp; "offense involving economic</text>
+  <text x="485" y="492" class="td">sabotage") were retrieved at Rank #1–#2 in every configuration regardless of chunk size or overlap.</text>
+</svg>

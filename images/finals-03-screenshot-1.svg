@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="1200" height="680" role="img" aria-label="WW-F1 Part A 15-Configuration RAG Parameter Matrix: MRR@k, Answer Correctness, and Supported Share">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .grid { stroke: #232934; stroke-width: 1; stroke-dasharray: 4 4; }
+      .axis { stroke: #3b4352; stroke-width: 1.2; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .subtitle { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; }
+      .label { fill: #c3c9d2; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .label-b { fill: #ffffff; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; font-weight: 700; }
+      .mono { fill: #a0a8b4; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; }
+      .mono-hi { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .mono-warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .mrr-bar { fill: #3b82f6; }
+      .cor-bar { fill: #5ce1e6; }
+      .sup-bar { fill: #10b981; }
+      .row-hi { fill: #13252c; stroke: #5ce1e6; stroke-width: 1; }
+      .row-warn { fill: #25181b; stroke: #ffb4a8; stroke-width: 0.8; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="680" class="bg"/>
+
+  <text x="28" y="32" class="subtitle">WW-F1 PART A · 15 RAG CONFIGURATIONS (A–N*) ON TESLA T4 GPU · 18 TRILINGUAL QUERIES (PEOS + DMW)</text>
+  <text x="28" y="56" class="title">Chunk Size, Overlap, Top-k &amp; Prompt Strictness vs. MRR@k, Correctness, and Source Support</text>
+
+  <rect x="24" y="72" width="1152" height="584" rx="10" class="panel"/>
+
+  <!-- Legend -->
+  <rect x="240" y="90" width="14" height="10" rx="2" class="mrr-bar"/>
+  <text x="260" y="99" class="label">MRR@k (max 0.537)</text>
+  <rect x="415" y="90" width="14" height="10" rx="2" class="cor-bar"/>
+  <text x="435" y="99" class="label">Answer Correctness (max 0.556)</text>
+  <rect x="650" y="90" width="14" height="10" rx="2" class="sup-bar"/>
+  <text x="670" y="99" class="label">Supported by Sources % (max 83.3%)</text>
+  <text x="920" y="99" class="mono-hi">* Stricter System Prompt (L, M, N)</text>
+
+  <!-- X-axis grid: x=240 is 0.0, x=690 is 1.0 (450px per 1.0) -->
+  <line x1="240" y1="115" x2="240" y2="615" class="axis"/>
+  <line x1="330" y1="115" x2="330" y2="615" class="grid"/>
+  <line x1="420" y1="115" x2="420" y2="615" class="grid"/>
+  <line x1="510" y1="115" x2="510" y2="615" class="grid"/>
+  <line x1="600" y1="115" x2="600" y2="615" class="grid"/>
+  <line x1="690" y1="115" x2="690" y2="615" class="grid"/>
+
+  <text x="240" y="633" text-anchor="middle" class="mono">0.00</text>
+  <text x="330" y="633" text-anchor="middle" class="mono">0.20</text>
+  <text x="420" y="633" text-anchor="middle" class="mono">0.40</text>
+  <text x="510" y="633" text-anchor="middle" class="mono">0.60</text>
+  <text x="600" y="633" text-anchor="middle" class="mono">0.80</text>
+  <text x="690" y="633" text-anchor="middle" class="mono">1.00</text>
+
+  <text x="710" y="116" class="subtitle">MRR · CORR · SUPP</text>
+  <text x="885" y="116" class="subtitle">CHUNKS · GEN (s)</text>
+  <text x="1030" y="116" class="subtitle">KEY FINDING</text>
+
+  <!-- 15 runs, y starts at 124, step 32.5 -->
+  <!-- A: 400/50 | 400/50 | k=3 | MRR .306 (137.7) | Corr .306 (137.7) | Sup .667 (300.2) -->
+  <text x="228" y="141" text-anchor="end" class="label">A (400/50 · 400/50 · k3)</text>
+  <rect x="240" y="126" width="137.7" height="6" class="mrr-bar"/>
+  <rect x="240" y="133" width="137.7" height="6" class="cor-bar"/>
+  <rect x="240" y="140" width="300.2" height="6" class="sup-bar"/>
+  <text x="710" y="141" class="mono">0.306 · 0.306 · 66.7%</text>
+  <text x="885" y="141" class="mono">3,961 · 11.65s</text>
+  <text x="1030" y="141" class="mono">PEOS cut (~25 words)</text>
+
+  <!-- B: 800/100 | 800/100 | k=3 | MRR .537 (241.7) | Corr .556 (250.2) | Sup .833 (374.9) -->
+  <rect x="34" y="155" width="1132" height="29" rx="5" class="row-hi"/>
+  <text x="228" y="173" text-anchor="end" class="label-b" fill="#5ce1e6">★ B (800/100 · 800/100 · k3)</text>
+  <rect x="240" y="158" width="241.7" height="6" class="mrr-bar"/>
+  <rect x="240" y="165" width="250.2" height="6" class="cor-bar"/>
+  <rect x="240" y="172" width="374.9" height="6" class="sup-bar"/>
+  <text x="710" y="173" class="mono-hi">0.537 · 0.556 · 83.3%</text>
+  <text x="885" y="173" class="mono-hi">2,079 · 11.24s</text>
+  <text x="1030" y="173" class="mono-hi">Best overall balance</text>
+
+  <!-- B2: repeat of B | MRR .537 | Corr .528 | Sup .722 -->
+  <text x="228" y="205" text-anchor="end" class="label">B2 (800/100 repeat · k3)</text>
+  <rect x="240" y="190" width="241.7" height="6" class="mrr-bar"/>
+  <rect x="240" y="197" width="237.6" height="6" class="cor-bar"/>
+  <rect x="240" y="204" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="205" class="mono">0.537 · 0.528 · 72.2%</text>
+  <text x="885" y="205" class="mono">2,079 · 11.48s</text>
+  <text x="1030" y="205" class="mono">Identical retrieval; ±0.028</text>
+
+  <!-- C: 1200/150 | 1200/150 | k=3 | MRR .324 | Corr .417 | Sup .722 -->
+  <text x="228" y="237" text-anchor="end" class="label">C (1200/150 · 1200/150 · k3)</text>
+  <rect x="240" y="222" width="145.8" height="6" class="mrr-bar"/>
+  <rect x="240" y="229" width="187.7" height="6" class="cor-bar"/>
+  <rect x="240" y="236" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="237" class="mono">0.324 · 0.417 · 72.2%</text>
+  <text x="885" y="237" class="mono">1,385 · 11.70s</text>
+  <text x="1030" y="237" class="mono-warn">DMW dropped to 0.167</text>
+
+  <!-- D: 800/200 | 800/200 | k=3 | MRR .056 | Corr .028 | Sup .556 -->
+  <rect x="34" y="251" width="1132" height="29" rx="5" class="row-warn"/>
+  <text x="228" y="269" text-anchor="end" class="label-b" fill="#ffb4a8">✗ D (800/200 · 25% overlap)</text>
+  <rect x="240" y="254" width="25.2" height="6" class="mrr-bar"/>
+  <rect x="240" y="261" width="12.6" height="6" class="cor-bar"/>
+  <rect x="240" y="268" width="250.2" height="6" class="sup-bar"/>
+  <text x="710" y="269" class="mono-warn">0.056 · 0.028 · 55.6%</text>
+  <text x="885" y="269" class="mono-warn">2,387 · 11.34s</text>
+  <text x="1030" y="269" class="mono-warn">+308 dupes broke top-3</text>
+
+  <!-- E: 800/100 | 800/100 | k=5 | MRR .537 | Corr .528 | Sup .667 -->
+  <text x="228" y="301" text-anchor="end" class="label">E (800/100 · 800/100 · k5)</text>
+  <rect x="240" y="286" width="241.7" height="6" class="mrr-bar"/>
+  <rect x="240" y="293" width="237.6" height="6" class="cor-bar"/>
+  <rect x="240" y="300" width="300.2" height="6" class="sup-bar"/>
+  <text x="710" y="301" class="mono">0.537 · 0.528 · 66.7%</text>
+  <text x="885" y="301" class="mono">2,079 · 13.02s</text>
+  <text x="1030" y="301" class="mono">Top R 0.583; extra noise</text>
+
+  <!-- F: 1500/300 | 700/70 | k=3 | MRR .250 | Corr .278 | Sup .778 -->
+  <text x="228" y="333" text-anchor="end" class="label">F (1500/300 · 700/70 · k3)</text>
+  <rect x="240" y="318" width="112.5" height="6" class="mrr-bar"/>
+  <rect x="240" y="325" width="125.1" height="6" class="cor-bar"/>
+  <rect x="240" y="332" width="350.1" height="6" class="sup-bar"/>
+  <text x="710" y="333" class="mono">0.250 · 0.278 · 77.8%</text>
+  <text x="885" y="333" class="mono">2,208 · 10.90s</text>
+  <text x="1030" y="333" class="mono">42 PEOS lost P1 in TL/TGL</text>
+
+  <!-- G: 2000/500 | 700/70 | k=3 | MRR .407 | Corr .500 | Sup .833 -->
+  <text x="228" y="365" text-anchor="end" class="label">G (2000/500 · 700/70 · k3)</text>
+  <rect x="240" y="350" width="183.2" height="6" class="mrr-bar"/>
+  <rect x="240" y="357" width="225.0" height="6" class="cor-bar"/>
+  <rect x="240" y="364" width="374.9" height="6" class="sup-bar"/>
+  <text x="710" y="365" class="mono">0.407 · 0.500 · 83.3%</text>
+  <text x="885" y="365" class="mono">2,196 · 11.58s</text>
+  <text x="1030" y="365" class="mono">Boundary luck; lost P2</text>
+
+  <!-- H: 800/100 | 700/70 | k=3 | MRR .463 | Corr .528 | Sup .778 -->
+  <text x="228" y="397" text-anchor="end" class="label">H (800/100 · 700/70 · k3)</text>
+  <rect x="240" y="382" width="208.4" height="6" class="mrr-bar"/>
+  <rect x="240" y="389" width="237.6" height="6" class="cor-bar"/>
+  <rect x="240" y="396" width="350.1" height="6" class="sup-bar"/>
+  <text x="710" y="397" class="mono">0.463 · 0.528 · 77.8%</text>
+  <text x="885" y="397" class="mono">2,235 · 11.24s</text>
+  <text x="1030" y="397" class="mono">DMW shift hurt P2-TGL</text>
+
+  <!-- I: 800/100 | 500/50 | k=3 | MRR .472 | Corr .500 | Sup .611 -->
+  <text x="228" y="429" text-anchor="end" class="label">I (800/100 · 500/50 · k3)</text>
+  <rect x="240" y="414" width="212.4" height="6" class="mrr-bar"/>
+  <rect x="240" y="421" width="225.0" height="6" class="cor-bar"/>
+  <rect x="240" y="428" width="275.0" height="6" class="sup-bar"/>
+  <text x="710" y="429" class="mono">0.472 · 0.500 · 61.1%</text>
+  <text x="885" y="429" class="mono">3,082 · 12.40s</text>
+  <text x="1030" y="429" class="mono-warn">Found MOJO; split D2</text>
+
+  <!-- J: 1000/120 | 800/100 | k=3 | MRR .370 | Corr .417 | Sup .722 -->
+  <text x="228" y="461" text-anchor="end" class="label">J (1000/120 · 800/100 · k3)</text>
+  <rect x="240" y="446" width="166.5" height="6" class="mrr-bar"/>
+  <rect x="240" y="453" width="187.7" height="6" class="cor-bar"/>
+  <rect x="240" y="460" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="461" class="mono">0.370 · 0.417 · 72.2%</text>
+  <text x="885" y="461" class="mono">2,067 · 11.91s</text>
+  <text x="1030" y="461" class="mono">Lost P3 in all 3 langs</text>
+
+  <!-- K: 600/75 | 800/100 | k=3 | MRR .435 | Corr .500 | Sup .722 -->
+  <text x="228" y="493" text-anchor="end" class="label">K (600/75 · 800/100 · k3)</text>
+  <rect x="240" y="478" width="195.8" height="6" class="mrr-bar"/>
+  <rect x="240" y="485" width="225.0" height="6" class="cor-bar"/>
+  <rect x="240" y="492" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="493" class="mono">0.435 · 0.500 · 72.2%</text>
+  <text x="885" y="493" class="mono">2,098 · 12.20s</text>
+  <text x="1030" y="493" class="mono">Best P@3 (0.241) pre-prompt</text>
+
+  <!-- L*: 800/100 | 800/100 | k=3 | Strict | MRR .537 | Corr .500 | Sup .778 -->
+  <rect x="34" y="507" width="1132" height="29" rx="5" class="row-hi"/>
+  <text x="228" y="525" text-anchor="end" class="label-b" fill="#5ce1e6">★ L* (800/100 · k3 · Strict)</text>
+  <rect x="240" y="510" width="241.7" height="6" class="mrr-bar"/>
+  <rect x="240" y="517" width="225.0" height="6" class="cor-bar"/>
+  <rect x="240" y="524" width="350.1" height="6" class="sup-bar"/>
+  <text x="710" y="525" class="mono-hi">0.537 · 0.500 · 77.8%</text>
+  <text x="885" y="525" class="mono-hi">2,079 · 4.91s (-56%)</text>
+  <text x="1030" y="525" class="mono-hi">0 unsupported DMW claims</text>
+
+  <!-- M*: 600/75 | 800/100 | k=3 | Strict | MRR .481 | Corr .556 | Sup .722 -->
+  <text x="228" y="557" text-anchor="end" class="label-b">M* (600/75 · 800/100 · Strict)</text>
+  <rect x="240" y="542" width="216.5" height="6" class="mrr-bar"/>
+  <rect x="240" y="549" width="250.2" height="6" class="cor-bar"/>
+  <rect x="240" y="556" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="557" class="mono">0.481 · 0.556 · 72.2%</text>
+  <text x="885" y="557" class="mono-hi">2,098 · 4.76s</text>
+  <text x="1030" y="557" class="mono">Highest P (0.278) &amp; R (0.611)</text>
+
+  <!-- N*: 800/100 | 800/100 | k=5 | Strict | MRR .463 | Corr .417 | Sup .722 -->
+  <text x="228" y="589" text-anchor="end" class="label">N* (800/100 · k5 · Strict)</text>
+  <rect x="240" y="574" width="208.4" height="6" class="mrr-bar"/>
+  <rect x="240" y="581" width="187.7" height="6" class="cor-bar"/>
+  <rect x="240" y="588" width="324.9" height="6" class="sup-bar"/>
+  <text x="710" y="589" class="mono">0.463 · 0.417 · 72.2%</text>
+  <text x="885" y="589" class="mono">2,079 · 6.03s</text>
+  <text x="1030" y="589" class="mono">k=5 hurt DMW (0.222)</text>
+</svg>

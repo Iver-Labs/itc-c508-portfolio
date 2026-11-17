@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-label="Group DaBig3 Member Responsibility Matrix D6 and Deliverables Package D1 to D7">
+  <defs>
+    <linearGradient id="bgGrad3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11141a"/>
+      <stop offset="100%" stop-color="#0b0d11"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="660" rx="14" fill="url(#bgGrad3)" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <text x="40" y="46" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="13" font-weight="600" letter-spacing="1.5">P-F1 · DELIVERABLE D6 (MRM) &amp; D1–D7 DELIVERABLES ARCHITECTURE · GROUP DABIG3</text>
+  <text x="40" y="78" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="24" font-weight="800">Member Responsibility Matrix &amp; End-to-End Capstone Deliverables Traceability</text>
+  <text x="40" y="102" fill="#a0a8b4" font-family="'IBM Plex Sans', sans-serif" font-size="14">Non-overlapping ownership across Web Architecture &amp; Deployment (Iverson Labastida), RAG Notebook &amp; Logs (Antonio Lontoc), and Evaluation &amp; IEEE Report (Isabela Reyes)</text>
+
+  <!-- Card 1: Iverson Labastida (Highlighted) -->
+  <rect x="40" y="128" width="360" height="404" rx="10" fill="rgba(92,225,230,0.07)" stroke="#5ce1e6" stroke-width="1.5"/>
+  <rect x="60" y="148" width="136" height="22" rx="11" fill="#5ce1e6"/>
+  <text x="72" y="163" fill="#0b0d10" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">MY CONTRIBUTION</text>
+  <text x="60" y="196" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="20" font-weight="800">Iverson Labastida</text>
+  <text x="60" y="216" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">Website Programmer, Architecture Designer</text>
+  <text x="60" y="232" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">&amp; Deployment Lead</text>
+
+  <g transform="translate(60, 258)" font-family="'IBM Plex Sans', sans-serif" font-size="12.5" fill="#f5f7fa">
+    <text x="0" y="0" font-weight="700" fill="#ffffff">Primary Tasks Owned:</text>
+    <text x="0" y="24">• Designed Cloud Run RAG container architecture</text>
+    <text x="0" y="46">• Built Next.js 16 DMW Info Demo &amp; chat UI</text>
+    <text x="0" y="68">• Hosted &amp; deployed on Google Cloud Run</text>
+    <text x="0" y="90">• Set up &amp; maintained GitHub repo (D3 codebase)</text>
+    <text x="0" y="112">• Built 7/7 automated config parity test suite</text>
+    <text x="0" y="134">• Ran Playwright 33-question parity audit (33/33)</text>
+    <text x="0" y="156">• Captured 39 screenshots &amp; wrote D3 Web Report</text>
+    <text x="0" y="178">• Authored IEEE Paper Section V (Deployment)</text>
+  </g>
+  <rect x="60" y="458" width="320" height="54" rx="6" fill="rgba(11,13,17,0.75)" stroke="rgba(92,225,230,0.35)"/>
+  <text x="74" y="478" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">DELIVERABLES &amp; ARTIFACTS:</text>
+  <text x="74" y="498" fill="#ffffff" font-family="'IBM Plex Mono', monospace" font-size="11">github.com/Iver-Labs/dmw-demo · Cloud Run · IEEE §V</text>
+
+  <!-- Card 2: Antonio Lontoc -->
+  <rect x="420" y="128" width="360" height="404" rx="10" fill="rgba(20,23,28,0.88)" stroke="rgba(255,255,255,0.12)"/>
+  <rect x="440" y="148" width="118" height="22" rx="11" fill="rgba(255,255,255,0.1)"/>
+  <text x="454" y="163" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="600">GROUP LEADER</text>
+  <text x="440" y="196" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="20" font-weight="800">Antonio Lontoc</text>
+  <text x="440" y="216" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">Group Leader; Notebook &amp; Experiment</text>
+  <text x="440" y="232" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">Logs Lead</text>
+
+  <g transform="translate(440, 258)" font-family="'IBM Plex Sans', sans-serif" font-size="12.5" fill="#c3c9d2">
+    <text x="0" y="0" font-weight="700" fill="#ffffff">Primary Tasks Owned:</text>
+    <text x="0" y="24">• Led development of RAG Final Notebook (D3)</text>
+    <text x="0" y="46">• Engineered Stage 2 progression (R0 to FINAL)</text>
+    <text x="0" y="68">• Led Experiment Logs &amp; Checkpoints (D4)</text>
+    <text x="0" y="90">• Exported 3,849-chunk handoff package</text>
+    <text x="0" y="112">• Coordinated task assignment &amp; verified MRM (D6)</text>
+    <text x="0" y="134">• Prepared signed Integrity &amp; AI Statement (D7)</text>
+    <text x="0" y="156">• Authored IEEE pipeline &amp; methodology sections</text>
+  </g>
+  <rect x="440" y="458" width="320" height="54" rx="6" fill="rgba(11,13,17,0.75)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="454" y="478" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">DELIVERABLES &amp; ARTIFACTS:</text>
+  <text x="454" y="498" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11">D3 Notebook (.ipynb) · D4 Logs (.xlsx) · D6 &amp; D7</text>
+
+  <!-- Card 3: Isabela Loraine Reyes -->
+  <rect x="800" y="128" width="360" height="404" rx="10" fill="rgba(20,23,28,0.88)" stroke="rgba(255,255,255,0.12)"/>
+  <rect x="820" y="148" width="136" height="22" rx="11" fill="rgba(255,255,255,0.1)"/>
+  <text x="832" y="163" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="600">EVALUATION LEAD</text>
+  <text x="820" y="196" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="20" font-weight="800">Isabela Loraine Reyes</text>
+  <text x="820" y="216" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">Evaluation, Chunking Experiments &amp;</text>
+  <text x="820" y="232" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11.5" font-weight="600">Report Assembly Lead</text>
+
+  <g transform="translate(820, 258)" font-family="'IBM Plex Sans', sans-serif" font-size="12.5" fill="#c3c9d2">
+    <text x="0" y="0" font-weight="700" fill="#ffffff">Primary Tasks Owned:</text>
+    <text x="0" y="24">• Designed 11 base questions × 3 languages (33 Qs)</text>
+    <text x="0" y="46">• Authored reference answers &amp; grading rubric</text>
+    <text x="0" y="68">• Led Chunking Experiments workbook (D2)</text>
+    <text x="0" y="90">• Led Chatbot Response Evaluation workbook (D5)</text>
+    <text x="0" y="112">• Analyzed PEOS 500/50, 800/100, 800/200, 1200/150</text>
+    <text x="0" y="134">• Final assembly, editing &amp; formatting of IEEE (D1)</text>
+  </g>
+  <rect x="820" y="458" width="320" height="54" rx="6" fill="rgba(11,13,17,0.75)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="834" y="478" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="700">DELIVERABLES &amp; ARTIFACTS:</text>
+  <text x="834" y="498" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="11">D1 IEEE Report (.docx) · D2 Chunking · D5 Eval (.xlsx)</text>
+
+  <!-- Bottom Shared Bar: Joint Contributions -->
+  <rect x="40" y="548" width="1120" height="76" rx="10" fill="rgba(20,23,28,0.92)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="64" y="576" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">JOINT TEAM CONTRIBUTIONS (ALL 3 MEMBERS) &amp; SIGNED INTEGRITY STATEMENT (D7)</text>
+  <text x="64" y="602" fill="#f5f7fa" font-family="'IBM Plex Sans', sans-serif" font-size="13">1. Working Dataset: Combined PEOS pre-departure orientation module (57 cleaned chunks) + DMW licensed recruitment agency directory (3,792 single-record chunks).</text>
+  <text x="64" y="618" fill="#a0a8b4" font-family="'IBM Plex Sans', sans-serif" font-size="12">2. System Prompt: Co-authored the 11-rule grounding prompt forbidding licensing verdicts without evidence, forbidding fee invention, and enforcing bilingual FALLBACK.</text>
+</svg>

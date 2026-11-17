@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" width="1200" height="650" role="img" aria-label="PT-F2 Configuration-Level Retrieval Results: Precision@3, Recall@3, and MRR@3 across C1 to C12">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .grid { stroke: #232934; stroke-width: 1; stroke-dasharray: 4 4; }
+      .axis { stroke: #3b4352; stroke-width: 1.2; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .subtitle { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; }
+      .label { fill: #c3c9d2; font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; }
+      .label-bold { fill: #ffffff; font-family: 'IBM Plex Sans', sans-serif; font-size: 11.5px; font-weight: 700; }
+      .mono { fill: #a0a8b4; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+      .mono-hi { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .mono-warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .p-bar { fill: #3b82f6; }
+      .r-bar { fill: #f59e0b; }
+      .m-bar { fill: #10b981; }
+      .row-hi { fill: #13252c; stroke: #5ce1e6; stroke-width: 1; }
+      .row-base { fill: #1c2029; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="650" class="bg"/>
+
+  <!-- Top Header -->
+  <text x="28" y="32" class="subtitle">PT-F2 TABLE A &amp; FIG. 1 · 12 CHUNKING CONFIGURATIONS (K = 3, ALL-MINILM-L6-V2, FAISS INDEXFLATIP)</text>
+  <text x="28" y="56" class="title">Precision@3, Recall@3, and MRR@3 Across Chunk Sizes (300–1,000) &amp; Overlaps (0%–20%)</text>
+
+  <rect x="24" y="72" width="1152" height="554" rx="10" class="panel"/>
+
+  <!-- Legend -->
+  <rect x="210" y="90" width="14" height="10" rx="2" class="p-bar"/>
+  <text x="230" y="99" class="label">Precision@3 (max 0.306)</text>
+  <rect x="400" y="90" width="14" height="10" rx="2" class="r-bar"/>
+  <text x="420" y="99" class="label">Recall@3 (max 0.736)</text>
+  <rect x="575" y="90" width="14" height="10" rx="2" class="m-bar"/>
+  <text x="595" y="99" class="label">MRR@3 (max 0.750)</text>
+  <text x="780" y="99" class="mono-hi">★ C11 (1000/100): Recommended Winner · † C12 (1000/200): Part 1 Baseline</text>
+
+  <!-- X-axis grid lines: x=210 is 0.0, x=810 is 1.0 (600px per 1.0 score) -->
+  <line x1="210" y1="115" x2="210" y2="575" class="axis"/>
+  <line x1="330" y1="115" x2="330" y2="575" class="grid"/>
+  <line x1="450" y1="115" x2="450" y2="575" class="grid"/>
+  <line x1="570" y1="115" x2="570" y2="575" class="grid"/>
+  <line x1="690" y1="115" x2="690" y2="575" class="grid"/>
+  <line x1="810" y1="115" x2="810" y2="575" class="grid"/>
+
+  <text x="210" y="594" text-anchor="middle" class="mono">0.00</text>
+  <text x="330" y="594" text-anchor="middle" class="mono">0.20</text>
+  <text x="450" y="594" text-anchor="middle" class="mono">0.40</text>
+  <text x="570" y="594" text-anchor="middle" class="mono">0.60</text>
+  <text x="690" y="594" text-anchor="middle" class="mono">0.80</text>
+  <text x="810" y="594" text-anchor="middle" class="mono">1.00</text>
+  <text x="510" y="614" text-anchor="middle" class="label">Retrieval Metric Score (k = 3 over 12 Questions, 20 Evidence Units)</text>
+
+  <!-- Column headers on right -->
+  <text x="845" y="116" class="subtitle">P@3 / R@3 / MRR@3</text>
+  <text x="1015" y="116" class="subtitle">INDEX COST</text>
+
+  <!-- C1 (300/0): P=.222(133.2), R=.542(325.2), M=.514(308.4) -->
+  <text x="196" y="142" text-anchor="end" class="label">C1 (300 / 0 · 0%)</text>
+  <rect x="210" y="126" width="133.2" height="7" class="p-bar"/>
+  <rect x="210" y="134" width="325.2" height="7" class="r-bar"/>
+  <rect x="210" y="142" width="308.4" height="7" class="m-bar"/>
+  <text x="845" y="142" class="mono">0.222 · 0.542 · 0.514</text>
+  <text x="1015" y="142" class="mono-warn">128 chunks · 192.0 KB</text>
+
+  <!-- C2 (300/30): P=.139(83.4), R=.333(199.8), M=.333(199.8) -->
+  <text x="196" y="180" text-anchor="end" class="label">C2 (300 / 30 · 10%)</text>
+  <rect x="210" y="164" width="83.4" height="7" class="p-bar"/>
+  <rect x="210" y="172" width="199.8" height="7" class="r-bar"/>
+  <rect x="210" y="180" width="199.8" height="7" class="m-bar"/>
+  <text x="845" y="180" class="mono-warn">0.139 · 0.333 · 0.333</text>
+  <text x="1015" y="180" class="mono-warn">140 chunks · 210.0 KB</text>
+
+  <!-- C3 (300/60): P=.167(100.2), R=.333(199.8), M=.333(199.8) -->
+  <text x="196" y="218" text-anchor="end" class="label">C3 (300 / 60 · 20%)</text>
+  <rect x="210" y="202" width="100.2" height="7" class="p-bar"/>
+  <rect x="210" y="210" width="199.8" height="7" class="r-bar"/>
+  <rect x="210" y="218" width="199.8" height="7" class="m-bar"/>
+  <text x="845" y="218" class="mono-warn">0.167 · 0.333 · 0.333</text>
+  <text x="1015" y="218" class="mono-warn">159 chunks · 238.5 KB</text>
+
+  <!-- C4 (500/0): P=.278(166.8), R=.653(391.8), M=.750(450.0) -->
+  <text x="196" y="256" text-anchor="end" class="label">C4 (500 / 0 · 0%)</text>
+  <rect x="210" y="240" width="166.8" height="7" class="p-bar"/>
+  <rect x="210" y="248" width="391.8" height="7" class="r-bar"/>
+  <rect x="210" y="256" width="450.0" height="7" class="m-bar"/>
+  <text x="845" y="256" class="mono">0.278 · 0.653 · <tspan fill="#ffffff" font-weight="700">0.750</tspan></text>
+  <text x="1015" y="256" class="mono">80 chunks · 120.0 KB</text>
+
+  <!-- C5 (500/50): P=.278(166.8), R=.639(383.4), M=.736(441.6) -->
+  <text x="196" y="294" text-anchor="end" class="label">C5 (500 / 50 · 10%)</text>
+  <rect x="210" y="278" width="166.8" height="7" class="p-bar"/>
+  <rect x="210" y="286" width="383.4" height="7" class="r-bar"/>
+  <rect x="210" y="294" width="441.6" height="7" class="m-bar"/>
+  <text x="845" y="294" class="mono">0.278 · 0.639 · 0.736</text>
+  <text x="1015" y="294" class="mono">88 chunks · 132.0 KB</text>
+
+  <!-- C6 (500/100): P=.306(183.6), R=.694(416.4), M=.625(375.0) -->
+  <text x="196" y="332" text-anchor="end" class="label">C6 (500 / 100 · 20%)</text>
+  <rect x="210" y="316" width="183.6" height="7" class="p-bar"/>
+  <rect x="210" y="324" width="416.4" height="7" class="r-bar"/>
+  <rect x="210" y="332" width="375.0" height="7" class="m-bar"/>
+  <text x="845" y="332" class="mono"><tspan fill="#ffffff" font-weight="700">0.306</tspan> · 0.694 · 0.625</text>
+  <text x="1015" y="332" class="mono">97 chunks · 145.5 KB</text>
+
+  <!-- C7 (750/0): P=.306(183.6), R=.639(383.4), M=.750(450.0) -->
+  <text x="196" y="370" text-anchor="end" class="label">C7 (750 / 0 · 0%)</text>
+  <rect x="210" y="354" width="183.6" height="7" class="p-bar"/>
+  <rect x="210" y="362" width="383.4" height="7" class="r-bar"/>
+  <rect x="210" y="370" width="450.0" height="7" class="m-bar"/>
+  <text x="845" y="370" class="mono"><tspan fill="#ffffff" font-weight="700">0.306</tspan> · 0.639 · <tspan fill="#ffffff" font-weight="700">0.750</tspan></text>
+  <text x="1015" y="370" class="mono">58 chunks · 87.0 KB</text>
+
+  <!-- C8 (750/75): P=.222(133.2), R=.542(325.2), M=.528(316.8) -->
+  <text x="196" y="408" text-anchor="end" class="label">C8 (750 / 75 · 10%)</text>
+  <rect x="210" y="392" width="133.2" height="7" class="p-bar"/>
+  <rect x="210" y="400" width="325.2" height="7" class="r-bar"/>
+  <rect x="210" y="408" width="316.8" height="7" class="m-bar"/>
+  <text x="845" y="408" class="mono">0.222 · 0.542 · 0.528</text>
+  <text x="1015" y="408" class="mono">59 chunks · 88.5 KB</text>
+
+  <!-- C9 (750/150): P=.306(183.6), R=.736(441.6), M=.569(341.4) -->
+  <text x="196" y="446" text-anchor="end" class="label">C9 (750 / 150 · 20%)</text>
+  <rect x="210" y="430" width="183.6" height="7" class="p-bar"/>
+  <rect x="210" y="438" width="441.6" height="7" class="r-bar"/>
+  <rect x="210" y="446" width="341.4" height="7" class="m-bar"/>
+  <text x="845" y="446" class="mono"><tspan fill="#ffffff" font-weight="700">0.306</tspan> · <tspan fill="#ffffff" font-weight="700">0.736</tspan> · 0.569</text>
+  <text x="1015" y="446" class="mono">69 chunks · 103.5 KB</text>
+
+  <!-- C10 (1000/0): P=.278(166.8), R=.736(441.6), M=.694(416.4) -->
+  <text x="196" y="484" text-anchor="end" class="label">C10 (1000 / 0 · 0%)</text>
+  <rect x="210" y="468" width="166.8" height="7" class="p-bar"/>
+  <rect x="210" y="476" width="441.6" height="7" class="r-bar"/>
+  <rect x="210" y="484" width="416.4" height="7" class="m-bar"/>
+  <text x="845" y="484" class="mono">0.278 · <tspan fill="#ffffff" font-weight="700">0.736</tspan> · 0.694</text>
+  <text x="1015" y="484" class="mono">44 chunks · 66.0 KB</text>
+
+  <!-- C11* (1000/100): HIGHLIGHTED RECOMMENDED WINNER -->
+  <rect x="36" y="500" width="1128" height="34" rx="6" class="row-hi"/>
+  <text x="196" y="522" text-anchor="end" class="label-bold" fill="#5ce1e6">★ C11* (1000 / 100 · 10%)</text>
+  <rect x="210" y="506" width="183.6" height="7" class="p-bar"/>
+  <rect x="210" y="514" width="424.8" height="7" class="r-bar"/>
+  <rect x="210" y="522" width="416.4" height="7" class="m-bar"/>
+  <text x="845" y="522" class="mono-hi">0.306 · 0.708 · 0.694</text>
+  <text x="1015" y="522" class="mono-hi">48 chunks · 72.0 KB</text>
+
+  <!-- C12† (1000/200): PART 1 BASELINE -->
+  <rect x="36" y="538" width="1128" height="34" rx="6" class="row-base"/>
+  <text x="196" y="560" text-anchor="end" class="label">† C12 (1000 / 200 · 20%)</text>
+  <rect x="210" y="544" width="166.8" height="7" class="p-bar"/>
+  <rect x="210" y="552" width="375.0" height="7" class="r-bar"/>
+  <rect x="210" y="560" width="375.0" height="7" class="m-bar"/>
+  <text x="845" y="560" class="mono">0.278 · 0.625 · 0.625</text>
+  <text x="1015" y="560" class="mono">50 chunks · 75.0 KB</text>
+</svg>

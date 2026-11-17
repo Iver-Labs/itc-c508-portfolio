@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fine-Tuning a Transformer for Text Classification — Report — ITC C508 Portfolio</title>
-<meta name="robots" content="noindex">
+<title>PT-F2: Experimenting to Determine the Best Chunk Size and Overlap — Report — ITC C508 Portfolio</title>
+<meta name="description" content="Controlled 12-configuration FAISS retrieval experiment across chunk sizes (300–1,000 chars) and overlaps (0%–20%) on DMW/POEA guidance: C11 (1000/100) beat the 1000/200 baseline on Precision@3 (0.306), Recall@3 (0.708), and MRR@3 (0.694).">
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body data-activity-id="finals-02">
@@ -25,37 +25,452 @@
 </header>
 
 <main>
-  <section class="hero" style="padding-bottom: 0.5rem;">
+  <section class="hero report-hero">
     <span class="kicker">Finals &middot; Activity 02 &middot; Week 14</span>
-    <h1>Fine-Tuning a Transformer for Text Classification</h1>
+    <h1>PT-F2: Experimenting to Determine the Best Chunk Size and Overlap</h1>
+    <p class="report-takeaway">Chunk size mattered more than overlap: 300-character chunks severed headings from facts, 20% overlap lowered ranking quality at every size, and 1,000-character chunks with 100-character overlap (C11) outperformed the Part 1 baseline across all three retrieval metrics.</p>
+    <dl class="report-facts">
+      <div><dt>Experiment</dt><dd>12 configs (C1–C12) · 432 retrieval rows</dd></div>
+      <div><dt>Grid</dt><dd>Sizes 300, 500, 750, 1,000 · Overlaps 0%, 10%, 20%</dd></div>
+      <div><dt>Benchmark</dt><dd>12 questions (E / A / D) · 20 evidence units</dd></div>
+      <div><dt>Recommended</dt><dd>C11 (1,000 / 100 · 48 chunks · 72.0 KB)</dd></div>
+    </dl>
   </section>
 
-  <div class="report-gallery">
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
+  <div class="report-layout">
+    <div class="report-body">
+
+      <section class="report-section" id="summary">
+        <h2>Summary</h2>
+        <p data-field="description">Conducted a controlled 12-configuration retrieval experiment over the 12-page bilingual DMW/POEA anti-illegal recruitment compilation (95 passages, 25 sections), crossing chunk sizes of 300, 500, 750, and 1,000 characters with relative overlaps of 0%, 10%, and 20% in newly built FAISS IndexFlatIP stores using all-MiniLM-L6-v2 embeddings. Evaluated across 12 verified questions (20 evidence units) using Precision@3, Recall@3, MRR@3, and efficiency benchmarks, identifying C11 (1,000-character chunks, 100-character overlap) as the most balanced configuration—surpassing the Part 1 baseline (1,000/200) on every metric while indexing fewer chunks.</p>
+        <ul class="metric-grid" aria-label="Key results">
+          <li class="metric">
+            <span class="metric-label">Recommended config (C11)</span>
+            <span class="metric-value">1,000 / 100</span>
+            <span class="metric-note">48 chunks (72.0 KB) · Top 4 on all 3 metrics</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Recall@3 vs. baseline</span>
+            <span class="metric-value">0.625 → 0.708</span>
+            <span class="metric-note">C12 (1000/200) vs C11 (1000/100) · Peak 0.736</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">MRR@3 vs. baseline</span>
+            <span class="metric-value">0.625 → 0.694</span>
+            <span class="metric-note">C12 vs C11 · 20% overlap hurt MRR@3 at every size</span>
+          </li>
+          <li class="metric">
+            <span class="metric-label">Difficult Recall@3</span>
+            <span class="metric-value">0.125 → 0.375</span>
+            <span class="metric-note">3× gain over C12 baseline on multi-passage queries</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="report-section" id="approach">
+        <h2>Approach</h2>
+        <p>Following Part 1 (PT-F1), which built the full RAG pipeline using a baseline of <code>1,000</code>-character chunks and <code>200</code>-character overlap (<code>C12</code>), this Part 2 study isolates the retrieval layer to test whether smaller chunk sizes or different overlap ratios retrieve the required legal evidence more effectively for the same 12-page <code>dmw_source_b_guidance.pdf</code> compilation.</p>
+        <ol>
+          <li><strong>Controlled Experimental Grid (Steps 1–5):</strong> Everything except chunk size and overlap was held strictly constant: the extracted page text, the page-scoped <code>create_chunks()</code> function, the <code>sentence-transformers/all-MiniLM-L6-v2</code> embedder on CPU (384 dimensions, 256-token input limit), unit L2 normalization, exact inner-product search in <code>faiss.IndexFlatIP(384)</code>, and <code>TOP_K = 3</code>. Crossing four chunk sizes (<code>300</code>, <code>500</code>, <code>750</code>, <code>1,000</code> characters) with three relative overlap ratios (<code>0%</code>, <code>10%</code>, <code>20%</code>) generated 12 configurations (<code>C1</code>–<code>C12</code>), where each configuration received a freshly built FAISS index and searched with the exact same pre-computed query vectors.</li>
+          <li><strong>Ground-Truth Evidence Units &amp; Audited Relevance Rule (Steps 6–7):</strong> The 12 verified questions from Part 1 (4 Easy, 4 Average, 4 Difficult) require <strong>20 distinct evidence units</strong> in total (4 Easy units, 6 Average units, 10 Difficult units). Each unit specifies its source page and an exact check phrase (validated via <code>find_in_pdf()</code> and <code>Min_Span_Chars</code>). A retrieved chunk covers a unit only if it originates from that page and contains the complete normalized check phrase—preventing look-alike scam advisories or mere keyword mentions from counting as hits. Auditing all 432 retrieved rows identified 5 chunks where a boundary cut the check phrase while leaving the answer-bearing words intact (<code>Q04</code> in C1, C4, C7, C10; <code>Q10</code> in C1); these were recorded transparently in <code>RELEVANCE_OVERRIDES</code>.</li>
+          <li><strong>Quality &amp; Efficiency Evaluation (Steps 8–11):</strong> Because <code>Precision@3</code>, <code>Recall@3</code>, and <code>MRR@3</code> evaluate retrieval directly, the language model was not invoked. For each configuration, the notebook logged overall metrics (<strong>Table A</strong>), difficulty-tier breakdowns (<strong>Table B</strong>), all 432 chunk judgments (<strong>Table C</strong>), and efficiency indicators: total chunks, serialized index size in KB, embedding time, search latency, and the percentage of chunks exceeding MiniLM's 256-token truncation limit.</li>
+        </ol>
+        <dl class="terms">
+          <div><dt>Evidence unit &amp; check phrase</dt><dd>A single required passage verified by its page number and the exact answer-bearing wording from the PDF, ensuring multi-hop questions are scored on every fact they need rather than topic similarity.</dd></div>
+          <div><dt>Precision@3 &amp; Recall@3</dt><dd>Precision@3 measures the share of the three retrieved chunks that are relevant; Recall@3 measures the share of a question's required evidence units covered across the top three chunks.</dd></div>
+          <div><dt>Mean Reciprocal Rank (MRR@3)</dt><dd>Rewards configurations that place the first relevant chunk at Rank #1 (score 1.0) rather than Rank #2 (0.5) or Rank #3 (0.333), averaged across all 12 questions.</dd></div>
+          <div><dt>Embedder 256-token ceiling</dt><dd>The maximum sub-word sequence length read by <code>all-MiniLM-L6-v2</code>; any text beyond 256 tokens in a long chunk is truncated before embedding and becomes invisible to vector search.</dd></div>
+        </dl>
+      </section>
+
+      <section class="report-section" id="results">
+        <h2>Results</h2>
+        <p>Across the 12 configurations, chunk size drove retrieval quality far more than overlap. The 300-character configurations (<code>C1</code>–<code>C3</code>) were the weakest on every metric, while <code>C11</code> (<code>1,000 / 100</code>, 10% overlap) was the only configuration to rank in the top four across <code>Precision@3</code>, <code>Recall@3</code>, and <code>MRR@3</code> simultaneously.</p>
+
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Overall Recall@3 across the 12 experimental configurations (k = 3, 12 questions, 20 evidence units)</caption>
+            <thead>
+              <tr>
+                <th scope="col">Config · Size / Overlap</th>
+                <th scope="col" class="num">Chunks</th>
+                <th scope="col">Recall@3 (Share of 20 Evidence Units Covered)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="has-bar">
+                <th scope="row">C1 · 300 / 0 (0%)</th>
+                <td class="num">128</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.542"></span><span class="bar-value">0.542</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C2 · 300 / 30 (10%)</th>
+                <td class="num">140</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.333"></span><span class="bar-value">0.333</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C3 · 300 / 60 (20%)</th>
+                <td class="num">159</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.333"></span><span class="bar-value">0.333</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C4 · 500 / 0 (0%)</th>
+                <td class="num">80</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.653"></span><span class="bar-value">0.653</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C5 · 500 / 50 (10%)</th>
+                <td class="num">88</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.639"></span><span class="bar-value">0.639</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C6 · 500 / 100 (20%)</th>
+                <td class="num">97</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.694"></span><span class="bar-value">0.694</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C7 · 750 / 0 (0%)</th>
+                <td class="num">58</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.639"></span><span class="bar-value">0.639</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C8 · 750 / 75 (10%)</th>
+                <td class="num">59</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.542"></span><span class="bar-value">0.542</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C9 · 750 / 150 (20%)</th>
+                <td class="num">69</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.736"></span><span class="bar-value">0.736</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C10 · 1000 / 0 (0%)</th>
+                <td class="num">44</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.736"></span><span class="bar-value">0.736</span></div></td>
+              </tr>
+              <tr class="has-bar is-key">
+                <th scope="row">C11* · 1000 / 100 (10%) <span class="row-tag">Recommended</span></th>
+                <td class="num">48</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.708"></span><span class="bar-value">0.708</span></div></td>
+              </tr>
+              <tr class="has-bar">
+                <th scope="row">C12† · 1000 / 200 (20% · Part 1 Baseline)</th>
+                <td class="num">50</td>
+                <td class="bar-cell"><div class="bar-track"><span class="bar" style="--p: 0.625"></span><span class="bar-value">0.625</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Table A &amp; Table IV: Configuration-level retrieval quality and efficiency</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Complete configuration-level metrics and CPU efficiency measurements across C1–C12 (bold indicates column best)</caption>
+            <thead>
+              <tr>
+                <th scope="col">Config</th>
+                <th scope="col" class="num">Size</th>
+                <th scope="col" class="num">Overlap</th>
+                <th scope="col" class="num">Chunks</th>
+                <th scope="col" class="num">Index (KB)</th>
+                <th scope="col" class="num">P@3</th>
+                <th scope="col" class="num">R@3</th>
+                <th scope="col" class="num">MRR@3</th>
+                <th scope="col" class="num">Embed (s)</th>
+                <th scope="col" class="num">&gt; 256 tok.</th>
+                <th scope="col">Role / Finding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">C1</td><td class="num">300</td><td class="num">0 (0%)</td><td class="num">128</td><td class="num">192.0</td>
+                <td class="num">0.222</td><td class="num">0.542</td><td class="num">0.514</td><td class="num">0.626</td><td class="num">0.0%</td>
+                <td>Fragmented headings from facts (missed Q02)</td>
+              </tr>
+              <tr>
+                <td class="mono">C2</td><td class="num">300</td><td class="num">30 (10%)</td><td class="num">140</td><td class="num">210.0</td>
+                <td class="num">0.139</td><td class="num">0.333</td><td class="num">0.333</td><td class="num">0.759</td><td class="num">0.0%</td>
+                <td>0.000 Difficult recall; worst overall P@3</td>
+              </tr>
+              <tr>
+                <td class="mono">C3</td><td class="num">300</td><td class="num">60 (20%)</td><td class="num">159</td><td class="num">238.5</td>
+                <td class="num">0.167</td><td class="num">0.333</td><td class="num">0.333</td><td class="num">0.742</td><td class="num">0.0%</td>
+                <td>Largest index (238.5 KB), tied lowest R@3 &amp; MRR@3</td>
+              </tr>
+              <tr>
+                <td class="mono">C4</td><td class="num">500</td><td class="num">0 (0%)</td><td class="num">80</td><td class="num">120.0</td>
+                <td class="num">0.278</td><td class="num">0.653</td><td class="num"><strong>0.750</strong></td><td class="num">0.699</td><td class="num">0.0%</td>
+                <td>Tied highest MRR@3; 1.000 Easy recall</td>
+              </tr>
+              <tr>
+                <td class="mono">C5</td><td class="num">500</td><td class="num">50 (10%)</td><td class="num">88</td><td class="num">132.0</td>
+                <td class="num">0.278</td><td class="num">0.639</td><td class="num">0.736</td><td class="num">0.711</td><td class="num">0.0%</td>
+                <td>Strong ranking (0.736 MRR@3)</td>
+              </tr>
+              <tr>
+                <td class="mono">C6</td><td class="num">500</td><td class="num">100 (20%)</td><td class="num">97</td><td class="num">145.5</td>
+                <td class="num"><strong>0.306</strong></td><td class="num">0.694</td><td class="num">0.625</td><td class="num">0.957</td><td class="num">0.0%</td>
+                <td>2nd best Difficult recall (0.333), slower embed</td>
+              </tr>
+              <tr>
+                <td class="mono">C7</td><td class="num">750</td><td class="num">0 (0%)</td><td class="num">58</td><td class="num">87.0</td>
+                <td class="num"><strong>0.306</strong></td><td class="num">0.639</td><td class="num"><strong>0.750</strong></td><td class="num">0.846</td><td class="num">0.0%</td>
+                <td>Tied best P@3 &amp; MRR@3; best Difficult MRR@3 (0.625)</td>
+              </tr>
+              <tr>
+                <td class="mono">C8</td><td class="num">750</td><td class="num">75 (10%)</td><td class="num">59</td><td class="num">88.5</td>
+                <td class="num">0.222</td><td class="num">0.542</td><td class="num">0.528</td><td class="num">0.768</td><td class="num">0.0%</td>
+                <td>Matched C1 quality with 54% fewer chunks</td>
+              </tr>
+              <tr>
+                <td class="mono">C9</td><td class="num">750</td><td class="num">150 (20%)</td><td class="num">69</td><td class="num">103.5</td>
+                <td class="num"><strong>0.306</strong></td><td class="num"><strong>0.736</strong></td><td class="num">0.569</td><td class="num">0.888</td><td class="num">0.0%</td>
+                <td>Tied best R@3, but 8th in MRR@3 (lower ranks)</td>
+              </tr>
+              <tr>
+                <td class="mono">C10</td><td class="num">1000</td><td class="num">0 (0%)</td><td class="num"><strong>44</strong></td><td class="num"><strong>66.0</strong></td>
+                <td class="num">0.278</td><td class="num"><strong>0.736</strong></td><td class="num">0.694</td><td class="num"><strong>0.603</strong></td><td class="num">6.8%</td>
+                <td>Smallest index &amp; tied best R@3, but weak Difficult R@3 (0.208)</td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">C11*</td><td class="num">1000</td><td class="num">100 (10%)</td><td class="num">48</td><td class="num">72.0</td>
+                <td class="num"><strong>0.306</strong></td><td class="num">0.708</td><td class="num">0.694</td><td class="num">0.678</td><td class="num">4.2%</td>
+                <td>Best balanced &amp; top Difficult R@3 (0.375) <span class="row-tag">Best</span></td>
+              </tr>
+              <tr>
+                <td class="mono">C12†</td><td class="num">1000</td><td class="num">200 (20%)</td><td class="num">50</td><td class="num">75.0</td>
+                <td class="num">0.278</td><td class="num">0.625</td><td class="num">0.625</td><td class="num">0.696</td><td class="num">4.0%</td>
+                <td>Part 1 baseline; trailed C11 on all 3 metrics <span class="row-tag">Baseline</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Table B: Retrieval performance by question difficulty</h3>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption>Precision@3, Recall@3, and MRR@3 across Easy (4 units), Average (6 units), and Difficult (10 units) tiers</caption>
+            <thead>
+              <tr>
+                <th scope="col">Config (Size / Overlap)</th>
+                <th scope="col" class="num">Easy R@3</th>
+                <th scope="col" class="num">Avg R@3</th>
+                <th scope="col" class="num">Diff R@3</th>
+                <th scope="col" class="num">Easy MRR@3</th>
+                <th scope="col" class="num">Avg MRR@3</th>
+                <th scope="col" class="num">Diff MRR@3</th>
+                <th scope="col">Difficulty Breakdown Diagnosis</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">C1 (300 / 0)</td>
+                <td class="num">0.750</td><td class="num">0.750</td><td class="num">0.125</td>
+                <td class="num">0.583</td><td class="num">0.875</td><td class="num">0.083</td>
+                <td>Best of the 300-char group, but missed Q02 &amp; failed multi-hop</td>
+              </tr>
+              <tr>
+                <td class="mono">C2 (300 / 30)</td>
+                <td class="num">0.500</td><td class="num">0.500</td><td class="num">0.000</td>
+                <td class="num">0.500</td><td class="num">0.500</td><td class="num">0.000</td>
+                <td>Zero Difficult units retrieved</td>
+              </tr>
+              <tr>
+                <td class="mono">C3 (300 / 60)</td>
+                <td class="num">0.250</td><td class="num">0.625</td><td class="num">0.125</td>
+                <td class="num">0.250</td><td class="num">0.625</td><td class="num">0.125</td>
+                <td>Easy recall collapsed to 0.250 due to duplicate overlap slots</td>
+              </tr>
+              <tr>
+                <td class="mono">C4 (500 / 0)</td>
+                <td class="num"><strong>1.000</strong></td><td class="num">0.750</td><td class="num">0.208</td>
+                <td class="num"><strong>0.875</strong></td><td class="num"><strong>1.000</strong></td><td class="num">0.375</td>
+                <td>Full Easy recall &amp; Rank #1 on all Average questions</td>
+              </tr>
+              <tr>
+                <td class="mono">C5 (500 / 50)</td>
+                <td class="num">0.750</td><td class="num">0.875</td><td class="num">0.292</td>
+                <td class="num">0.625</td><td class="num"><strong>1.000</strong></td><td class="num">0.583</td>
+                <td>Improved Average &amp; Difficult recall over C4, missed Q04</td>
+              </tr>
+              <tr>
+                <td class="mono">C6 (500 / 100)</td>
+                <td class="num">0.750</td><td class="num"><strong>1.000</strong></td><td class="num">0.333</td>
+                <td class="num">0.625</td><td class="num">0.875</td><td class="num">0.375</td>
+                <td>Full Average recall; 2nd highest Difficult recall (0.333)</td>
+              </tr>
+              <tr>
+                <td class="mono">C7 (750 / 0)</td>
+                <td class="num">0.750</td><td class="num">0.875</td><td class="num">0.292</td>
+                <td class="num">0.625</td><td class="num"><strong>1.000</strong></td><td class="num"><strong>0.625</strong></td>
+                <td>Highest Difficult MRR@3 (0.625)</td>
+              </tr>
+              <tr>
+                <td class="mono">C8 (750 / 75)</td>
+                <td class="num">0.500</td><td class="num"><strong>1.000</strong></td><td class="num">0.125</td>
+                <td class="num">0.333</td><td class="num"><strong>1.000</strong></td><td class="num">0.250</td>
+                <td>1.000 Average recall, but dipped on Easy &amp; Difficult</td>
+              </tr>
+              <tr>
+                <td class="mono">C9 (750 / 150)</td>
+                <td class="num"><strong>1.000</strong></td><td class="num"><strong>1.000</strong></td><td class="num">0.208</td>
+                <td class="num">0.750</td><td class="num">0.625</td><td class="num">0.333</td>
+                <td>1.000 on both Easy &amp; Average recall; lower Average MRR@3</td>
+              </tr>
+              <tr>
+                <td class="mono">C10 (1000 / 0)</td>
+                <td class="num"><strong>1.000</strong></td><td class="num"><strong>1.000</strong></td><td class="num">0.208</td>
+                <td class="num">0.750</td><td class="num"><strong>1.000</strong></td><td class="num">0.333</td>
+                <td>Full Easy &amp; Average recall, but 0% overlap hurt Difficult recall</td>
+              </tr>
+              <tr class="is-key">
+                <td class="mono">C11* (1000 / 100)</td>
+                <td class="num">0.750</td><td class="num"><strong>1.000</strong></td><td class="num"><strong>0.375</strong></td>
+                <td class="num">0.750</td><td class="num">0.875</td><td class="num">0.458</td>
+                <td>1.000 Average R@3 &amp; highest Difficult R@3 (0.375) <span class="row-tag">Winner</span></td>
+              </tr>
+              <tr>
+                <td class="mono">C12† (1000 / 200)</td>
+                <td class="num"><strong>1.000</strong></td><td class="num">0.750</td><td class="num">0.125</td>
+                <td class="num"><strong>0.875</strong></td><td class="num">0.750</td><td class="num">0.250</td>
+                <td>Part 1 baseline: missed Q06 (Average) and 87.5% of Difficult units</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Why C11 (1000 / 100) beat both the C12 baseline and C10 (1000 / 0)</h3>
+        <div class="compare">
+          <div>
+            <h4>C11 (1000 / 100) vs. Part 1 Baseline C12 (1000 / 200)</h4>
+            <p>Reducing overlap from 200 characters (20%) to 100 characters (10%) raised <code>Precision@3</code> from <code>0.278</code> to <code>0.306</code>, <code>Recall@3</code> from <code>0.625</code> to <code>0.708</code>, and <code>MRR@3</code> from <code>0.625</code> to <code>0.694</code> while indexing two fewer chunks (48 vs. 50). Crucially, C11 recovered both placement-fee tips on <code>Q06</code> (which C12 missed entirely) and tripled Difficult-question recall from <code>0.125</code> to <code>0.375</code>.</p>
+          </div>
+          <div>
+            <h4>C11 (1000 / 100) vs. Zero-Overlap C10 (1000 / 0)</h4>
+            <p>Although C10 used four fewer chunks (44 vs. 48) and retrieved the Filipino question <code>Q04</code> via a boundary override, removing overlap entirely caused Difficult-question recall to drop from C11's <code>0.375</code> down to <code>0.208</code>. C11 was the only configuration in the entire study to retrieve two of the three required passages on <code>Q11</code> (the Tourist–Worker Scheme).</p>
+          </div>
+        </div>
+
+        <h3>Experiment charts &amp; Table C retrieval log captures</h3>
+        <div class="report-figures">
+          <figure class="report-figure">
+            <a href="../images/finals-02-screenshot-1.svg" aria-label="Open the configuration-level Precision@3, Recall@3, and MRR@3 chart full size">
+              <img data-field="screenshot-1" src="../images/finals-02-screenshot-1.svg" alt="Horizontal grouped bar chart of Precision@3, Recall@3, and MRR@3 across all 12 chunking configurations C1 to C12, highlighting C11 (1000/100) as the recommended winner." loading="lazy">
+            </a>
+            <figcaption><strong>Configuration-level retrieval quality (Table A / Fig. 1).</strong> Compares <code>Precision@3</code>, <code>Recall@3</code>, and <code>MRR@3</code> alongside index chunk count and storage size across <code>C1</code>–<code>C12</code>.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-02-screenshot-2.svg" aria-label="Open the difficulty heatmap and overlap effect chart full size">
+              <img data-field="screenshot-2" src="../images/finals-02-screenshot-2.svg" alt="Two-panel chart showing the Recall@3 and MRR@3 heatmap by Easy, Average, and Difficult tiers alongside the overlap degradation curves and quality-versus-cost scatter plot." loading="lazy">
+            </a>
+            <figcaption><strong>Difficulty breakdown &amp; overlap degradation (Table B / Figs. 2–4).</strong> Left: Difficult recall stays below <code>0.40</code> everywhere, peaking at <code>0.375</code> in <code>C11</code>. Right: 20% overlap lowers <code>MRR@3</code> at every chunk size while adding 14–24% more chunks.</figcaption>
+          </figure>
+          <figure class="report-figure">
+            <a href="../images/finals-02-screenshot-3.svg" aria-label="Open the Table C retrieval log diagnostic preview full size">
+              <img src="../images/finals-02-screenshot-3.svg" alt="Diagnostic rows from Table_C_Retrieval_Log.csv showing C1 heading fragmentation on Q02, C11 recovering Q06 and leading Q11, the C10 manual override on Q04, and the Q09 look-alike miss." loading="lazy">
+            </a>
+            <figcaption><strong>Table C retrieval log audit (432 rows).</strong> Contrasts <code>C1</code>'s 300-char heading split on <code>Q02</code>, <code>C11</code>'s recovery of <code>Q06</code> and <code>Q11</code>, the 5 boundary overrides, and the universal look-alike failure on <code>Q09</code>.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="report-section" id="learned">
+        <h2>What I learned</h2>
+        <p data-field="reflection-1">Working through the PT-F2 experiment notebook taught me how to turn chunking from guesswork into a controlled scientific test. In Part 1 we only saw how one baseline configuration behaved, so in Part 2 I learned why every other variable had to be locked down: extracting the 12 PDF pages once, encoding the 12 test questions into query vectors a single time, keeping the embedding model and retrieval depth fixed at three chunks, and building a brand-new FAISS index from scratch for each of the 12 configurations. Defining overlap as a percentage of chunk size rather than a fixed number of characters was another important concept, because it let us compare small and large chunks at the exact same relative overlap. Just as importantly, setting up the ground truth around 20 verifiable <strong>evidence units</strong>—each requiring both the correct source page and an exact check phrase cleaned for Unicode quotes, case, and spacing—showed me how automated scoring avoids rewarding chunks that merely mention a related topic or a look-alike scam. Auditing all 432 retrieval rows in Table C also taught me how boundary cuts interact with strict phrase matching: when five chunks contained the actual answer right at the edge of a window but clipped the end of the check phrase, recording transparent manual overrides with written justifications kept the evaluation fair and reproducible across every configuration.</p>
+        <p data-field="reflection-2">The second major group of concepts I learned came from seeing why both small chunks and heavy overlap failed in ways I did not initially expect. Before running the grid, it seemed natural to assume that smaller 300-character chunks would pinpoint single facts more accurately and that 20% overlap would always be safer than 0% or 10% overlap. Instead, the 300-character configurations performed worst on every metric because they broke the link between section headings and the facts written underneath them: on <code>Q02</code>, the retriever found the chunk holding the heading for the Pre-Employment Overseas Seminar (PEOS), but the phrase stating that it has eight modules sat roughly 400 characters further down in a separate chunk that lacked the heading's keywords, whereas every chunk size of 500 characters or larger kept the heading and module count together. At the same time, comparing 0%, 10%, and 20% overlap revealed why excessive overlap hurts ranking quality: at 20% overlap, Mean Reciprocal Rank was lower than at 0% overlap for every single chunk size while inflating the number of stored vectors by up to 24%. Inspecting the retrieved chunks showed what happens behind the scenes—when consecutive chunks share too much repeated text, near-duplicate neighbors compete for the same three retrieval slots and crowd out the second or third distinct passage a multi-part question needs.</p>
+        <p data-field="reflection-3">Third, analyzing the results across Table A, Table B, and the efficiency logs taught me what each retrieval metric actually measures and why no single number is enough on its own. Because most of our questions only need one or two passages to be answered completely, at most one or two of the three retrieved chunks can ever be relevant at once, which explains why Precision@3 topped out around one-third across the entire study. Comparing Recall@3 (how many of the required facts were found in the top three) against MRR@3 (how high up the first relevant chunk ranked) exposed real trade-offs between configurations: for example, <code>C9</code> (750 characters with 150 overlap) tied for the highest recall but dropped to eighth place in MRR@3 because its relevant chunks appeared lower down in the ranking, while <code>C4</code> and <code>C7</code> placed relevant chunks at Rank #1 more often but missed more facts overall. Pairing those quality scores with efficiency diagnostics in Step 8 also highlighted a critical hardware and model concept: while smaller chunks multiply index storage size and embedding time linearly, making chunks too large runs into the embedding model's 256-token reading limit. At 1,000 characters, between 4.0% and 6.8% of the chunks already exceeded 256 tokens, meaning <code>all-MiniLM-L6-v2</code> silently truncated their trailing words before computing the vector—proving why testing chunk sizes above 1,000 characters would increasingly blind the retriever to text at the end of a chunk.</p>
+        <p data-field="reflection-4">Finally, bringing all of these findings together showed me both why <code>C11</code> (1,000-character chunks with 100-character overlap) is the best choice for our document and where chunk tuning reaches its natural ceiling. Reducing overlap from the Part 1 baseline's 200 characters down to 100 characters kept headings and paragraphs intact while cutting down neighbor duplication, which allowed <code>C11</code> to recover both placement-fee tips on <code>Q06</code>, achieve 100% recall on Average questions, lead the entire study on Difficult-question recall (including finding two of the three passages on <code>Q11</code>), and rank in the top four on all three metrics while storing fewer vectors. Compared with <code>C10</code> (1,000 characters with zero overlap), keeping a 10% overlap bridge prevented Difficult-question recall from collapsing. Even so, the persistent failures on <code>Q09</code>—where every configuration reached the right pages but retrieved look-alike scam paragraphs instead of the exact peso amounts—and on <code>Q04</code>—where the Filipino question failed in half the configurations because <code>all-MiniLM-L6-v2</code> was trained primarily on English—taught me an essential engineering lesson for our <strong>AlalayOFW</strong> project: chunk size and overlap can fix context fragmentation and slot duplication, but solving look-alike disambiguation and cross-lingual retrieval requires upgrading the retriever itself with a multilingual embedding model, sentence-aware boundaries, and a slightly larger retrieval depth.</p>
+      </section>
+
+      <section class="report-section" id="details">
+        <details class="report-details">
+          <summary>Technical details <span class="hint">Summary of the 10 laboratory analysis questions &amp; notebook checks <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+          <h3>Answers to the 10 PT-F2 laboratory analysis questions</h3>
+          <ul>
+            <li><strong>1–3. Top configurations per metric:</strong> <code>C6</code>, <code>C7</code>, <code>C9</code>, and <code>C11</code> tied for highest <code>Precision@3</code> (<code>0.306</code>); <code>C9</code> (<code>750/150</code>) and <code>C10</code> (<code>1,000/0</code>) tied for highest <code>Recall@3</code> (<code>0.736</code>), followed by <code>C11</code> (<code>0.708</code>); and <code>C4</code> (<code>500/0</code>) and <code>C7</code> (<code>750/0</code>) tied for highest <code>MRR@3</code> (<code>0.750</code>), followed by <code>C5</code> (<code>0.736</code>).</li>
+            <li><strong>4. Consistency across metrics:</strong> Leading on one metric did not guarantee leading on the others—only <code>C11</code> (<code>1,000/100</code>) ranked in the top four across all three metrics simultaneously, beating the <code>C12</code> baseline on every measure.</li>
+            <li><strong>5–6. Best chunk size at equal overlap &amp; effect of overlap:</strong> Across 0%, 10%, and 20% overlap, <code>500–1,000</code> characters consistently outperformed <code>300</code> characters. Adding overlap increased chunk counts by <code>13.6%–24.2%</code> without a consistent recall gain and lowered <code>MRR@3</code> at 20% overlap for every chunk size because overlapping neighbors competed for the three retrieval slots.</li>
+            <li><strong>7–9. Difficult questions, small chunks vs. large chunks:</strong> <code>C11</code> achieved the highest Difficult <code>Recall@3</code> (<code>0.375</code>) and tied for highest Difficult <code>Precision@3</code> (<code>0.250</code>). Small <code>300</code>-character chunks failed on <code>Q02</code> because the answer sat 400 characters after the heading, whereas larger <code>500–1,000</code>-character chunks kept headings and facts together (achieving <code>1.000</code> Average recall in <code>C9–C11</code>), with the caveat that <code>4.0%–6.8%</code> of <code>1,000</code>-character chunks exceeded MiniLM's 256-token limit.</li>
+            <li><strong>10. Efficiency &amp; comparable quality with fewer chunks:</strong> Within a <code>0.05</code> tolerance on all three metrics, <code>C8</code> matched <code>C1</code> with 54% fewer chunks (<code>59</code> vs. <code>128</code>), <code>C7</code> matched <code>C4</code> and <code>C5</code> with 27%–34% fewer chunks, and <code>C10</code>/<code>C11</code> delivered top-tier recall with only <code>44–48</code> chunks (<code>66.0–72.0 KB</code> vs. <code>238.5 KB</code> in <code>C3</code>).</li>
+          </ul>
+          <h3>Automated reproducibility &amp; integrity checks in the notebook</h3>
+          <ul>
+            <li><strong>Baseline parity check (Step 8):</strong> Before building the FAISS index for <code>C12</code> (<code>1,000/200</code>), the notebook verifies that <code>create_chunks()</code> produces the exact same 50 chunk texts as Part 1, guaranteeing zero drift between the two experiments.</li>
+            <li><strong>Substring &amp; vector count assertions:</strong> Every configuration asserts that no chunk exceeds its configured character cap, every chunk is an exact substring of its source page, and <code>cfg_index.ntotal</code> equals the number of generated chunks.</li>
+          </ul>
+        </details>
+      </section>
+
+      <section class="report-section" id="files">
+        <h2>Files</h2>
+        <ul class="file-list">
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>
+            <span class="file-name"><strong>PT-F2 IEEE experimental report</strong><span>PDF · Labastida_PT-F2_IEEE_Report (1).pdf (6 pages)</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f2_final/Labastida_PT-F2_IEEE_Report%20%281%29.pdf" target="_blank" rel="noopener">Open PDF <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg></span>
+            <span class="file-name"><strong>12-configuration experiment notebook</strong><span>Jupyter Notebook · Labastida_PT_F2_Chunking_Experiment (1) (1).ipynb</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f2_final/Labastida_PT_F2_Chunking_Experiment%20%281%29%20%281%29.ipynb" download>Download .ipynb <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg></span>
+            <span class="file-name"><strong>Experiment results workbook (Tables A, B, C)</strong><span>XLSX · dmw_source_b_guidance_PT-F2_chunking_experiment 1.xlsx</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f2_final/dmw_source_b_guidance_PT-F2_chunking_experiment%201.xlsx" download>Download .xlsx <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+            <span class="file-name"><strong>Table C full retrieval log (432 rows)</strong><span>CSV · Table_C_Retrieval_Log.csv (12 configs × 12 questions × top 3)</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f2_final/Table_C_Retrieval_Log.csv" download>Download .csv <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+          <li>
+            <span class="file-icon"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg></span>
+            <span class="file-name"><strong>Verified ground truth &amp; question bank</strong><span>CSV · Ground_Truth.csv (20 evidence units) · dmw_source_b_test_questions (1).csv</span></span>
+            <a class="file-action" href="../portfolio_activities/pt_f2_final/Ground_Truth.csv" download>Download .csv <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></a>
+          </li>
+        </ul>
+        <div class="pdf-viewer">
+          <object data="../portfolio_activities/pt_f2_final/Labastida_PT-F2_IEEE_Report%20%281%29.pdf" type="application/pdf" aria-label="PT-F2 IEEE experimental report PDF">
+            <p class="pdf-viewer-fallback">
+              Your browser can't display this PDF inline.
+              <a href="../portfolio_activities/pt_f2_final/Labastida_PT-F2_IEEE_Report%20%281%29.pdf">Open the PT-F2 IEEE report PDF directly</a>.
+            </p>
+          </object>
+        </div>
+      </section>
+
+      <nav class="report-pager" aria-label="More reports">
+        <a class="prev" href="finals-01.html">
+          <span class="pager-label"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Previous report</span>
+          <span class="pager-title">PT-F1: Optimizing Chunk Size and Overlap</span>
+        </a>
+        <a class="next" href="finals-03.html">
+          <span class="pager-label">Next report <svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          <span class="pager-title">WW-F1 &amp; WW-F2: RAG Optimization and GPU Benchmarking</span>
+        </a>
+      </nav>
+      <a class="back-link" href="../report.html">&larr; All reports</a>
     </div>
-    <div class="img-placeholder" role="img" aria-label="Screenshot coming soon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5-4 4-3-3-6 6"/></svg>
-      <span>Screenshot coming soon</span>
-    </div>
+
+    <aside class="report-aside" aria-label="On this page">
+      <div>
+        <p class="aside-label">On this page</p>
+        <nav class="toc">
+          <a href="#summary">Summary</a>
+          <a href="#approach">Approach</a>
+          <a href="#results">Results</a>
+          <a href="#learned">What I learned</a>
+          <a href="#details">Technical details</a>
+          <a href="#files">Files</a>
+        </nav>
+      </div>
+      <div class="aside-links">
+        <a href="../portfolio_activities/pt_f2_final/Labastida_PT-F2_IEEE_Report%20%281%29.pdf" target="_blank" rel="noopener"><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg> Open the PDF report</a>
+        <a href="../portfolio_activities/pt_f2_final/Labastida_PT-F2_IEEE_Report%20%281%29.pdf" download><svg class="r-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg> Download the PDF</a>
+      </div>
+    </aside>
   </div>
-
-  <section class="report-section">
-    <h2>Description</h2>
-    <p>Fine-tuned a pretrained transformer model on a labeled text
-    classification dataset, comparing results against the LSTM baseline from
-    Midterms.</p>
-  </section>
-
-  <section class="report-section">
-    <h2>Reflection</h2>
-    <!-- TODO: add your reflection here (or in content.md) — what you learned,
-         what was difficult, or what you'd do differently. -->
-    <p style="color:var(--muted);">Reflection coming soon.</p>
-  </section>
-
-  <a class="back-link" href="../finals.html">&larr; Back to Finals</a>
 </main>
 
 <footer>

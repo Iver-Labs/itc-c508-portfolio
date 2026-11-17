@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 660" width="1200" height="660" role="img" aria-label="Notebook FINAL vs Live Website Configuration and Behavioural Parity Analysis">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#11141a"/>
+      <stop offset="100%" stop-color="#0b0d11"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#16a6ad"/>
+      <stop offset="100%" stop-color="#5ce1e6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="660" rx="14" fill="url(#bgGrad2)" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <text x="40" y="46" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="13" font-weight="600" letter-spacing="1.5">P-F1 · IVERSON LABASTIDA DELIVERABLE · NOTEBOOK-TO-WEBSITE PARITY VERIFICATION</text>
+  <text x="40" y="78" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="24" font-weight="800">7/7 Automated Configuration Parity &amp; 33-Question Live Browser Evaluation</text>
+  <text x="40" y="102" fill="#a0a8b4" font-family="'IBM Plex Sans', sans-serif" font-size="14">Verifying that https://dmw-demo-vsicb5dr2a-as.a.run.app/ (github.com/Iver-Labs/dmw-demo) reproduces the Python notebook handoff</text>
+
+  <!-- Left Panel: 7/7 Configuration Parity Suite -->
+  <rect x="40" y="124" width="545" height="496" rx="10" fill="rgba(20,23,28,0.88)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="64" y="156" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="16" font-weight="700">1. Configuration Parity Suite (tests/notebook-parity.test.ts)</text>
+  <text x="64" y="176" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="12">CI gate fails if any website setting drifts from content/handoff/</text>
+
+  <!-- 7 Test Rows -->
+  <g transform="translate(64, 198)" font-family="'IBM Plex Sans', sans-serif">
+    <rect x="0" y="0" width="497" height="46" rx="6" fill="rgba(92,225,230,0.06)" stroke="rgba(92,225,230,0.22)"/>
+    <text x="14" y="20" fill="#ffffff" font-size="13" font-weight="700">T1 · System Prompt Parity</text>
+    <text x="14" y="37" fill="#a0a8b4" font-size="11">Matches 11-rule system_prompt.txt + site PII guardrail (no passport/OEC)</text>
+    <text x="438" y="28" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="56" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="76" fill="#ffffff" font-size="13" font-weight="700">T2 · Hybrid Retrieval Parameters</text>
+    <text x="14" y="93" fill="#a0a8b4" font-size="11">20 candidates each, RRF k=60, BM25 k1=1.5 / b=0.75, top-3, no gate</text>
+    <text x="438" y="84" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="112" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="132" fill="#ffffff" font-size="13" font-weight="700">T3 · Generation Settings</text>
+    <text x="14" y="149" fill="#a0a8b4" font-size="11">Llama-SEA-LION-v3-70B-IT, temp=0, max_tokens=400, FALLBACK token</text>
+    <text x="438" y="140" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="168" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="188" fill="#ffffff" font-size="13" font-weight="700">T4 · Embedding Model &amp; Prefixes</text>
+    <text x="14" y="205" fill="#a0a8b4" font-size="11">intfloat/multilingual-e5-small, query:/passage: prefixes, 384-d</text>
+    <text x="438" y="196" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="224" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="244" fill="#ffffff" font-size="13" font-weight="700">T5 · Prebuilt Index Integrity</text>
+    <text x="14" y="261" fill="#a0a8b4" font-size="11">Exactly 3,849 exported chunks (57 PEOS + 3,792 DMW records)</text>
+    <text x="438" y="252" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="280" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="300" fill="#ffffff" font-size="13" font-weight="700">T6 · BM25 Tokenizer Parity</text>
+    <text x="14" y="317" fill="#a0a8b4" font-size="11">TypeScript tokenizer splits tokens identically to Python notebook</text>
+    <text x="438" y="308" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+
+    <rect x="0" y="336" width="497" height="46" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="14" y="356" fill="#ffffff" font-size="13" font-weight="700">T7 · BM25 Scoring Parity</text>
+    <text x="14" y="373" fill="#a0a8b4" font-size="11">Exact numerical agreement with Python rank_bm25 0.2.2 library</text>
+    <text x="438" y="364" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">PASS</text>
+  </g>
+
+  <!-- Right Panel: Behavioural Parity & 5 Runtime Shifts -->
+  <rect x="609" y="124" width="551" height="496" rx="10" fill="rgba(20,23,28,0.88)" stroke="rgba(255,255,255,0.12)"/>
+  <text x="633" y="156" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="16" font-weight="700">2. Behavioural Parity (Playwright 33-Question Audit)</text>
+  <text x="633" y="176" fill="#a0a8b4" font-family="'IBM Plex Mono', monospace" font-size="12">Headless Chromium 1440x1000 · Isolated sessions · 13s rate spacing</text>
+
+  <!-- Parity Bars -->
+  <g transform="translate(633, 198)">
+    <text x="0" y="14" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="12">Live Correctness (33/33 vs 32/33)</text>
+    <rect x="245" y="2" width="200" height="14" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="245" y="2" width="200" height="14" rx="4" fill="url(#cyanGrad2)"/>
+    <text x="455" y="14" fill="#ffffff" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">100%</text>
+
+    <text x="0" y="42" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="12">Same Fallback Decision (32/33)</text>
+    <rect x="245" y="30" width="200" height="14" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="245" y="30" width="194" height="14" rx="4" fill="url(#cyanGrad2)"/>
+    <text x="455" y="42" fill="#5ce1e6" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">97%</text>
+
+    <text x="0" y="70" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="12">Same Top-3 Chunks (28/33)</text>
+    <rect x="245" y="58" width="200" height="14" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="245" y="58" width="170" height="14" rx="4" fill="#16a6ad"/>
+    <text x="455" y="70" fill="#ffffff" font-family="'IBM Plex Mono', monospace" font-size="12" font-weight="700">85%</text>
+
+    <text x="0" y="98" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="12">Identical Answer Text (21/33)</text>
+    <rect x="245" y="86" width="200" height="14" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <rect x="245" y="86" width="128" height="14" rx="4" fill="#16a6ad"/>
+    <text x="455" y="98" fill="#c3c9d2" font-family="'IBM Plex Mono', monospace" font-size="12">64%</text>
+  </g>
+
+  <!-- 5 Retrieval Shifts Table -->
+  <text x="633" y="332" fill="#ffffff" font-family="'Archivo', sans-serif" font-size="15" font-weight="700">Analysis of the 5 Top-3 Retrieval Shifts (ONNX CPU vs. Python GPU)</text>
+  <g transform="translate(633, 348)" font-family="'IBM Plex Mono', monospace" font-size="11.5">
+    <rect x="0" y="0" width="503" height="32" rx="4" fill="rgba(255,255,255,0.06)"/>
+    <text x="12" y="20" fill="#5ce1e6" font-weight="700">ID</text>
+    <text x="80" y="20" fill="#5ce1e6" font-weight="700">Retrieval Shift (Notebook → Website)</text>
+    <text x="360" y="20" fill="#5ce1e6" font-weight="700">Net Outcome</text>
+
+    <text x="12" y="52" fill="#ffffff" font-weight="600">P4-TL</text>
+    <text x="80" y="52" fill="#c3c9d2">PEOS p.4 entered rank 1 (was 3 DMW recs)</text>
+    <text x="360" y="52" fill="#5ce1e6" font-weight="700">Fallback → Correct</text>
+
+    <text x="12" y="82" fill="#ffffff" font-weight="600">P2-EN</text>
+    <text x="80" y="82" fill="#c3c9d2">PEOS p.13 moved from rank 2 to rank 1</text>
+    <text x="360" y="82" fill="#ffffff">Higher rank · Same</text>
+
+    <text x="12" y="112" fill="#ffffff" font-weight="600">P4-EN</text>
+    <text x="80" y="112" fill="#c3c9d2">PEOS p.4 moved from rank 2 to rank 1</text>
+    <text x="360" y="112" fill="#ffffff">Higher rank · Same</text>
+
+    <text x="12" y="142" fill="#c3c9d2">D1-TGL</text>
+    <text x="80" y="142" fill="#a0a8b4">Unrelated rank-2 DMW record swapped</text>
+    <text x="360" y="142" fill="#a0a8b4">No effect · Correct</text>
+
+    <text x="12" y="172" fill="#c3c9d2">D4-TL</text>
+    <text x="80" y="172" fill="#a0a8b4">Unrelated rank-3 DMW record swapped</text>
+    <text x="360" y="172" fill="#a0a8b4">No effect · Correct</text>
+  </g>
+
+  <text x="633" y="564" fill="#a0a8b4" font-family="'IBM Plex Sans', sans-serif" font-size="12">Why 5 top-3 lists shifted: Small floating-point differences between the notebook's Python</text>
+  <text x="633" y="582" fill="#a0a8b4" font-family="'IBM Plex Sans', sans-serif" font-size="12">embedding runtime and the website's ONNX CPU runtime shifted near-tied cosine scores;</text>
+  <text x="633" y="600" fill="#5ce1e6" font-family="'IBM Plex Sans', sans-serif" font-size="12" font-weight="600">in all 5 cases, answer quality either improved (P4-TL) or remained 100% unchanged.</text>
+</svg>

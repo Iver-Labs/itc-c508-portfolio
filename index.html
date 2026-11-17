@@ -1015,17 +1015,82 @@
           <span class="kicker-pill">Period 03 // Finals</span>
           <h2 class="panel-title">Finals Capstone Coursework</h2>
           <p class="panel-lead">
-            Advanced neural models—encoder-decoder architectures with attention mechanisms and transformer fine-tuning for document-level tasks.
+            Retrieval-Augmented Generation (RAG) indexing, chunk-size and overlap optimization, vector search with FAISS, and quantized LLM evaluation.
           </p>
         </div>
 
-        <div class="panel-content empty-state">
-          <!-- Finals report cards are hidden until the reports are written.
-               The pages still exist in reports/ (finals-01.html, finals-02.html). -->
-          <svg class="icon empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>
-          <h3 class="empty-title">Final reports aren't posted yet</h3>
-          <p class="empty-text">They'll appear here once each activity and its reflection are finished. In the meantime, the Prelims reports cover the work so far.</p>
-          <button class="empty-action" type="button" data-page="prelims">See the Prelims reports</button>
+        <div class="cards-grid-3 panel-content">
+          <article class="glass-card">
+            <img class="card-thumb" src="images/finals-01-screenshot-1.svg" alt="Chunk length distribution across 50 chunks and Top-3 FAISS cosine similarity scores for PT-F1" loading="lazy" />
+            <div class="card-body">
+              <span class="card-meta">Activity 01 · Week 12</span>
+              <h3 class="card-h3">PT-F1: Optimizing Chunk Size &amp; Overlap</h3>
+              <p class="card-p">
+                Built a two-component RAG pipeline over the 12-page DMW/POEA Source B guidance (50 chunks at 1,000/200 chars), audited chunk boundaries in Excel, and evaluated 4-bit quantized SEA-LION v3-8B-IT on a Tesla T4 GPU.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">FAISS</span>
+                <span class="tag-chip">MiniLM-L6-v2</span>
+                <span class="tag-chip">SEA-LION v3-8B</span>
+                <span class="tag-chip">RAG</span>
+              </div>
+              <a class="view-link" href="reports/finals-01.html">Read the PT-F1 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/finals-02-screenshot-1.svg" alt="Precision@3, Recall@3, and MRR@3 across 12 chunking configurations C1 to C12 for PT-F2" loading="lazy" />
+            <div class="card-body">
+              <span class="card-meta">Activity 02 · Week 14</span>
+              <h3 class="card-h3">PT-F2: Best Chunk Size &amp; Overlap Experiment</h3>
+              <p class="card-p">
+                Benchmarked 12 chunking configurations (sizes 300–1,000, overlaps 0%–20%) across 20 verified evidence units with Precision@3, Recall@3, and MRR@3. Found C11 (1,000/100) outperformed the Part 1 baseline on all metrics.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">Precision@3</span>
+                <span class="tag-chip">Recall@3</span>
+                <span class="tag-chip">MRR@3</span>
+                <span class="tag-chip">FAISS</span>
+              </div>
+              <a class="view-link" href="reports/finals-02.html">Read the PT-F2 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/finals-03-screenshot-1.svg" alt="Part A 15-configuration RAG parameter matrix for AlalayOFW across chunk size, overlap, top-k, and strict prompt" loading="lazy" />
+            <div class="card-body">
+              <span class="card-meta">Activity 03 · Week 15</span>
+              <h3 class="card-h3">WW-F1 &amp; WW-F2: RAG Optimization &amp; GPU Benchmark</h3>
+              <p class="card-p">
+                Tuned Chroma chunking, top-k, and a stricter grounding prompt across 15 trilingual runs for AlalayOFW (PEOS + 3,792 DMW records) and benchmarked Tesla T4 GPU (&gt;53× response speedup) against CPU timeouts.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">Chroma</span>
+                <span class="tag-chip">SEA-LION v3-8B</span>
+                <span class="tag-chip">T4 GPU</span>
+                <span class="tag-chip">AlalayOFW</span>
+              </div>
+              <a class="view-link" href="reports/finals-03.html">Read the WW-F1/F2 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
+
+          <article class="glass-card">
+            <img class="card-thumb" src="images/finals-04-screenshot-1.svg" alt="AlalayOFW Stage 2 redesign progression from R0 to R6/FINAL and Live Cloud Run 100% accuracy for P-F1" loading="lazy" />
+            <div class="card-body">
+              <span class="card-meta">P-F1 Capstone · Week 18</span>
+              <h3 class="card-h3">P-F1: AlalayOFW Project Reflection &amp; Deliverables</h3>
+              <p class="card-p">
+                Final project reflection and D1–D7 deliverables: architected and deployed the AlalayOFW Next.js 16 + ONNX hybrid RRF chatbot on Google Cloud Run (github.com/Iver-Labs/dmw-demo), passing 7/7 parity tests and achieving 33/33 (100%) live accuracy.
+              </p>
+              <div class="tag-row">
+                <span class="tag-chip">Cloud Run</span>
+                <span class="tag-chip">Next.js 16</span>
+                <span class="tag-chip">Hybrid RRF</span>
+                <span class="tag-chip">SEA-LION 70B</span>
+              </div>
+              <a class="view-link" href="reports/finals-04.html">Read the P-F1 reflection <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -1065,6 +1130,42 @@
               Documented how batch sizes and Adam learning rate schedules directly dictate gradient stability and validation loss convergence across training epochs.
             </p>
             <a class="view-link" href="reports/prelims-03.html">Read the PT-P2 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          </div>
+
+          <div class="glass-card padded">
+            <span class="card-meta">Finals · Week 12</span>
+            <h3 class="card-h3">PT-F1: RAG Chunking &amp; Overlap</h3>
+            <p class="card-p">
+              Audited 1,000-character / 200-overlap FAISS retrieval on DMW/POEA guidance with 4-bit SEA-LION v3-8B-IT: 5/7 grounded hits, plus diagnostics on topic dilution and page-tail fragments.
+            </p>
+            <a class="view-link" href="reports/finals-01.html">Read the PT-F1 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          </div>
+
+          <div class="glass-card padded">
+            <span class="card-meta">Finals · Week 14</span>
+            <h3 class="card-h3">PT-F2: 12-Config Chunking Study</h3>
+            <p class="card-p">
+              Controlled 12-configuration FAISS experiment (300–1,000 chars, 0%–20% overlap): proved 300-char chunks severed headings from facts and selected C11 (1,000/100) with 0.708 Recall@3 and 0.694 MRR@3.
+            </p>
+            <a class="view-link" href="reports/finals-02.html">Read the PT-F2 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          </div>
+
+          <div class="glass-card padded">
+            <span class="card-meta">Finals · Week 15</span>
+            <h3 class="card-h3">WW-F1 &amp; WW-F2: GPU &amp; RAG Tuning</h3>
+            <p class="card-p">
+              Dual-PDF trilingual AlalayOFW study: 800/100 with k=3 and stricter prompt won 0.500 correctness &amp; 4.9s answers, while T4 GPU beat CPU timeouts by &gt;53×.
+            </p>
+            <a class="view-link" href="reports/finals-03.html">Read the WW-F1/F2 report <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
+          </div>
+
+          <div class="glass-card padded">
+            <span class="card-meta">Finals · Week 18</span>
+            <h3 class="card-h3">P-F1: Final Project Reflection</h3>
+            <p class="card-p">
+              Individual contribution (MRM D6) and D1–D7 deliverables for AlalayOFW: Next.js 16 + ONNX Cloud Run deployment (Iver-Labs/dmw-demo), 7/7 parity tests, and 33/33 (100%) live accuracy.
+            </p>
+            <a class="view-link" href="reports/finals-04.html">Read the P-F1 reflection <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a>
           </div>
         </div>
       </section>

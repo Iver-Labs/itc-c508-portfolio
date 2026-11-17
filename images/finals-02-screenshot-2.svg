@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" role="img" aria-label="PT-F2 Retrieval Performance by Question Difficulty and Effect of Overlap Ratio">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .grid { stroke: #232934; stroke-width: 1; stroke-dasharray: 4 4; }
+      .axis { stroke: #3b4352; stroke-width: 1.2; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 16px; font-weight: 700; }
+      .subtitle { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; }
+      .label { fill: #c3c9d2; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .mono { fill: #c3c9d2; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; }
+      .val-w { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .val-d { fill: #0e1013; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 700; }
+      .hi-cyan { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; }
+      .warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" class="bg"/>
+
+  <text x="28" y="32" class="subtitle">PT-F2 TABLE B, FIG. 2 &amp; FIG. 3 · DIFFICULTY BREAKDOWN (EASY / AVERAGE / DIFFICULT) &amp; OVERLAP EFFECT</text>
+  <text x="28" y="56" class="title" style="font-size: 20px;">Difficulty-Tier Heatmap (Recall@3 &amp; MRR@3) and Overlap Degradation Curves</text>
+
+  <!-- LEFT PANEL: Heatmap (Table III / Fig 2) -->
+  <rect x="24" y="76" width="576" height="520" rx="10" class="panel"/>
+  <text x="44" y="106" class="title">A. Recall@3 &amp; MRR@3 by Question Difficulty (Table B)</text>
+  <text x="44" y="124" class="subtitle">EASY (Q01–Q04, 4 UNITS) · AVERAGE (Q05–Q08, 6 UNITS) · DIFFICULT (Q09–Q12, 10 UNITS)</text>
+
+  <text x="235" y="148" text-anchor="middle" class="subtitle">RECALL@3</text>
+  <text x="455" y="148" text-anchor="middle" class="subtitle">MRR@3</text>
+  <text x="165" y="166" text-anchor="middle" class="mono">Easy</text>
+  <text x="235" y="166" text-anchor="middle" class="mono">Avg</text>
+  <text x="305" y="166" text-anchor="middle" class="mono">Diff</text>
+  <text x="385" y="166" text-anchor="middle" class="mono">Easy</text>
+  <text x="455" y="166" text-anchor="middle" class="mono">Avg</text>
+  <text x="525" y="166" text-anchor="middle" class="mono">Diff</text>
+
+  <!-- 12 Rows of Heatmap (y starts at 176, height 29, step 31) -->
+  <!-- C1: R(.750, .750, .125) M(.583, .875, .083) -->
+  <text x="120" y="195" text-anchor="end" class="mono">C1 (300/0)</text>
+  <rect x="132" y="176" width="66" height="27" fill="#167980" rx="3"/><text x="165" y="194" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="202" y="176" width="66" height="27" fill="#167980" rx="3"/><text x="235" y="194" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="272" y="176" width="66" height="27" fill="#23313d" rx="3"/><text x="305" y="194" text-anchor="middle" class="mono">0.125</text>
+  <rect x="352" y="176" width="66" height="27" fill="#1b5b66" rx="3"/><text x="385" y="194" text-anchor="middle" class="val-w">0.583</text>
+  <rect x="422" y="176" width="66" height="27" fill="#16a6ad" rx="3"/><text x="455" y="194" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="492" y="176" width="66" height="27" fill="#202a36" rx="3"/><text x="525" y="194" text-anchor="middle" class="mono">0.083</text>
+
+  <!-- C2: R(.500, .500, .000) M(.500, .500, .000) -->
+  <text x="120" y="226" text-anchor="end" class="mono">C2 (300/30)</text>
+  <rect x="132" y="207" width="66" height="27" fill="#1d4d59" rx="3"/><text x="165" y="225" text-anchor="middle" class="val-w">0.500</text>
+  <rect x="202" y="207" width="66" height="27" fill="#1d4d59" rx="3"/><text x="235" y="225" text-anchor="middle" class="val-w">0.500</text>
+  <rect x="272" y="207" width="66" height="27" fill="#281b1e" rx="3"/><text x="305" y="225" text-anchor="middle" class="warn">0.000</text>
+  <rect x="352" y="207" width="66" height="27" fill="#1d4d59" rx="3"/><text x="385" y="225" text-anchor="middle" class="val-w">0.500</text>
+  <rect x="422" y="207" width="66" height="27" fill="#1d4d59" rx="3"/><text x="455" y="225" text-anchor="middle" class="val-w">0.500</text>
+  <rect x="492" y="207" width="66" height="27" fill="#281b1e" rx="3"/><text x="525" y="225" text-anchor="middle" class="warn">0.000</text>
+
+  <!-- C3: R(.250, .625, .125) M(.250, .625, .125) -->
+  <text x="120" y="257" text-anchor="end" class="mono">C3 (300/60)</text>
+  <rect x="132" y="238" width="66" height="27" fill="#223b47" rx="3"/><text x="165" y="256" text-anchor="middle" class="mono">0.250</text>
+  <rect x="202" y="238" width="66" height="27" fill="#1a636e" rx="3"/><text x="235" y="256" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="272" y="238" width="66" height="27" fill="#23313d" rx="3"/><text x="305" y="256" text-anchor="middle" class="mono">0.125</text>
+  <rect x="352" y="238" width="66" height="27" fill="#223b47" rx="3"/><text x="385" y="256" text-anchor="middle" class="mono">0.250</text>
+  <rect x="422" y="238" width="66" height="27" fill="#1a636e" rx="3"/><text x="455" y="256" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="492" y="238" width="66" height="27" fill="#23313d" rx="3"/><text x="525" y="256" text-anchor="middle" class="mono">0.125</text>
+
+  <!-- C4: R(1.00, .750, .208) M(.875, 1.00, .375) -->
+  <text x="120" y="288" text-anchor="end" class="mono">C4 (500/0)</text>
+  <rect x="132" y="269" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="165" y="287" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="202" y="269" width="66" height="27" fill="#167980" rx="3"/><text x="235" y="287" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="272" y="269" width="66" height="27" fill="#223b47" rx="3"/><text x="305" y="287" text-anchor="middle" class="mono">0.208</text>
+  <rect x="352" y="269" width="66" height="27" fill="#16a6ad" rx="3"/><text x="385" y="287" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="422" y="269" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="455" y="287" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="492" y="269" width="66" height="27" fill="#1f4854" rx="3"/><text x="525" y="287" text-anchor="middle" class="val-w">0.375</text>
+
+  <!-- C5: R(.750, .875, .292) M(.625, 1.00, .583) -->
+  <text x="120" y="319" text-anchor="end" class="mono">C5 (500/50)</text>
+  <rect x="132" y="300" width="66" height="27" fill="#167980" rx="3"/><text x="165" y="318" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="202" y="300" width="66" height="27" fill="#16a6ad" rx="3"/><text x="235" y="318" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="272" y="300" width="66" height="27" fill="#1f4450" rx="3"/><text x="305" y="318" text-anchor="middle" class="val-w">0.292</text>
+  <rect x="352" y="300" width="66" height="27" fill="#1a636e" rx="3"/><text x="385" y="318" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="422" y="300" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="455" y="318" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="492" y="300" width="66" height="27" fill="#1b5b66" rx="3"/><text x="525" y="318" text-anchor="middle" class="val-w">0.583</text>
+
+  <!-- C6: R(.750, 1.00, .333) M(.625, .875, .375) -->
+  <text x="120" y="350" text-anchor="end" class="mono">C6 (500/100)</text>
+  <rect x="132" y="331" width="66" height="27" fill="#167980" rx="3"/><text x="165" y="349" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="202" y="331" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="235" y="349" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="272" y="331" width="66" height="27" fill="#1f4854" rx="3"/><text x="305" y="349" text-anchor="middle" class="val-w">0.333</text>
+  <rect x="352" y="331" width="66" height="27" fill="#1a636e" rx="3"/><text x="385" y="349" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="422" y="331" width="66" height="27" fill="#16a6ad" rx="3"/><text x="455" y="349" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="492" y="331" width="66" height="27" fill="#1f4854" rx="3"/><text x="525" y="349" text-anchor="middle" class="val-w">0.375</text>
+
+  <!-- C7: R(.750, .875, .292) M(.625, 1.00, .625) -->
+  <text x="120" y="381" text-anchor="end" class="mono">C7 (750/0)</text>
+  <rect x="132" y="362" width="66" height="27" fill="#167980" rx="3"/><text x="165" y="380" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="202" y="362" width="66" height="27" fill="#16a6ad" rx="3"/><text x="235" y="380" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="272" y="362" width="66" height="27" fill="#1f4450" rx="3"/><text x="305" y="380" text-anchor="middle" class="val-w">0.292</text>
+  <rect x="352" y="362" width="66" height="27" fill="#1a636e" rx="3"/><text x="385" y="380" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="422" y="362" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="455" y="380" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="492" y="362" width="66" height="27" fill="#1a636e" rx="3"/><text x="525" y="380" text-anchor="middle" class="val-w">0.625</text>
+
+  <!-- C8: R(.500, 1.00, .125) M(.333, 1.00, .250) -->
+  <text x="120" y="412" text-anchor="end" class="mono">C8 (750/75)</text>
+  <rect x="132" y="393" width="66" height="27" fill="#1d4d59" rx="3"/><text x="165" y="411" text-anchor="middle" class="val-w">0.500</text>
+  <rect x="202" y="393" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="235" y="411" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="272" y="393" width="66" height="27" fill="#23313d" rx="3"/><text x="305" y="411" text-anchor="middle" class="mono">0.125</text>
+  <rect x="352" y="393" width="66" height="27" fill="#1f4854" rx="3"/><text x="385" y="411" text-anchor="middle" class="val-w">0.333</text>
+  <rect x="422" y="393" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="455" y="411" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="492" y="393" width="66" height="27" fill="#223b47" rx="3"/><text x="525" y="411" text-anchor="middle" class="mono">0.250</text>
+
+  <!-- C9: R(1.00, 1.00, .208) M(.750, .625, .333) -->
+  <text x="120" y="443" text-anchor="end" class="mono">C9 (750/150)</text>
+  <rect x="132" y="424" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="165" y="442" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="202" y="424" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="235" y="442" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="272" y="424" width="66" height="27" fill="#223b47" rx="3"/><text x="305" y="442" text-anchor="middle" class="mono">0.208</text>
+  <rect x="352" y="424" width="66" height="27" fill="#167980" rx="3"/><text x="385" y="442" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="422" y="424" width="66" height="27" fill="#1a636e" rx="3"/><text x="455" y="442" text-anchor="middle" class="val-w">0.625</text>
+  <rect x="492" y="424" width="66" height="27" fill="#1f4854" rx="3"/><text x="525" y="442" text-anchor="middle" class="val-w">0.333</text>
+
+  <!-- C10: R(1.00, 1.00, .208) M(.750, 1.00, .333) -->
+  <text x="120" y="474" text-anchor="end" class="mono">C10 (1000/0)</text>
+  <rect x="132" y="455" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="165" y="473" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="202" y="455" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="235" y="473" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="272" y="455" width="66" height="27" fill="#223b47" rx="3"/><text x="305" y="473" text-anchor="middle" class="mono">0.208</text>
+  <rect x="352" y="455" width="66" height="27" fill="#167980" rx="3"/><text x="385" y="473" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="422" y="455" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="455" y="473" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="492" y="455" width="66" height="27" fill="#1f4854" rx="3"/><text x="525" y="473" text-anchor="middle" class="val-w">0.333</text>
+
+  <!-- C11*: R(.750, 1.00, .375) M(.750, .875, .458) -->
+  <text x="120" y="505" text-anchor="end" class="hi-cyan">★ C11 (1000/100)</text>
+  <rect x="132" y="486" width="66" height="27" fill="#167980" stroke="#5ce1e6" rx="3"/><text x="165" y="504" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="202" y="486" width="66" height="27" fill="#5ce1e6" stroke="#ffffff" rx="3"/><text x="235" y="504" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="272" y="486" width="66" height="27" fill="#16a6ad" stroke="#5ce1e6" rx="3"/><text x="305" y="504" text-anchor="middle" class="val-w">0.375 ★</text>
+  <rect x="352" y="486" width="66" height="27" fill="#167980" stroke="#5ce1e6" rx="3"/><text x="385" y="504" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="422" y="486" width="66" height="27" fill="#16a6ad" stroke="#5ce1e6" rx="3"/><text x="455" y="504" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="492" y="486" width="66" height="27" fill="#1b5b66" stroke="#5ce1e6" rx="3"/><text x="525" y="504" text-anchor="middle" class="val-w">0.458</text>
+
+  <!-- C12: R(1.00, .750, .125) M(.875, .750, .250) -->
+  <text x="120" y="536" text-anchor="end" class="mono">† C12 (1000/200)</text>
+  <rect x="132" y="517" width="66" height="27" fill="#5ce1e6" rx="3"/><text x="165" y="535" text-anchor="middle" class="val-d">1.000</text>
+  <rect x="202" y="517" width="66" height="27" fill="#167980" rx="3"/><text x="235" y="535" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="272" y="517" width="66" height="27" fill="#23313d" rx="3"/><text x="305" y="535" text-anchor="middle" class="warn">0.125</text>
+  <rect x="352" y="517" width="66" height="27" fill="#16a6ad" rx="3"/><text x="385" y="535" text-anchor="middle" class="val-w">0.875</text>
+  <rect x="422" y="517" width="66" height="27" fill="#167980" rx="3"/><text x="455" y="535" text-anchor="middle" class="val-w">0.750</text>
+  <rect x="492" y="517" width="66" height="27" fill="#223b47" rx="3"/><text x="525" y="535" text-anchor="middle" class="mono">0.250</text>
+
+  <text x="44" y="574" class="label">C11 achieves the highest Difficult Recall@3 (<tspan fill="#5ce1e6" font-weight="700">0.375</tspan> vs C12's 0.125 and C10's 0.208).</text>
+
+  <!-- RIGHT PANEL: Effect of Overlap & Efficiency Frontier -->
+  <rect x="616" y="76" width="560" height="520" rx="10" class="panel"/>
+  <text x="636" y="106" class="title">B. Effect of Overlap (0% vs 10% vs 20%) &amp; Storage Cost</text>
+  <text x="636" y="124" class="subtitle">20% OVERLAP LOWERED MRR@3 AT EVERY CHUNK SIZE WHILE ADDING 14–24% MORE CHUNKS</text>
+
+  <!-- Top Chart in Right Panel: MRR@3 vs Overlap % (y=320 is 0.25, y=160 is 0.80 => 290.9px per 1.0) -->
+  <text x="765" y="150" text-anchor="middle" class="subtitle">MRR@3 BY OVERLAP RATIO</text>
+  <line x1="670" y1="165" x2="860" y2="165" class="grid"/><text x="662" y="169" text-anchor="end" class="mono">0.75</text>
+  <line x1="670" y1="220" x2="860" y2="220" class="grid"/><text x="662" y="224" text-anchor="end" class="mono">0.55</text>
+  <line x1="670" y1="275" x2="860" y2="275" class="grid"/><text x="662" y="279" text-anchor="end" class="mono">0.35</text>
+  <line x1="670" y1="305" x2="860" y2="305" class="axis"/>
+  <text x="685" y="324" text-anchor="middle" class="mono">0%</text>
+  <text x="765" y="324" text-anchor="middle" class="mono">10%</text>
+  <text x="845" y="324" text-anchor="middle" class="mono">20%</text>
+
+  <!-- 1000 chars: .694 -> .694 -> .625 -->
+  <polyline points="685,180 765,180 845,199" fill="none" stroke="#5ce1e6" stroke-width="2.5"/>
+  <circle cx="685" cy="180" r="4" fill="#5ce1e6"/><circle cx="765" cy="180" r="5" fill="#ffffff" stroke="#5ce1e6" stroke-width="2"/><circle cx="845" cy="199" r="4" fill="#5ce1e6"/>
+
+  <!-- 500 chars: .750 -> .736 -> .625 -->
+  <polyline points="685,165 765,169 845,199" fill="none" stroke="#3b82f6" stroke-width="2"/>
+  <circle cx="685" cy="165" r="3.5" fill="#3b82f6"/><circle cx="765" cy="169" r="3.5" fill="#3b82f6"/><circle cx="845" cy="199" r="3.5" fill="#3b82f6"/>
+
+  <!-- 750 chars: .750 -> .528 -> .569 -->
+  <polyline points="685,165 765,226 845,215" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 2"/>
+  <circle cx="685" cy="165" r="3.5" fill="#10b981"/><circle cx="765" cy="226" r="3.5" fill="#10b981"/><circle cx="845" cy="215" r="3.5" fill="#10b981"/>
+
+  <!-- 300 chars: .514 -> .333 -> .333 -->
+  <polyline points="685,230 765,280 845,280" fill="none" stroke="#ffb4a8" stroke-width="2"/>
+  <circle cx="685" cy="230" r="3.5" fill="#ffb4a8"/><circle cx="765" cy="280" r="3.5" fill="#ffb4a8"/><circle cx="845" cy="280" r="3.5" fill="#ffb4a8"/>
+
+  <!-- Top Right Mini-Chart: Recall@3 vs Total Chunks (Pareto Frontier, Fig 4) -->
+  <text x="1030" y="150" text-anchor="middle" class="subtitle">QUALITY vs. COST (FIG. 4)</text>
+  <line x1="920" y1="165" x2="1145" y2="165" class="grid"/><text x="914" y="169" text-anchor="end" class="mono">.75</text>
+  <line x1="920" y1="220" x2="1145" y2="220" class="grid"/><text x="914" y="224" text-anchor="end" class="mono">.55</text>
+  <line x1="920" y1="275" x2="1145" y2="275" class="grid"/><text x="914" y="279" text-anchor="end" class="mono">.35</text>
+  <line x1="920" y1="305" x2="1145" y2="305" class="axis"/>
+  <text x="930" y="324" text-anchor="middle" class="mono">44c</text>
+  <text x="1030" y="324" text-anchor="middle" class="mono">100c</text>
+  <text x="1135" y="324" text-anchor="middle" class="mono">159c</text>
+
+  <!-- Points on Recall vs Chunks -->
+  <circle cx="930" cy="169" r="5" fill="#5ce1e6"/><text x="932" y="160" class="mono">C10</text>
+  <circle cx="938" cy="177" r="6" fill="#ffffff" stroke="#5ce1e6" stroke-width="2"/><text x="948" y="181" class="hi-cyan">C11★</text>
+  <circle cx="942" cy="200" r="4.5" fill="#a0a8b4"/><text x="950" y="204" class="mono">C12†</text>
+  <circle cx="976" cy="169" r="5" fill="#10b981"/><text x="984" y="173" class="mono">C9</text>
+  <circle cx="1028" cy="180" r="4.5" fill="#3b82f6"/><text x="1036" y="184" class="mono">C6</text>
+  <circle cx="1080" cy="222" r="4.5" fill="#ffb4a8"/><text x="1088" y="225" class="warn">C1</text>
+  <circle cx="1102" cy="280" r="4.5" fill="#ffb4a8"/><text x="1085" y="295" class="warn">C2/C3</text>
+
+  <!-- Legend for Line Chart -->
+  <line x1="640" y1="350" x2="662" y2="350" stroke="#5ce1e6" stroke-width="2.5"/><text x="668" y="354" class="label">1,000 chars (C10–C12)</text>
+  <line x1="815" y1="350" x2="837" y2="350" stroke="#10b981" stroke-width="2"/><text x="843" y="354" class="label">750 chars (C7–C9)</text>
+  <line x1="970" y1="350" x2="992" y2="350" stroke="#3b82f6" stroke-width="2"/><text x="998" y="354" class="label">500 chars (C4–C6)</text>
+  <line x1="640" y1="372" x2="662" y2="372" stroke="#ffb4a8" stroke-width="2"/><text x="668" y="376" class="warn">300 chars (C1–C3: broke heading-to-fact links)</text>
+
+  <!-- Efficiency & Truncation Summary Box (Table IV) -->
+  <rect x="636" y="394" width="520" height="184" rx="8" fill="#12151b" stroke="#28303d"/>
+  <text x="652" y="418" class="subtitle">TABLE IV · EFFICIENCY &amp; EMBEDDER TRUNCATION DIAGNOSTICS</text>
+  <text x="652" y="442" class="label">• <tspan fill="#ffffff" font-weight="600">Storage scaling (1.5 KB / 384-D vector):</tspan> Ranges from <tspan class="mono">66.0 KB</tspan> (C10, 44 chunks)</text>
+  <text x="664" y="460" class="label">and <tspan class="hi-cyan">72.0 KB (C11★, 48 chunks)</tspan> up to <tspan class="warn">238.5 KB (C3, 159 chunks)</tspan>.</text>
+  <text x="652" y="484" class="label">• <tspan fill="#ffffff" font-weight="600">Embedder 256-token ceiling (all-MiniLM-L6-v2):</tspan> 0.0% of chunks truncated at</text>
+  <text x="664" y="502" class="label">300–750 chars, vs. <tspan class="warn">6.8% (C10), 4.2% (C11★), and 4.0% (C12†)</tspan> at 1,000 chars.</text>
+  <text x="652" y="526" class="label">• <tspan fill="#ffffff" font-weight="600">5 Audited Relevance Overrides (Step 6):</tspan> Q04 in C1, C4, C7, C10 and Q10 in C1</text>
+  <text x="664" y="544" class="label">where a boundary clipped the check phrase while keeping the answer words.</text>
+  <text x="652" y="566" class="hi-cyan">→ Conclusion: C11 (1000 / 100) is the only config in the Top 4 on all 3 metrics.</text>
+</svg>

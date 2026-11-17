@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" width="1200" height="540" role="img" aria-label="Excel Chunk Inspection Workbook Preview and 200-Character Sliding Window Overlap Anatomy">
+  <defs>
+    <style>
+      .bg { fill: #0e1013; }
+      .panel { fill: #151920; stroke: #2a303c; stroke-width: 1; }
+      .excel-hdr { fill: #1f4e78; }
+      .row-a { fill: #14181f; }
+      .row-b { fill: #181d25; }
+      .row-tail { fill: #25191c; }
+      .row-hit { fill: #132429; }
+      .title { fill: #ffffff; font-family: 'Archivo', system-ui, sans-serif; font-size: 18px; font-weight: 700; }
+      .kicker { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; }
+      .th { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; }
+      .td { fill: #e5e9f0; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+      .mono { fill: #5ce1e6; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+      .mono-w { fill: #ffffff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .warn { fill: #ffb4a8; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; }
+      .hl-cyan { fill: #5ce1e6; font-weight: 600; }
+      .hl-red { fill: #ffb4a8; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="540" class="bg"/>
+
+  <text x="28" y="32" class="kicker">STEP I-10 EXCEL WORKBOOK AUDIT · DMW_SOURCE_B_GUIDANCE_CHUNKS_INSPECTION.XLSX (SHEET: GENERATED_CHUNKS)</text>
+  <text x="28" y="56" class="title">Sliding-Window Overlap Continuity (1000 / 200) vs. Page-Boundary Tail Fragments</text>
+
+  <rect x="24" y="72" width="1152" height="444" rx="8" class="panel"/>
+  <rect x="24" y="72" width="1152" height="36" rx="8" class="excel-hdr"/>
+
+  <!-- Excel Columns: Chunk_ID | Source_Document | Page | Chars | Size | Overlap | Chunk_Text -->
+  <text x="38" y="94" class="th">Chunk_ID</text>
+  <text x="115" y="94" class="th">Page</text>
+  <text x="170" y="94" class="th">Chars</text>
+  <text x="235" y="94" class="th">Setting</text>
+  <text x="330" y="94" class="th">Chunk_Text (Excerpt Showing 200-Char Overlap &amp; Boundary Behavior)</text>
+  <text x="1015" y="94" class="th">Inspection Note</text>
+
+  <!-- Chunk 0 -->
+  <rect x="25" y="108" width="1150" height="48" class="row-a"/>
+  <text x="55" y="136" text-anchor="middle" class="mono-w">0</text>
+  <text x="128" y="136" text-anchor="middle" class="td">1</text>
+  <text x="188" y="136" text-anchor="middle" class="mono">999</text>
+  <text x="270" y="136" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="130" class="td">"Page 1 AlalayOFW Knowledge Base — Source B DMW and POEA guidance on licensed recruitment...</text>
+  <text x="330" y="146" class="td">...<tspan class="hl-cyan">who issued the text, its date, and the web address it came from. One section (Section 3) is in Filipino...</tspan>"</text>
+  <text x="1015" y="136" class="mono">Window [0:1000]</text>
+
+  <!-- Chunk 1 -->
+  <rect x="25" y="156" width="1150" height="48" class="row-b"/>
+  <text x="55" y="184" text-anchor="middle" class="mono-w">1</text>
+  <text x="128" y="184" text-anchor="middle" class="td">1</text>
+  <text x="188" y="184" text-anchor="middle" class="mono">999</text>
+  <text x="270" y="184" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="178" class="td">"<tspan class="hl-cyan">who issued the text, its date, and the web address it came from. One section (Section 3) is in Filipino...</tspan></text>
+  <text x="330" y="194" class="td">...1. Licensed Recruitment Agencies ... Only agencies licensed by the Department of Migrant Workers..."</text>
+  <text x="1015" y="184" class="mono">Window [800:1800]</text>
+
+  <!-- Chunk 3 -->
+  <rect x="25" y="204" width="1150" height="48" class="row-a"/>
+  <text x="55" y="232" text-anchor="middle" class="mono-w">3</text>
+  <text x="128" y="232" text-anchor="middle" class="td">1</text>
+  <text x="188" y="232" text-anchor="middle" class="mono">820</text>
+  <text x="270" y="232" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="226" class="td">"holder, licensee or holder of authority. (a) To charge or accept directly or indirectly any amount greater...</text>
+  <text x="330" y="242" class="td">...unless the transfer is designed to liberate a worker from oppressive terms and condi<tspan class="hl-red">tions of employment;</tspan>"</text>
+  <text x="1015" y="232" class="mono">Window [2400:3220]</text>
+
+  <!-- Chunk 4 (Tail) -->
+  <rect x="25" y="252" width="1150" height="46" class="row-tail"/>
+  <text x="55" y="280" text-anchor="middle" class="warn">4</text>
+  <text x="128" y="280" text-anchor="middle" class="td">1</text>
+  <text x="188" y="280" text-anchor="middle" class="warn">20</text>
+  <text x="270" y="280" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="280" class="td">"<tspan class="hl-red">tions of employment;</tspan>"  (100% contained in Chunk 3's last 200 chars; created because start=3200 &lt; 3220)</text>
+  <text x="1015" y="280" class="warn">Redundant Tail</text>
+
+  <!-- Chunk 10 (Q06 Target) -->
+  <rect x="25" y="298" width="1150" height="54" class="row-b"/>
+  <text x="55" y="328" text-anchor="middle" class="mono-w">10</text>
+  <text x="128" y="328" text-anchor="middle" class="td">3</text>
+  <text x="188" y="328" text-anchor="middle" class="mono">1000</text>
+  <text x="270" y="328" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="320" class="td">"POEA para mai-process (lalo na sa kaso ng EPS-Korea) 4. How to Avoid Illegal Recruitment ... Tips 1–4 ...</text>
+  <text x="330" y="338" class="td"><tspan class="hl-cyan">5. Do not pay more than the allowed placement fee (1 month salary). 6. Do not pay unless valid contract + receipt...</tspan>"</text>
+  <text x="1015" y="322" class="warn">Q06 Target</text>
+  <text x="1015" y="338" class="td">7 tips bundled</text>
+
+  <!-- Chunk 18 & 19 (Q07 Overlap Win) -->
+  <rect x="25" y="352" width="1150" height="54" class="row-hit"/>
+  <text x="55" y="382" text-anchor="middle" class="mono-w">18–19</text>
+  <text x="128" y="382" text-anchor="middle" class="td">5</text>
+  <text x="188" y="382" text-anchor="middle" class="mono">1000</text>
+  <text x="270" y="382" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="374" class="td">Chunk 18 ends &amp; Chunk 19 begins with shared 200-char bridge: "<tspan class="hl-cyan">Immigration consultants are required to</tspan></text>
+  <text x="330" y="392" class="td"><tspan class="hl-cyan">obtain a license from the POEA before engaging in recruitment...</tspan> Also, language training centers are not allowed..."</text>
+  <text x="1015" y="376" class="mono">Q07 Rank #1 &amp; #2</text>
+  <text x="1015" y="392" class="td">Bridge preserved</text>
+
+  <!-- Chunk 21 (Tail) -->
+  <rect x="25" y="406" width="1150" height="46" class="row-tail"/>
+  <text x="55" y="434" text-anchor="middle" class="warn">21</text>
+  <text x="128" y="434" text-anchor="middle" class="td">5</text>
+  <text x="188" y="434" text-anchor="middle" class="warn">27</text>
+  <text x="270" y="434" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="434" class="td">"<tspan class="hl-red">r European Union countries.</tspan>"  (Mid-word cut from "other European Union countries." at end of Chunk 20)</text>
+  <text x="1015" y="434" class="warn">Redundant Tail</text>
+
+  <!-- Chunk 49 (Tail that polluted Q06) -->
+  <rect x="25" y="452" width="1150" height="58" class="row-tail"/>
+  <text x="55" y="484" text-anchor="middle" class="warn">49</text>
+  <text x="128" y="484" text-anchor="middle" class="td">12</text>
+  <text x="188" y="484" text-anchor="middle" class="warn">109</text>
+  <text x="270" y="484" text-anchor="middle" class="td">1000 / 200</text>
+  <text x="330" y="476" class="td">"<tspan class="hl-red">d Training Centers, Local Government Units/Public Employment Service Office (PESO). Total Standard Fee: None.</tspan>"</text>
+  <text x="330" y="494" class="td">(Short tail of PEOS Chunk 48; concentrated "Total Standard Fee: None" scored 0.4241 on Q06, displacing Chunk 10!)</text>
+  <text x="1015" y="478" class="warn">Polluted Q06 #3</text>
+  <text x="1015" y="494" class="td">Cosine: 0.4241</text>
+</svg>
